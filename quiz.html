@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Play Quiz - RealorNah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e}
+        html,body{height:100%;overflow-x:hidden}
+        body{font-family:'Righteous',cursive;background:var(--deep-bg);color:white;line-height:1.4}
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(131,56,236,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(131,56,236,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");pointer-events:none}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:.6rem .75rem;position:fixed;top:0;left:0;right:0;height:50px;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
+        .logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+        .quiz-info{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.7)}
+        .progress-bar{width:70px;height:5px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-pink),var(--hot-orange));width:0%;transition:width .5s ease;box-shadow:0 0 10px var(--neon-pink)}
+        .container{max-width:500px;margin:0 auto;padding:55px .75rem 1rem;min-height:100vh}
+        /* Loading / Error screens */
+        .loading-screen,.error-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);text-align:center;gap:1rem}
+        .spinner{width:50px;height:50px;border:4px solid rgba(131,56,236,.3);border-top:4px solid var(--neon-pink);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
+        .error-icon{font-size:3rem}
+        .error-title{font-family:'Bungee Shade',cursive;font-size:1.4rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .error-text{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.7)}
+        /* Intro */
+        .intro-screen{text-align:center;padding:.5rem;animation:fadeIn .5s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px)}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .creator-avatar{width:70px;height:70px;background:linear-gradient(135deg,var(--electric-purple),var(--neon-pink));border-radius:50%;margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(131,56,236,.5);animation:pulse 2s infinite;font-size:2rem}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        .intro-title{font-family:'Bungee Shade',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.25rem;line-height:1.2}
+        .intro-subtitle{font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:1.25rem;line-height:1.3}
+        .name-input-wrapper{width:100%;max-width:260px;margin-bottom:.75rem}
+        .name-input{width:100%;padding:.8rem 1rem;background:var(--input-bg);border:2px solid var(--electric-purple);border-radius:12px;color:white;font-family:'Righteous',cursive;font-size:.95rem;text-align:center;outline:none;transition:all .3s}
+        .name-input:focus{border-color:var(--neon-pink);box-shadow:0 0 15px rgba(255,0,110,.3)}
+        .name-input::placeholder{color:rgba(255,255,255,.4)}
+        .start-btn{padding:.875rem 2.5rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 8px 25px rgba(255,0,110,.4)}
+        .start-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,0,110,.6)}
+        .start-btn:disabled{opacity:.5;cursor:not-allowed}
+        .quiz-meta{margin-top:.75rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.6)}
+        /* Question screen */
+        .question-screen{display:none;animation:fadeIn .3s ease;padding:.5rem 0}
+        .question-counter{font-family:'Chewy',cursive;font-size:.9rem;color:rgba(255,255,255,.6);text-align:center;margin-bottom:.75rem}
+        .question-text{font-family:'Chewy',cursive;font-size:clamp(1.1rem,4vw,1.4rem);text-align:center;margin-bottom:1.25rem;color:white;line-height:1.4;padding:.5rem}
+        .options-grid{display:flex;flex-direction:column;gap:.75rem}
+        .option-text-only{background:var(--card-bg);border:2px solid rgba(131,56,236,.3);border-radius:14px;padding:.875rem 1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+        .option-text-only:hover:not(.disabled){border-color:var(--electric-purple);transform:translateX(5px)}
+        .option-letter{width:30px;height:30px;background:rgba(131,56,236,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik Bubbles',cursive;font-size:.85rem;color:var(--cyan-blast);flex-shrink:0}
+        .option-label{display:flex;align-items:center;gap:.5rem;font-size:.95rem}
+        .option-with-image{background:var(--card-bg);border:2px solid rgba(131,56,236,.3);border-radius:14px;padding:.875rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+        .option-with-image:hover:not(.disabled){border-color:var(--electric-purple);transform:translateY(-3px)}
+        .option-image-box{width:50px;height:50px;background:rgba(131,56,236,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+        .option-text{font-size:.95rem}
+        .check-mark,.x-mark{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;font-size:.85rem}
+        .check-mark{background:var(--cyan-blast);color:var(--deep-bg)}
+        .x-mark{background:var(--neon-pink);color:white}
+        .option-text-only.correct,.option-with-image.correct{border-color:var(--cyan-blast);background:rgba(6,255,165,.08)}
+        .option-text-only.correct .check-mark,.option-with-image.correct .check-mark{opacity:1}
+        .option-text-only.wrong,.option-with-image.wrong{border-color:var(--neon-pink);background:rgba(255,0,110,.08)}
+        .option-text-only.wrong .x-mark,.option-with-image.wrong .x-mark{opacity:1}
+        .option-text-only.disabled,.option-with-image.disabled{cursor:default}
+        /* Results */
+        .result-screen{display:none;animation:fadeIn .5s ease;padding:1rem 0}
+        .score-circle-container{display:flex;justify-content:center;margin-bottom:1.5rem;position:relative}
+        .score-svg{transform:rotate(-90deg)}
+        .score-bg{fill:none;stroke:rgba(131,56,236,.2);stroke-width:10}
+        .score-circle{fill:none;stroke-width:10;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1.5s ease}
+        .score-text-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+        .score-percent{font-family:'Bungee Shade',cursive;font-size:2rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .result-message{font-family:'Bungee Shade',cursive;font-size:clamp(1.2rem,5vw,1.6rem);background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:.4rem}
+        .result-subtitle{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.7);text-align:center;margin-bottom:1.5rem}
+        .leaderboard-section{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:20px;padding:1.25rem;margin-bottom:1.25rem}
+        .leaderboard-title{font-family:'Chewy',cursive;font-size:1.1rem;color:var(--lemon-yellow);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+        .leaderboard-item{display:flex;align-items:center;padding:.75rem .5rem;border-bottom:1px solid rgba(131,56,236,.15);transition:all .3s}
+        .leaderboard-item:last-child{border-bottom:none}
+        .leaderboard-item.you{background:rgba(6,255,165,.05);border-radius:10px}
+        .rank{width:32px;height:32px;background:var(--electric-purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik Bubbles',cursive;font-size:.9rem;margin-right:.875rem;flex-shrink:0}
+        .leaderboard-item:nth-child(1) .rank{background:var(--lemon-yellow);color:var(--deep-bg)}
+        .leaderboard-item:nth-child(2) .rank{background:#C0C0C0;color:var(--deep-bg)}
+        .leaderboard-item:nth-child(3) .rank{background:#CD7F32;color:var(--deep-bg)}
+        .player-name{flex:1;font-size:.95rem}
+        .player-score{font-family:'Rubik Bubbles',cursive;color:var(--cyan-blast);font-size:1rem}
+        .result-actions{display:flex;flex-direction:column;gap:.75rem}
+        .action-btn{padding:1rem;border-radius:14px;border:none;font-family:'Rubik Bubbles',cursive;font-size:1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+        .action-btn.primary{background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));color:white;box-shadow:0 8px 25px rgba(255,0,110,.3)}
+        .action-btn.secondary{background:transparent;border:2px solid var(--electric-purple);color:white}
+        .action-btn:hover{transform:translateY(-2px)}
+        /* confetti */
+        .confetti{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:fall linear forwards;z-index:999}
+        @keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}
+        /* loading screen (between questions and results) */
+        .mid-loading{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);gap:1rem;text-align:center}
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+
+<nav>
+    <a href="index.html" class="logo">RealorNah</a>
+    <div class="quiz-info">
+        <div class="progress-bar"><div class="progress-fill" id="navProgress"></div></div>
+        <span id="quizProgressText">0/0</span>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Loading -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading quiz...</div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-screen" id="errorScreen" style="display:none">
+        <div class="error-icon">😕</div>
+        <div class="error-title">Quiz Not Found</div>
+        <div class="error-text">This quiz link may be invalid or expired.</div>
+        <a href="index.html" style="margin-top:1rem;color:var(--cyan-blast);font-family:'Chewy',cursive;font-size:1rem">← Back to Home</a>
+    </div>
+
+    <!-- Intro -->
+    <div class="intro-screen" id="introScreen" style="display:none">
+        <div class="creator-avatar">🎯</div>
+        <div class="intro-title" id="introTitle">Quiz by Someone</div>
+        <div class="intro-subtitle" id="introSubtitle">How well do you know them?<br>Answer all questions to find out!</div>
+        <div class="name-input-wrapper">
+            <input type="text" class="name-input" id="playerName" placeholder="Your name..." maxlength="25" autocomplete="off">
+        </div>
+        <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Let's Go! 🚀</button>
+        <div class="quiz-meta" id="quizMeta"></div>
+    </div>
+
+    <!-- Question -->
+    <div class="question-screen" id="questionScreen">
+        <div class="question-counter" id="questionCounter"></div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options-grid" id="optionsGrid"></div>
+    </div>
+
+    <!-- Mid Loading -->
+    <div class="mid-loading" id="midLoading">
+        <div class="spinner"></div>
+        <div class="loading-text">Calculating results...</div>
+    </div>
+
+    <!-- Results -->
+    <div class="result-screen" id="resultScreen">
+        <div class="score-circle-container">
+            <svg class="score-svg" width="160" height="160" viewBox="0 0 160 160">
+                <circle class="score-bg" cx="80" cy="80" r="70"/>
+                <circle class="score-circle" cx="80" cy="80" r="70" id="scoreCircle"
+                    stroke="url(#scoreGrad)"/>
+                <defs>
+                    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#ff006e"/>
+                        <stop offset="100%" style="stop-color:#fb5607"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="score-text-overlay">
+                <div class="score-percent" id="scorePercent">0%</div>
+            </div>
+        </div>
+        <div class="result-message" id="resultMessage"></div>
+        <div class="result-subtitle" id="resultSubtitle"></div>
+
+        <div class="leaderboard-section">
+            <div class="leaderboard-title">
+                <span class="iconify" data-icon="ph:trophy-bold"></span> Leaderboard
+            </div>
+            <div id="leaderboardList"></div>
+        </div>
+
+        <div class="result-actions">
+            <button class="action-btn primary" onclick="shareResult()">
+                <span class="iconify" data-icon="ph:share-network-bold"></span> Share My Score
+            </button>
+            <a href="create-quiz.html" class="action-btn secondary" style="text-decoration:none">
+                <span class="iconify" data-icon="ph:plus-bold"></span> Create My Own Quiz
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion, increment }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ── PASTE YOUR FIREBASE CONFIG HERE ──────────────────────────
+const firebaseConfig = {
+    apiKey: "AIzaSyAVmDJy2Iowj6BVK3HF8sb2FPuew2wBny8",
+    authDomain: "realornah-app.firebaseapp.com",
+    projectId: "realornah-app",
+    storageBucket: "realornah-app.firebasestorage.app",
+    messagingSenderId: "313279191530",
+    appId: "1:313279191530:web:639185b8807f68e24cba93"
+};
+// ─────────────────────────────────────────────────────────────
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+window._db = db;
+
+window.loadQuiz = async function(quizId) {
+    const snap = await getDoc(doc(db, "quizzes", quizId));
+    if (!snap.exists()) return null;
+    return snap.data();
+};
+
+window.saveScore = async function(quizId, playerName, score) {
+    const ref = doc(db, "quizzes", quizId);
+    await updateDoc(ref, {
+        plays: increment(1),
+        scores: arrayUnion({ name: playerName, score, playedAt: new Date().toISOString() })
+    });
+};
+
+window.getLeaderboard = async function(quizId) {
+    const snap = await getDoc(doc(db, "quizzes", quizId));
+    if (!snap.exists()) return [];
+    return snap.data().scores || [];
+};
+</script>
+
+<script>
+let quiz         = null;
+let currentQ     = 0;
+let score        = 0;
+let playerName   = '';
+let canAnswer    = true;
+let quizId       = null;
+
+// Parse ?id= from URL
+const params = new URLSearchParams(location.search);
+quizId = params.get('id');
+
+async function init() {
+    if (!quizId) { showError(); return; }
+    try {
+        quiz = await window.loadQuiz(quizId);
+        if (!quiz) { showError(); return; }
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('introTitle').textContent = `Quiz by ${quiz.creator}`;
+        document.getElementById('introSubtitle').textContent = `How well do you know ${quiz.creator}?\nAnswer all ${quiz.questions.length} questions!`;
+        document.getElementById('quizMeta').textContent = `${quiz.questions.length} questions · Good luck!`;
+        document.getElementById('introScreen').style.display = 'flex';
+        document.title = `${quiz.creator}'s Quiz - RealorNah`;
+    } catch(e) {
+        showError();
+        console.error(e);
+    }
+}
+
+function showError() {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('errorScreen').style.display  = 'flex';
+}
+
+document.getElementById('playerName').addEventListener('input', function() {
+    document.getElementById('startBtn').disabled = this.value.trim() === '';
+});
+
+function startQuiz() {
+    playerName = document.getElementById('playerName').value.trim();
+    if (!playerName) return;
+    document.getElementById('introScreen').style.display    = 'none';
+    document.getElementById('questionScreen').style.display = 'block';
+    showQuestion();
+    updateNavProgress();
+}
+
+function showQuestion() {
+    const q = quiz.questions[currentQ];
+    document.getElementById('questionCounter').textContent = `Question ${currentQ + 1} / ${quiz.questions.length}`;
+    document.getElementById('questionText').textContent    = q.question;
+    const grid = document.getElementById('optionsGrid');
+    grid.innerHTML = '';
+    const letters = ['A','B','C','D'];
+
+    q.options.forEach((opt, idx) => {
+        let card;
+        if (q.type === 'image') {
+            card = document.createElement('div');
+            card.className = 'option-with-image';
+            card.innerHTML = `
+                <div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div>
+                <div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div>
+                <div class="option-image-box"><span class="iconify" data-icon="${opt.icon}"></span></div>
+                <div class="option-text">${opt.text}</div>`;
+        } else {
+            card = document.createElement('div');
+            card.className = 'option-text-only';
+            card.innerHTML = `
+                <div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div>
+                <div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div>
+                <div class="option-label">
+                    <span class="option-letter">${letters[idx]}</span>
+                    <span>${opt.text}</span>
+                </div>`;
+        }
+        card.onclick = () => selectAnswer(idx, card);
+        grid.appendChild(card);
+    });
+
+    if (window.Iconify) window.Iconify.scan();
+    canAnswer = true;
+}
+
+function selectAnswer(selectedIdx, cardEl) {
+    if (!canAnswer) return;
+    canAnswer = false;
+    const q = quiz.questions[currentQ];
+    const isCorrect = selectedIdx === q.correct;
+    const allCards = document.querySelectorAll('.option-with-image, .option-text-only');
+    if (isCorrect) { score++; cardEl.classList.add('correct'); }
+    else           { cardEl.classList.add('wrong'); allCards[q.correct].classList.add('correct'); }
+    allCards.forEach(c => c.classList.add('disabled'));
+    setTimeout(() => {
+        currentQ++;
+        if (currentQ < quiz.questions.length) { showQuestion(); updateNavProgress(); }
+        else showMidLoading();
+    }, 1000);
+}
+
+function updateNavProgress() {
+    const pct = (currentQ / quiz.questions.length) * 100;
+    document.getElementById('navProgress').style.width  = pct + '%';
+    document.getElementById('quizProgressText').textContent = `${currentQ + 1}/${quiz.questions.length}`;
+}
+
+function showMidLoading() {
+    document.getElementById('questionScreen').style.display = 'none';
+    document.getElementById('midLoading').style.display    = 'flex';
+    document.getElementById('navProgress').style.width     = '100%';
+    saveAndShowResults();
+}
+
+async function saveAndShowResults() {
+    const percentage = Math.round((score / quiz.questions.length) * 100);
+    try {
+        await window.saveScore(quizId, playerName, percentage);
+    } catch(e) { console.error('Score save failed:', e); }
+
+    // Fetch fresh leaderboard
+    let allScores = [];
+    try { allScores = await window.getLeaderboard(quizId); } catch(e) {}
+
+    document.getElementById('midLoading').style.display   = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+
+    document.getElementById('scorePercent').textContent = percentage + '%';
+    setTimeout(() => {
+        const circle = document.getElementById('scoreCircle');
+        circle.style.strokeDashoffset = 440 - (440 * percentage) / 100;
+    }, 100);
+
+    const msgs = [
+        [90, "Best Friend Forever 🏆",   `You know ${quiz.creator} better than anyone!`],
+        [70, "You're a Good Friend 😊",   `You know ${quiz.creator} pretty well!`],
+        [50, "Not Bad 😐",               `You know some things about ${quiz.creator}.`],
+        [30, "Suspicious Friend 🤔",      `Do you even know ${quiz.creator}?`],
+        [0,  "Fake Friend Detected 💀",   `You're basically a stranger!`],
+    ];
+    const [, msg, sub] = msgs.find(([t]) => percentage >= t);
+    document.getElementById('resultMessage').textContent  = msg;
+    document.getElementById('resultSubtitle').textContent = sub;
+    if (percentage >= 90) createConfetti();
+
+    // Build leaderboard from real data
+    const sorted = [...allScores].sort((a,b) => b.score - a.score);
+    const list = document.getElementById('leaderboardList');
+    list.innerHTML = '';
+    sorted.forEach((p, idx) => {
+        const item = document.createElement('div');
+        const isMe = p.name === playerName;
+        item.className = 'leaderboard-item' + (isMe ? ' you' : '');
+        item.innerHTML = `
+            <div class="rank">${idx+1}</div>
+            <div class="player-name">${p.name}${isMe ? ' (You)' : ''}</div>
+            <div class="player-score">${p.score}%</div>`;
+        list.appendChild(item);
+    });
+
+    if (window.Iconify) window.Iconify.scan();
+}
+
+function createConfetti() {
+    const colors = ['#ff006e','#8338ec','#fb5607','#06ffa5','#ffbe0b'];
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.background = colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 4000);
+        }, i * 50);
+    }
+}
+
+function shareResult() {
+    const percentage = Math.round((score / quiz.questions.length) * 100);
+    const text = `I scored ${percentage}% on ${quiz.creator}'s quiz on RealorNah! Think you can beat me?`;
+    if (navigator.share) {
+        navigator.share({ title: 'RealorNah', text, url: location.href });
+    } else {
+        navigator.clipboard.writeText(text + ' ' + location.href);
+        alert('Link copied to clipboard!');
+    }
+}
+
+// Boot
+window.onload = () => { init(); };
+</script>
+</body>
+</html>
