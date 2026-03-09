@@ -83,13 +83,51 @@
         .type-btn.active{border-color:var(--neon-pink);background:rgba(255,0,110,.2);color:white}
         .delete-btn{background:rgba(255,0,110,.2);border:1.5px solid var(--neon-pink);color:var(--neon-pink);width:32px;height:32px;border-radius:50%;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:.85rem}
         .delete-btn:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
-        .options-container{display:flex;flex-direction:column;gap:.6rem}
+        .options-container{display:flex;flex-direction:column;gap:.8rem}
+        .options-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
         .option-text-only{background:var(--input-bg);border:2px solid rgba(255,255,255,.1);border-radius:12px;padding:.875rem 1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:all .25s;position:relative}
         .option-text-only:hover{border-color:var(--electric-purple);transform:translateX(5px)}
         .option-letter{width:28px;height:28px;background:rgba(131,56,236,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik Bubbles',cursive;font-size:.8rem;color:var(--cyan-blast);flex-shrink:0}
         .option-input{flex:1;background:transparent;border:none;border-bottom:2px solid rgba(255,255,255,.2);color:white;font-family:'Righteous',cursive;font-size:.9rem;padding:.25rem 0;outline:none}
         .option-input:focus{border-bottom-color:var(--neon-pink)}
         .option-with-image{background:var(--input-bg);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:all .25s;position:relative}
+        .option-grid{
+background:var(--input-bg);
+border:2px solid rgba(255,255,255,.1);
+border-radius:14px;
+padding:10px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+cursor:pointer;
+transition:.25s;
+}
+
+.option-grid:hover{
+border-color:var(--electric-purple);
+transform:translateY(-3px);
+}
+
+.option-grid.selected-correct{
+border-color:var(--cyan-blast);
+box-shadow:0 0 12px rgba(6,255,165,.4);
+}
+
+.option-grid .image-picker{
+width:55px;
+height:55px;
+}
+
+.option-grid .option-input{
+width:100%;
+text-align:center;
+font-size:.85rem;
+}
         .option-with-image:hover{border-color:var(--electric-purple);transform:translateY(-3px)}
         .image-picker{width:45px;height:45px;background:rgba(131,56,236,.2);border:2px dashed var(--electric-purple);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;font-size:1.3rem}
         .image-picker:hover{background:rgba(131,56,236,.4);border-style:solid}
@@ -108,10 +146,48 @@
         /* Icon Modal */
         .icon-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(5px);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
         .icon-modal.active{opacity:1;visibility:visible}
-        .icon-modal-content{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:24px 24px 0 0;padding:1.5rem;width:100%;max-width:500px;max-height:70vh;overflow-y:auto}
+        .icon-modal-content{
+background:var(--card-bg);
+border:2px solid var(--electric-purple);
+border-radius:24px 24px 0 0;
+padding:20px;
+width:100%;
+max-width:520px;
+height:80vh;
+overflow-y:auto;
+}
         .icon-modal-title{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--lemon-yellow);margin-bottom:1rem;text-align:center}
-        .icons-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem}
-        .icon-btn{background:var(--input-bg);border:2px solid rgba(131,56,236,.3);border-radius:12px;padding:.75rem;display:flex;flex-direction:column;align-items:center;gap:.3rem;cursor:pointer;transition:all .3s;font-size:.6rem;color:rgba(255,255,255,.7)}
+        .icons-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+padding-bottom:20px;
+}
+        .icon-btn{
+background:#1a0b2e;
+border:2px solid rgba(131,56,236,.4);
+border-radius:16px;
+padding:16px 10px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:6px;
+cursor:pointer;
+transition:.25s;
+font-size:12px;
+color:white;
+min-height:80px;
+}
+
+.icon-btn:hover{
+border-color:var(--neon-pink);
+transform:scale(1.05);
+}
+
+.icon-preview{
+font-size:32px;
+}
         .icon-btn:hover,.icon-btn.selected{border-color:var(--neon-pink);background:rgba(255,0,110,.1)}
         .icon-btn .icon-preview{font-size:1.5rem}
         /* Success Popup */
@@ -293,21 +369,36 @@ window.saveQuizToFirestore = async function(quizData) {
 <script>
 // ── Icon library ─────────────────────────────────────────────
 const ICONS = [
-    {icon:"emojione:pizza",label:"Pizza"},{icon:"emojione:hamburger",label:"Burger"},
-    {icon:"emojione:sushi",label:"Sushi"},{icon:"emojione:spaghetti",label:"Pasta"},
-    {icon:"emojione:taco",label:"Taco"},{icon:"emojione:ice-cream",label:"Ice Cream"},
-    {icon:"emojione:coffee",label:"Coffee"},{icon:"emojione:cake",label:"Cake"},
-    {icon:"emojione:tropical-drink",label:"Drink"},{icon:"emojione:apple",label:"Apple"},
-    {icon:"emojione:soccer-ball",label:"Soccer"},{icon:"emojione:basketball",label:"Basketball"},
-    {icon:"emojione:tennis",label:"Tennis"},{icon:"emojione:swimming",label:"Swim"},
-    {icon:"emojione:guitar",label:"Guitar"},{icon:"emojione:headphone",label:"Music"},
-    {icon:"emojione:movie-camera",label:"Movies"},{icon:"emojione:books",label:"Books"},
-    {icon:"emojione:video-game",label:"Gaming"},{icon:"emojione:artist-palette",label:"Art"},
-    {icon:"emojione:beach-with-umbrella",label:"Beach"},{icon:"emojione:mountain",label:"Mountain"},
-    {icon:"emojione:cityscape",label:"City"},{icon:"emojione:house",label:"Home"},
-    {icon:"emojione:airplane",label:"Travel"},{icon:"emojione:dog",label:"Dog"},
-    {icon:"emojione:cat",label:"Cat"},{icon:"emojione:red-heart",label:"Love"},
-    {icon:"emojione:fire",label:"Fire"},{icon:"emojione:rainbow",label:"Rainbow"}
+{icon:"twemoji:pizza",label:"Pizza"},
+{icon:"twemoji:hamburger",label:"Burger"},
+{icon:"twemoji:sushi",label:"Sushi"},
+{icon:"twemoji:spaghetti",label:"Pasta"},
+{icon:"twemoji:taco",label:"Taco"},
+{icon:"twemoji:ice-cream",label:"Ice Cream"},
+{icon:"twemoji:hot-beverage",label:"Coffee"},
+{icon:"twemoji:shortcake",label:"Cake"},
+{icon:"twemoji:tropical-drink",label:"Drink"},
+{icon:"twemoji:red-apple",label:"Apple"},
+{icon:"twemoji:soccer-ball",label:"Soccer"},
+{icon:"twemoji:basketball",label:"Basketball"},
+{icon:"twemoji:tennis",label:"Tennis"},
+{icon:"twemoji:swimmer",label:"Swim"},
+{icon:"twemoji:guitar",label:"Guitar"},
+{icon:"twemoji:headphone",label:"Music"},
+{icon:"twemoji:clapper-board",label:"Movies"},
+{icon:"twemoji:books",label:"Books"},
+{icon:"twemoji:video-game",label:"Gaming"},
+{icon:"twemoji:artist-palette",label:"Art"},
+{icon:"twemoji:beach-with-umbrella",label:"Beach"},
+{icon:"twemoji:mountain",label:"Mountain"},
+{icon:"twemoji:cityscape",label:"City"},
+{icon:"twemoji:house",label:"Home"},
+{icon:"twemoji:airplane",label:"Travel"},
+{icon:"twemoji:dog",label:"Dog"},
+{icon:"twemoji:cat",label:"Cat"},
+{icon:"twemoji:red-heart",label:"Love"},
+{icon:"twemoji:fire",label:"Fire"},
+{icon:"twemoji:rainbow",label:"Rainbow"}
 ];
 
 let questionCount = 0;
@@ -392,17 +483,41 @@ function renderTextOptions(qId) {
         </div>`).join('');
 }
 
-function renderImageOptions(qId) {
-    return [0,1,2,3].map(i => `
-        <div class="option-with-image" id="q${qId}-opt${i}" onclick="selectCorrect(${qId},${i})">
-            <input type="radio" class="radio-hidden" name="correct-${qId}" value="${i}">
-            <div class="image-picker" id="img-${qId}-${i}" onclick="openIconPicker(${qId},${i},event)">
-                <span class="iconify" data-icon="ph:image-bold"></span>
-            </div>
-            <input type="text" class="option-input" id="q${qId}-label${i}" placeholder="Label..."
-                maxlength="30" oninput="checkGenerateButton()" onclick="event.stopPropagation()">
-            <div class="correct-indicator"><span class="iconify" data-icon="ph:check-bold"></span></div>
-        </div>`).join('');
+function renderImageOptions(qId){
+
+return `
+<div class="options-grid">
+
+${[0,1,2,3].map(i=>`
+
+<div class="option-grid" id="q${qId}-opt${i}" onclick="selectCorrect(${qId},${i})">
+
+<input type="radio" class="radio-hidden" name="correct-${qId}" value="${i}">
+
+<div class="image-picker" id="img-${qId}-${i}" onclick="openIconPicker(${qId},${i},event)">
+<span class="iconify" data-icon="ph:image-bold"></span>
+</div>
+
+<input
+type="text"
+class="option-input"
+id="q${qId}-label${i}"
+placeholder="(optional)"
+maxlength="30"
+onclick="event.stopPropagation()"
+oninput="checkGenerateButton()"
+>
+
+<div class="correct-indicator">
+<span class="iconify" data-icon="ph:check-bold"></span>
+</div>
+
+</div>
+
+`).join('')}
+
+</div>
+`;
 }
 
 function switchType(qId, type) {
@@ -470,7 +585,9 @@ function selectIcon(icon, btn) {
 }
 
 function selectCorrect(qNum, optNum) {
-    document.querySelectorAll(`#question-${qNum} .option-text-only, #question-${qNum} .option-with-image`)
+    document.querySelectorAll(`#question-${qNum} .option-text-only,
+#question-${qNum} .option-with-image,
+#question-${qNum} .option-grid`)
         .forEach((opt, idx) => opt.classList.toggle('selected-correct', idx === optNum));
     const radio = document.querySelector(`#question-${qNum} input[value="${optNum}"]`);
     if (radio) radio.checked = true;
@@ -492,7 +609,7 @@ function checkGenerateButton() {
     let valid = 0;
     document.querySelectorAll('.question-card').forEach(card => {
         const qText = card.querySelector('input[id^="q-text-"]').value.trim();
-        const opts = Array.from(card.querySelectorAll('.option-input')).filter(o => o.value.trim()).length;
+       const opts = Array.from(card.querySelectorAll('.option-with-image, .option-text-only')).length;
         const hasCorrect = card.querySelector('.selected-correct');
         if (qText && opts >= 2 && hasCorrect) valid++;
     });
@@ -524,8 +641,16 @@ async function generateQuiz() {
 
         for (let i = 0; i < 4; i++) {
             const labelEl = document.getElementById(`q${qNum}-label${i}`);
-            if (!labelEl || !labelEl.value.trim()) continue;
-            const opt = { text: labelEl.value.trim() };
+            const label = labelEl ? labelEl.value.trim() : "";
+
+const opt = {};
+if(label) opt.text = label;
+
+if (isImage) {
+opt.icon = selectedIcons[`${qNum}-${i}`] || null;
+}
+
+options.push(opt);
             if (isImage) opt.icon = selectedIcons[`${qNum}-${i}`] || 'ph:question';
             options.push(opt);
             if (document.getElementById(`q${qNum}-opt${i}`).classList.contains('selected-correct')) {
