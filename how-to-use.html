@@ -632,6 +632,37 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+        .brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+margin-top: 5px;
+}
+
+.brand-logo{
+width:26px;
+height:26px;
+border-radius:6px;
+object-fit:cover;
+box-shadow:0 3px 8px rgba(0,0,0,.3);
+}
+.brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+padding:.875rem;
+background:linear-gradient(135deg,#ff4d8d,#ff758f);
+border-radius:12px;
+color:white;
+text-decoration:none;
+font-size:.9rem;
+transition:all .3s;
+}
+
+.brand-link:hover{
+transform:scale(1.03);
+box-shadow:0 8px 25px rgba(255,77,141,.5);
+}
     </style>
 </head>
 <body>
@@ -673,6 +704,10 @@
                     <span class="iconify" data-icon="ph:instagram-logo-bold"></span>
                     Visit Our Instagram
                 </a>
+                <a href="https://doyouknowme.vercel.com" target="_blank" class="insta-link brand-link">
+<img src="/assets/DYKMlogo.png" class="brand-logo">
+<span>Visit DoYouKnowMe</span>
+</a>
             </div>
         </aside>
 

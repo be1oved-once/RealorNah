@@ -46,6 +46,37 @@
         .sidebar-footer{padding-top:1rem;border-top:1px solid rgba(131,56,236,.3)}
         .insta-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
         .insta-link:hover{transform:scale(1.02);box-shadow:0 5px 20px rgba(253,29,29,.4)}
+                .brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+margin-top: 5px;
+}
+
+.brand-logo{
+width:26px;
+height:26px;
+border-radius:6px;
+object-fit:cover;
+box-shadow:0 3px 8px rgba(0,0,0,.3);
+}
+.brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+padding:.875rem;
+background:linear-gradient(135deg,#ff4d8d,#ff758f);
+border-radius:12px;
+color:white;
+text-decoration:none;
+font-size:.9rem;
+transition:all .3s;
+}
+
+.brand-link:hover{
+transform:scale(1.03);
+box-shadow:0 8px 25px rgba(255,77,141,.5);
+}
         .sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
         .sidebar-overlay.active{opacity:1;visibility:visible}
         .main-content{width:100%;height:100%;overflow-y:auto;transition:transform .3s ease}
@@ -150,6 +181,10 @@
             <a href="https://instagram.com" target="_blank" class="insta-link">
                 <span class="iconify" data-icon="ph:instagram-logo-bold"></span>Visit Our Instagram
             </a>
+            <a href="https://doyouknowme.vercel.com" target="_blank" class="insta-link brand-link">
+<img src="/assets/DYKMlogo.png" class="brand-logo">
+<span>Visit DoYouKnowMe</span>
+</a>
         </div>
     </aside>
 

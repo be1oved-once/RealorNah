@@ -254,6 +254,37 @@
         @keyframes spin{to{transform:rotate(360deg)}}
         .saving-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
         .error-msg{background:rgba(255,0,110,.1);border:1.5px solid var(--neon-pink);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:var(--neon-pink);margin-bottom:.75rem;display:none}
+        .brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+margin-top: 5px;
+}
+
+.brand-logo{
+width:26px;
+height:26px;
+border-radius:6px;
+object-fit:cover;
+box-shadow:0 3px 8px rgba(0,0,0,.3);
+}
+.brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+padding:.875rem;
+background:linear-gradient(135deg,#ff4d8d,#ff758f);
+border-radius:12px;
+color:white;
+text-decoration:none;
+font-size:.9rem;
+transition:all .3s;
+}
+
+.brand-link:hover{
+transform:scale(1.03);
+box-shadow:0 8px 25px rgba(255,77,141,.5);
+}
     </style>
 </head>
 <body>
@@ -286,6 +317,10 @@
             <a href="https://instagram.com" target="_blank" class="insta-link">
                 <span class="iconify" data-icon="ph:instagram-logo-bold"></span>Visit Our Instagram
             </a>
+<a href="https://doyouknowme.vercel.com" target="_blank" class="insta-link brand-link">
+<img src="/assets/DYKMlogo.png" class="brand-logo">
+<span>Visit DoYouKnowMe</span>
+</a>
         </div>
     </aside>
 
@@ -399,21 +434,88 @@ window.saveQuizToFirestore = async function(quizData) {
 
 <script>
 const ICONS = [
-    {icon:"twemoji:pizza",label:"Pizza"},{icon:"twemoji:hamburger",label:"Burger"},
-    {icon:"twemoji:sushi",label:"Sushi"},{icon:"twemoji:spaghetti",label:"Pasta"},
-    {icon:"twemoji:taco",label:"Taco"},{icon:"twemoji:ice-cream",label:"Ice Cream"},
-    {icon:"twemoji:hot-beverage",label:"Coffee"},{icon:"twemoji:shortcake",label:"Cake"},
-    {icon:"twemoji:tropical-drink",label:"Drink"},{icon:"twemoji:red-apple",label:"Apple"},
-    {icon:"twemoji:soccer-ball",label:"Soccer"},{icon:"twemoji:basketball",label:"Basketball"},
-    {icon:"twemoji:tennis",label:"Tennis"},{icon:"twemoji:swimmer",label:"Swim"},
-    {icon:"twemoji:guitar",label:"Guitar"},{icon:"twemoji:headphone",label:"Music"},
-    {icon:"twemoji:clapper-board",label:"Movies"},{icon:"twemoji:books",label:"Books"},
-    {icon:"twemoji:video-game",label:"Gaming"},{icon:"twemoji:artist-palette",label:"Art"},
-    {icon:"twemoji:beach-with-umbrella",label:"Beach"},{icon:"twemoji:mountain",label:"Mountain"},
-    {icon:"twemoji:cityscape",label:"City"},{icon:"twemoji:house",label:"Home"},
-    {icon:"twemoji:airplane",label:"Travel"},{icon:"twemoji:dog",label:"Dog"},
-    {icon:"twemoji:cat",label:"Cat"},{icon:"twemoji:red-heart",label:"Love"},
-    {icon:"twemoji:fire",label:"Fire"},{icon:"twemoji:rainbow",label:"Rainbow"}
+
+/* Food */
+{icon:"twemoji:pizza",label:"Pizza"},
+{icon:"twemoji:hamburger",label:"Burger"},
+{icon:"twemoji:hot-dog",label:"Hot Dog"},
+{icon:"twemoji:taco",label:"Taco"},
+{icon:"twemoji:burrito",label:"Burrito"},
+{icon:"twemoji:sushi",label:"Sushi"},
+{icon:"twemoji:spaghetti",label:"Pasta"},
+{icon:"twemoji:fried-shrimp",label:"Shrimp"},
+{icon:"twemoji:ice-cream",label:"Ice Cream"},
+{icon:"twemoji:shortcake",label:"Cake"},
+{icon:"twemoji:chocolate-bar",label:"Chocolate"},
+{icon:"twemoji:doughnut",label:"Donut"},
+{icon:"twemoji:candy",label:"Candy"},
+{icon:"twemoji:cookie",label:"Cookie"},
+{icon:"twemoji:red-apple",label:"Apple"},
+{icon:"twemoji:banana",label:"Banana"},
+{icon:"twemoji:watermelon",label:"Watermelon"},
+{icon:"twemoji:strawberry",label:"Strawberry"},
+
+/* Drinks */
+{icon:"twemoji:hot-beverage",label:"Coffee"},
+{icon:"twemoji:teacup-without-handle",label:"Tea"},
+{icon:"twemoji:bubble-tea",label:"Bubble Tea"},
+{icon:"twemoji:tropical-drink",label:"Cocktail"},
+{icon:"twemoji:beer-mug",label:"Beer"},
+{icon:"twemoji:clinking-beer-mugs",label:"Cheers"},
+
+/* Sports */
+{icon:"twemoji:soccer-ball",label:"Soccer"},
+{icon:"twemoji:basketball",label:"Basketball"},
+{icon:"twemoji:american-football",label:"Football"},
+{icon:"twemoji:tennis",label:"Tennis"},
+{icon:"twemoji:ping-pong",label:"Ping Pong"},
+{icon:"twemoji:bowling",label:"Bowling"},
+{icon:"twemoji:swimmer",label:"Swimming"},
+{icon:"twemoji:person-biking",label:"Cycling"},
+
+/* Entertainment */
+{icon:"twemoji:guitar",label:"Guitar"},
+{icon:"twemoji:musical-notes",label:"Music"},
+{icon:"twemoji:studio-microphone",label:"Microphone"},
+{icon:"twemoji:headphone",label:"Headphones"},
+{icon:"twemoji:clapper-board",label:"Movies"},
+{icon:"twemoji:television",label:"TV"},
+{icon:"twemoji:video-game",label:"Gaming"},
+{icon:"twemoji:artist-palette",label:"Art"},
+{icon:"twemoji:books",label:"Books"},
+{icon:"twemoji:camera",label:"Camera"},
+
+/* Places */
+{icon:"twemoji:beach-with-umbrella",label:"Beach"},
+{icon:"twemoji:mountain",label:"Mountain"},
+{icon:"twemoji:camping",label:"Camping"},
+{icon:"twemoji:cityscape",label:"City"},
+{icon:"twemoji:house",label:"Home"},
+{icon:"twemoji:school",label:"School"},
+{icon:"twemoji:office-building",label:"Office"},
+{icon:"twemoji:airplane",label:"Travel"},
+{icon:"twemoji:rocket",label:"Rocket"},
+
+/* Animals */
+{icon:"twemoji:dog",label:"Dog"},
+{icon:"twemoji:cat",label:"Cat"},
+{icon:"twemoji:rabbit",label:"Rabbit"},
+{icon:"twemoji:panda",label:"Panda"},
+{icon:"twemoji:lion",label:"Lion"},
+{icon:"twemoji:tiger",label:"Tiger"},
+{icon:"twemoji:monkey",label:"Monkey"},
+
+/* Emotions / Fun */
+{icon:"twemoji:red-heart",label:"Love"},
+{icon:"twemoji:two-hearts",label:"Couple"},
+{icon:"twemoji:sparkles",label:"Sparkles"},
+{icon:"twemoji:fire",label:"Fire"},
+{icon:"twemoji:rainbow",label:"Rainbow"},
+{icon:"twemoji:star",label:"Star"},
+{icon:"twemoji:crown",label:"Crown"},
+{icon:"twemoji:trophy",label:"Trophy"},
+{icon:"twemoji:party-popper",label:"Party"}
+
 ];
 
 let questionCount = 0;
