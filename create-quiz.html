@@ -760,8 +760,25 @@ function checkGenerateButton() {
     const can = name && valid >= 3;
     document.getElementById('generateBtn').disabled = !can;
     const ct = document.getElementById('questionCount');
-    if (can) { ct.textContent = `Ready! (${valid} question${valid!==1?'s':''})`; ct.style.color = 'var(--cyan-blast)'; }
-    else { const need = Math.max(0,3-valid); ct.textContent = name ? `Add ${need} more valid question${need!==1?'s':''}` : 'Enter your name first'; ct.style.color = 'rgba(255,255,255,.6)'; }
+    if (can) {
+    ct.textContent = `Ready! (${valid} question${valid!==1?'s':''})`;
+    ct.style.color = 'var(--cyan-blast)';
+}
+else {
+    const totalQuestions = document.querySelectorAll('.question-card').length;
+
+if (name && totalQuestions >= 3 && valid === 0) {
+    ct.textContent = 'Choose correct option first';
+}
+else {
+    const need = Math.max(0, 3 - valid);
+    ct.textContent = name ?
+        `Add ${need} more valid question${need!==1?'s':''}` :
+        'Enter your name first';
+}
+
+    ct.style.color = 'rgba(255,255,255,.6)';
+}
 }
 
 // ── Generate quiz ─────────────────────────────────────────────
