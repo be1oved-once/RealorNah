@@ -16,7 +16,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
 
-<!--- Apple / iOS -->
+<!-- Apple / iOS -->
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 
 <!-- Android / Chrome -->
@@ -107,7 +107,9 @@
         .result-actions{display:flex;flex-direction:column;gap:.75rem}
         .action-btn{padding:1rem;border-radius:14px;border:none;font-family:'Rubik Bubbles',cursive;font-size:1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem}
         .action-btn.primary{background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));color:white;box-shadow:0 8px 25px rgba(255,0,110,.3)}
-        .action-btn.secondary{background:transparent;border:2px solid var(--electric-purple);color:white}
+        .action-btn.secondary{background:transparent;border:2px solid var(--electric-purple);color:white;
+            margin-bottom: 10px;
+        }
         .action-btn:hover{transform:translateY(-2px)}
         /* confetti */
         .confetti{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:fall linear forwards;z-index:999}
@@ -115,11 +117,12 @@
         /* loading screen (between questions and results) */
         .mid-loading{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);gap:1rem;text-align:center}
         /* ── TIMER ── */
-        .timer-wrap{text-align:center;margin-bottom:.5rem}
-        .timer-svg{transform:rotate(-90deg)}
-        .timer-bg{fill:none;stroke:rgba(131,56,236,.2);stroke-width:5}
-        .timer-circle{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:157;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;stroke:var(--cyan-blast)}
-        .timer-text{font-family:'Rubik Bubbles',cursive;font-size:.85rem;color:white;margin-top:.2rem}
+        .timer-wrap{display:flex;align-items:center;justify-content:flex-end;gap:.4rem;margin-bottom:.5rem}
+        .timer-svg{transform:rotate(-90deg);flex-shrink:0}
+        .timer-bg{fill:none;stroke:rgba(131,56,236,.25);stroke-width:4}
+        .timer-circle{fill:none;stroke-width:4;stroke-linecap:round;stroke-dasharray:138;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;stroke:var(--cyan-blast)}
+        .timer-circle.urgent{stroke:var(--neon-pink)}
+        .timer-text{font-family:'Rubik Bubbles',cursive;font-size:1rem;color:white;min-width:22px;text-align:center}
         .timer-text.urgent{color:var(--neon-pink);animation:tPulse .4s infinite alternate}
         @keyframes tPulse{from{transform:scale(1)}to{transform:scale(1.15)}}
         /* ── PREVIEW BANNER ── */
@@ -207,6 +210,13 @@
     <!-- Question -->
     <div class="question-screen" id="questionScreen">
         <div class="question-counter" id="questionCounter"></div>
+        <div class="timer-wrap" id="timerWrap" style="display:none">
+            <svg class="timer-svg" width="50" height="50" viewBox="0 0 50 50">
+                <circle class="timer-bg" cx="25" cy="25" r="22"/>
+                <circle class="timer-circle" cx="25" cy="25" r="22" id="timerCircle"/>
+            </svg>
+            <div class="timer-text" id="timerText">--</div>
+        </div>
         <div class="question-text" id="questionText"></div>
         <div class="options-grid" id="optionsGrid"></div>
     </div>
@@ -243,15 +253,6 @@
                 <span class="iconify" data-icon="ph:trophy-bold"></span> Leaderboard
             </div>
             <div id="leaderboardList"></div>
-        </div>
-
-        <!-- Timer (shown when quiz has timer) -->
-        <div class="timer-wrap" id="timerWrap" style="display:none">
-            <svg class="timer-svg" width="50" height="50" viewBox="0 0 50 50">
-                <circle class="timer-bg" cx="25" cy="25" r="22"/>
-                <circle class="timer-circle" cx="25" cy="25" r="22" id="timerCircle"/>
-            </svg>
-            <div class="timer-text" id="timerText">--</div>
         </div>
 
         <div class="result-actions">
@@ -361,7 +362,7 @@ let playerAnswers = []; // {questionIdx, chosen, correct}
 // Timer state
 let timerSecs    = 0;
 let timerInterval= null;
-const TIMER_DASH = 157; // 2*PI*r for r=25
+const TIMER_DASH = 138; // 2*PI*r for r=22
 
 // Sounds
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -476,25 +477,30 @@ function showQuestion() {
 }
 
 function startTimer(secs) {
+    clearInterval(timerInterval); // always clear before starting fresh
     timerSecs = secs;
     const wrap   = document.getElementById('timerWrap');
     const circle = document.getElementById('timerCircle');
     const txt    = document.getElementById('timerText');
-    wrap.style.display = 'block';
+    wrap.style.display = 'flex';
     txt.textContent = timerSecs;
     circle.style.strokeDashoffset = 0;
+    circle.classList.remove('urgent');
     txt.className = 'timer-text';
 
     timerInterval = setInterval(() => {
         timerSecs--;
-        const pct = timerSecs / quiz.timerSecs;
+        const pct = timerSecs / secs; // use local secs not quiz.timerSecs to avoid stale ref
         circle.style.strokeDashoffset = TIMER_DASH * (1 - pct);
         txt.textContent = timerSecs;
-        if (timerSecs <= 5) txt.className = 'timer-text urgent';
+        if (timerSecs <= 5) {
+            txt.className = 'timer-text urgent';
+            circle.classList.add('urgent');
+        }
         if (timerSecs <= 0) {
             clearInterval(timerInterval);
+            timerInterval = null;
             wrap.style.display = 'none';
-            // Auto-wrong: pick nothing
             if (canAnswer) {
                 canAnswer = false;
                 const allCards = document.querySelectorAll('.option-with-image, .option-text-only');
