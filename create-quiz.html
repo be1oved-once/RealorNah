@@ -254,6 +254,20 @@
         @keyframes spin{to{transform:rotate(360deg)}}
         .saving-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
         .error-msg{background:rgba(255,0,110,.1);border:1.5px solid var(--neon-pink);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:var(--neon-pink);margin-bottom:.75rem;display:none}
+        /* Timer toggle */
+        .timer-toggle-wrap{background:var(--card-bg);border:2px solid rgba(131,56,236,.3);border-radius:16px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+        .timer-toggle-label{font-family:'Chewy',cursive;font-size:.95rem;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:.5rem}
+        .timer-secs-select{background:var(--input-bg);border:2px solid rgba(131,56,236,.4);border-radius:10px;color:white;font-family:'Righteous',cursive;font-size:.85rem;padding:.35rem .6rem;outline:none;cursor:pointer;transition:all .3s}
+        .timer-secs-select:focus{border-color:var(--neon-pink)}
+        .timer-toggle-btn{display:flex;gap:.4rem}
+        .ttb{padding:.4rem .75rem;border-radius:10px;border:2px solid transparent;font-family:'Righteous',cursive;font-size:.75rem;cursor:pointer;transition:all .25s;background:rgba(131,56,236,.15);color:rgba(255,255,255,.6)}
+        .ttb.active{border-color:var(--cyan-blast);background:rgba(6,255,165,.15);color:var(--cyan-blast)}
+        .timer-sec-wrap{display:flex;align-items:center;gap:.5rem;opacity:0;pointer-events:none;transition:opacity .3s}
+        .timer-sec-wrap.show{opacity:1;pointer-events:all}
+        /* QR code */
+        .qr-wrap{text-align:center;margin-bottom:.875rem}
+        .qr-label{font-family:'Chewy',cursive;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.4rem}
+        #qrCanvas{border-radius:12px;background:white;padding:8px;display:block;margin:0 auto}
         .brand-link{
 display:flex;
 align-items:center;
@@ -312,6 +326,9 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                 <span class="iconify" data-icon="ph:chart-bar-bold"></span>
                 My Quiz Stats
             </a>
+            <a href="trending.html" class="menu-item">
+                <span class="iconify" data-icon="ph:trend-up-bold"></span> Trending
+            </a>
             <a href="how-to-use.html" class="menu-item">
                 <span class="iconify" data-icon="ph:question-bold"></span>
                 How to Use
@@ -358,6 +375,46 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                     <label class="input-label">Your Name *</label>
                     <input type="text" class="text-input" id="creatorName" placeholder="e.g. Aman, Priya..." maxlength="30" autocomplete="off">
                 </div>
+                <div class="input-group" style="margin-top:.5rem">
+                    <label class="input-label" style="display:flex;align-items:center;gap:.4rem">
+                        <span class="iconify" data-icon="ph:bell-bold" style="color:var(--lemon-yellow)"></span>
+                        Your Email <span style="color:rgba(255,255,255,.35);font-size:.65rem;text-transform:none;letter-spacing:0">(optional)</span>
+                    </label>
+                    <input type="email" class="text-input" id="creatorEmail" placeholder="Get notified when friends play..." autocomplete="off">
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:.5rem;margin-top:.6rem;background:rgba(255,190,11,.07);border:1.5px solid rgba(255,190,11,.25);border-radius:10px;padding:.6rem .75rem">
+                    <span class="iconify" data-icon="ph:info-bold" style="color:var(--lemon-yellow);flex-shrink:0;margin-top:1px;font-size:1rem"></span>
+                    <p style="font-family:'Chewy',cursive;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.5;margin:0">
+                        Fill your email to receive a notification when your quiz gets played. We'll ping you every 7 plays — no spam, ever.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timer-toggle-wrap">
+                <div class="timer-toggle-label">
+                    <span class="iconify" data-icon="ph:timer-bold" style="color:var(--cyan-blast)"></span>
+                    Per-question timer
+                </div>
+                <div style="display:flex;align-items:center;gap:.75rem">
+                    <div class="timer-sec-wrap" id="timerSecWrap">
+                        <select class="timer-secs-select" id="timerSecsSelect">
+                            <option value="10">10s</option>
+                            <option value="15">15s</option>
+                            <option value="20" selected>20s</option>
+                            <option value="30">30s</option>
+                            <option value="45">45s</option>
+                            <option value="60">60s</option>
+                        </select>
+                    </div>
+                    <div class="timer-toggle-btn">
+                        <button class="ttb active" id="ttbOff" onclick="setTimer(false)">
+                            <span class="iconify" data-icon="ph:minus-circle-bold"></span>
+                        </button>
+                        <button class="ttb" id="ttbOn" onclick="setTimer(true)">
+                            <span class="iconify" data-icon="ph:check-circle-bold"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="questions-container" id="questionsContainer"></div>
@@ -395,10 +452,15 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
 <!-- Success Popup -->
 <div class="success-popup" id="successPopup">
     <div class="success-content">
-        <div class="success-icon">🎉</div>
+        <div class="success-icon"><span class="iconify" data-icon="ph:confetti-bold" style="color:var(--cyan-blast)"></span></div>
         <div class="success-title">Quiz Created!</div>
         <div class="success-subtitle">Share the link with your friends</div>
         <div class="error-msg" id="errorMsg"></div>
+        <!-- QR Code -->
+        <div class="qr-wrap">
+            <div class="qr-label"><span class="iconify" data-icon="ph:qr-code-bold"></span> Scan to play</div>
+            <canvas id="qrCanvas" width="140" height="140"></canvas>
+        </div>
         <div class="quiz-link-box">
             <span class="quiz-link-text" id="quizLinkText"></span>
             <button class="copy-btn" onclick="copyLink()">
@@ -413,6 +475,9 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                 <span class="iconify" data-icon="ph:telegram-logo-bold"></span> Telegram
             </button>
         </div>
+        <button class="share-btn" style="width:100%;margin-bottom:.75rem;background:linear-gradient(135deg,var(--electric-purple),#5b21b6);max-width:none" onclick="previewQuiz()">
+            <span class="iconify" data-icon="ph:eye-bold"></span> Preview Quiz
+        </button>
         <button class="close-success-btn" onclick="closeSuccess()">Create Another Quiz</button>
     </div>
 </div>
@@ -544,7 +609,7 @@ document.addEventListener('touchend',   e => {
     if (open  && dx < -50) closeSidebar();
 });
 
-// ── Build icon grid ───────────────────────────────────────────
+// ──- Build icon grid ───────────────────────────────────────────
 const grid = document.getElementById('iconsGrid');
 ICONS.forEach(item => {
     const btn = document.createElement('button');
@@ -789,16 +854,59 @@ else {
 }
 }
 
-// ── Generate quiz ─────────────────────────────────────────────
+// ── Timer toggle ──────────────────────────────────────────────
+let timerEnabled = false;
+function setTimer(on) {
+    timerEnabled = on;
+    document.getElementById('ttbOff').classList.toggle('active', !on);
+    document.getElementById('ttbOn').classList.toggle('active', on);
+    document.getElementById('timerSecWrap').classList.toggle('show', on);
+    if (window.Iconify) window.Iconify.scan();
+}
+
+// ── QR Code generator (pure canvas, no library needed) ────────
+function drawQR(canvas, text) {
+    // Minimal QR using qrcodejs via CDN loaded dynamically
+    const el = document.createElement('div');
+    el.style.display = 'none';
+    document.body.appendChild(el);
+    // Use existing QRCode lib (loaded below)
+    try {
+        const qr = new QRCode(el, { text, width: 140, height: 140, correctLevel: QRCode.CorrectLevel.M });
+        setTimeout(() => {
+            const img = el.querySelector('img') || el.querySelector('canvas');
+            if (img) {
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0,0,140,140);
+                ctx.drawImage(img, 0, 0, 140, 140);
+            }
+            document.body.removeChild(el);
+        }, 200);
+    } catch(e) { document.body.removeChild(el); }
+}
+
+// ── Preview quiz ──────────────────────────────────────────────
+function previewQuiz() {
+    if (!generatedQuizId) return;
+    const url = `${location.origin}/quiz.html?id=${generatedQuizId}&preview=1`;
+    window.open(url, '_blank');
+}
+
 async function generateQuiz() {
     const name = document.getElementById('creatorName').value.trim();
     generatedQuizId = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    const timerSecs = timerEnabled ? parseInt(document.getElementById('timerSecsSelect').value) : 0;
+    const creatorEmail = (document.getElementById('creatorEmail').value || '').trim();
 
     const quizData = {
         creator: name,
         quizId: generatedQuizId,
         createdAt: new Date().toISOString(),
         plays: 0,
+        timerSecs,
+        creatorEmail, // stored so notify.js can email them — empty string if not filled
         questions: []
     };
 
@@ -835,6 +943,8 @@ async function generateQuiz() {
         document.getElementById('quizLinkText').textContent = link;
         document.getElementById('errorMsg').style.display = 'none';
         document.getElementById('successPopup').classList.add('active');
+        // Draw QR code after popup is visible
+        setTimeout(() => drawQR(document.getElementById('qrCanvas'), link), 300);
         if (window.Iconify) window.Iconify.scan();
     } catch(e) {
         document.getElementById('savingOverlay').classList.remove('active');
@@ -876,7 +986,13 @@ document.getElementById('creatorName').addEventListener('input', () => { updateP
 document.getElementById('iconModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeIconPicker(); });
 document.getElementById('successPopup').addEventListener('click', e => { if (e.target === e.currentTarget) closeSuccess(); });
 
-window.onload = () => { addQuestion(); if (window.Iconify) window.Iconify.scan(); };
+window.onload = () => {
+    addQuestion();
+    setTimer(false); // init timer toggle state
+    if (window.Iconify) window.Iconify.scan();
+};
 </script>
+<!-- QRCode library for QR generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </body>
 </html>

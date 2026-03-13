@@ -19,7 +19,7 @@
 <!-- Apple / iOS -->
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 
-<!-- Android / Chrome -->
+<!--- Android / Chrome -->
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
 
@@ -148,6 +148,29 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
         .footer-logo{font-family:'Rubik Bubbles',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
         .footer-tagline{font-size:.8rem;color:rgba(255,255,255,.5)}
         @media(min-width:768px){.container{max-width:700px}.stats-grid{grid-template-columns:repeat(3,150px);justify-content:center}}
+        /* Edit/Detail Modal */
+        .edit-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(6px);z-index:400;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
+        .edit-modal.active{opacity:1;visibility:visible}
+        .edit-content{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:24px 24px 0 0;padding:1.5rem;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;animation:slideUp .3s ease}
+        @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+        .edit-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+        .edit-title{font-family:'Bungee Shade',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .close-edit{background:rgba(255,0,110,.15);border:1.5px solid var(--neon-pink);color:var(--neon-pink);width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+        .close-edit:hover{background:var(--neon-pink);color:white}
+        .edit-q-card{background:var(--input-bg);border:2px solid rgba(131,56,236,.3);border-radius:14px;padding:1rem;margin-bottom:.875rem}
+        .edit-q-label{font-family:'Chewy',cursive;font-size:.75rem;color:var(--cyan-blast);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:flex;align-items:center;gap:.35rem}
+        .edit-q-input{width:100%;background:transparent;border:none;border-bottom:2px solid rgba(131,56,236,.3);color:white;font-family:'Righteous',cursive;font-size:.9rem;padding:.3rem 0;outline:none;transition:border-color .3s}
+        .edit-q-input:focus{border-bottom-color:var(--neon-pink)}
+        .edit-options{display:flex;flex-direction:column;gap:.4rem;margin-top:.6rem}
+        .edit-opt{display:flex;align-items:center;gap:.6rem;padding:.4rem .5rem;border-radius:8px;border:1.5px solid transparent;cursor:pointer;transition:all .2s;font-family:'Chewy',cursive;font-size:.85rem}
+        .edit-opt.correct-opt{border-color:var(--cyan-blast);background:rgba(6,255,165,.08);color:var(--cyan-blast)}
+        .edit-opt:not(.correct-opt){color:rgba(255,255,255,.7)}
+        .edit-opt-letter{width:22px;height:22px;background:rgba(131,56,236,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik Bubbles',cursive;font-size:.7rem;flex-shrink:0}
+        .edit-correct-sel{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid rgba(131,56,236,.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+        .edit-opt.correct-opt .edit-correct-sel{background:var(--cyan-blast);border-color:var(--cyan-blast)}
+        .save-edit-btn{width:100%;padding:.875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1rem;cursor:pointer;transition:all .3s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+        .save-edit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,0,110,.4)}
+        .action-btn.edit{background:rgba(131,56,236,.15);color:var(--electric-purple);border:1.5px solid var(--electric-purple)}
     </style>
 </head>
 <body>
@@ -175,6 +198,9 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
             <a href="my-quizzes.html" class="menu-item">
                 <span class="iconify" data-icon="ph:chart-bar-bold"></span>
                 My Quiz Stats
+            </a>
+            <a href="trending.html" class="menu-item">
+                <span class="iconify" data-icon="ph:trend-up-bold"></span> Trending
             </a>
             <a href="how-to-use.html" class="menu-item">
                 <span class="iconify" data-icon="ph:question-bold"></span>
@@ -252,6 +278,22 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
     </div>
 </div>
 
+<!-- Edit/Detail Modal -->
+<div class="edit-modal" id="editModal">
+    <div class="edit-content">
+        <div class="edit-header">
+            <div class="edit-title">Edit Quiz</div>
+            <button class="close-edit" onclick="closeEdit()">
+                <span class="iconify" data-icon="ph:x-bold"></span>
+            </button>
+        </div>
+        <div id="editBody"></div>
+        <button class="save-edit-btn" onclick="saveEdit()">
+            <span class="iconify" data-icon="ph:floppy-disk-bold"></span> Save Changes
+        </button>
+    </div>
+</div>
+
 <!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -279,6 +321,17 @@ window.fetchQuizById = async function(id) {
 
 window.deleteQuizFromDB = async function(id) {
     await deleteDoc(doc(db, "quizzes", id));
+};
+
+window.updateQuizInDB = async function(id, questions) {
+    const { updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    await updateDoc(doc(db, "quizzes", id), { questions });
+};
+
+window.fetchAllQuizzesForTrending = async function() {
+    const { collection, getDocs, query, where } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap = await getDocs(collection(db, "quizzes"));
+    return snap.docs.map(d => d.data());
 };
 </script>
 
@@ -348,6 +401,7 @@ function renderQuizzes(container, quizzes) {
             <div class="quiz-stats">
                 <div class="quiz-stat"><span class="iconify" data-icon="ph:users-bold"></span> ${plays} play${plays!==1?'s':''}</div>
                 <div class="quiz-stat"><span class="iconify" data-icon="ph:chart-pie-bold"></span> ${avg}% avg</div>
+                <div class="quiz-stat"><span class="iconify" data-icon="ph:list-numbers-bold"></span> ${(q.questions||[]).length} Qs</div>
             </div>
             <div class="quiz-link-box">
                 <span class="quiz-link">${link}</span>
@@ -357,7 +411,10 @@ function renderQuizzes(container, quizzes) {
             </div>
             <div class="quiz-actions">
                 <button class="action-btn stats" onclick="showStats(${idx})">
-                    <span class="iconify" data-icon="ph:chart-bar-bold"></span> Leaderboard
+                    <span class="iconify" data-icon="ph:trophy-bold"></span> Board
+                </button>
+                <button class="action-btn edit" onclick="openEdit(${idx})">
+                    <span class="iconify" data-icon="ph:pencil-simple-bold"></span> Edit
                 </button>
                 <button class="action-btn delete" onclick="deleteQuiz('${q.quizId}')">
                     <span class="iconify" data-icon="ph:trash-bold"></span> Delete
@@ -421,6 +478,86 @@ async function deleteQuiz(quizId) {
 }
 
 document.getElementById('statsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeStats(); });
+document.getElementById('editModal').addEventListener('click',  e => { if (e.target === e.currentTarget) closeEdit(); });
+
+// ── Edit quiz ─────────────────────────────────────────────────
+let editingQuizIdx = null;
+let editCorrects   = {};  // { qIdx: correctAnswerIndex }
+
+function openEdit(idx) {
+    editingQuizIdx = idx;
+    editCorrects   = {};
+    const quiz = loadedQuizzes[idx];
+    const body = document.getElementById('editBody');
+    const letters = ['A','B','C','D'];
+
+    body.innerHTML = quiz.questions.map((q, qi) => {
+        editCorrects[qi] = q.correct;
+        const opts = q.options.map((opt, oi) => {
+            const isCorrect = oi === q.correct;
+            return `<div class="edit-opt ${isCorrect ? 'correct-opt' : ''}" id="edit-opt-${qi}-${oi}" onclick="toggleEditCorrect(${qi},${oi})">
+                <span class="edit-opt-letter">${letters[oi]}</span>
+                <span style="flex:1">${opt.text || (opt.icon ? '(icon)' : '—')}</span>
+                <div class="edit-correct-sel">
+                    ${isCorrect ? '<span class="iconify" data-icon="ph:check-bold" style="font-size:12px;color:#0d0221"></span>' : ''}
+                </div>
+            </div>`;
+        }).join('');
+
+        return `<div class="edit-q-card">
+            <div class="edit-q-label"><span class="iconify" data-icon="ph:question-bold"></span> Question ${qi+1}</div>
+            <input class="edit-q-input" id="edit-qtext-${qi}" value="${q.question.replace(/"/g,'&quot;')}" maxlength="120">
+            <div class="edit-options" id="edit-opts-${qi}">${opts}</div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('editModal').classList.add('active');
+    if (window.Iconify) window.Iconify.scan();
+}
+
+function toggleEditCorrect(qi, oi) {
+    editCorrects[qi] = oi;
+    const letters = ['A','B','C','D'];
+    const quiz = loadedQuizzes[editingQuizIdx];
+    const optsDiv = document.getElementById(`edit-opts-${qi}`);
+    optsDiv.querySelectorAll('.edit-opt').forEach((el, idx) => {
+        const isNow = idx === oi;
+        el.className = 'edit-opt' + (isNow ? ' correct-opt' : '');
+        el.querySelector('.edit-correct-sel').innerHTML = isNow ? '<span class="iconify" data-icon="ph:check-bold" style="font-size:12px;color:#0d0221"></span>' : '';
+    });
+    if (window.Iconify) window.Iconify.scan();
+}
+
+async function saveEdit() {
+    const quiz = loadedQuizzes[editingQuizIdx];
+    const btn  = document.querySelector('.save-edit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="iconify" data-icon="ph:circle-notch-bold" style="animation:spin .8s linear infinite;display:inline-block"></span> Saving…';
+
+    const updated = quiz.questions.map((q, qi) => {
+        const input = document.getElementById(`edit-qtext-${qi}`);
+        return { ...q, question: input ? input.value.trim() || q.question : q.question, correct: editCorrects[qi] ?? q.correct };
+    });
+
+    try {
+        await window.updateQuizInDB(quiz.quizId, updated);
+        loadedQuizzes[editingQuizIdx] = { ...quiz, questions: updated };
+        closeEdit();
+        renderQuizzes(document.getElementById('quizList'), loadedQuizzes);
+        if (window.Iconify) window.Iconify.scan();
+    } catch(e) {
+        alert('Could not save changes. Please try again.');
+        console.error(e);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="iconify" data-icon="ph:floppy-disk-bold"></span> Save Changes';
+    }
+}
+
+function closeEdit() {
+    document.getElementById('editModal').classList.remove('active');
+    editingQuizIdx = null;
+}
 
 window.onload = () => { loadMyQuizzes(); if (window.Iconify) window.Iconify.scan(); };
 </script>

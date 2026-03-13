@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- ══ SEO ══ -->
+    <!--- ══ SEO ══ -->
     <title>About RealOrNah – Built for Friend Drama & Real Talk</title>
     <meta name="description" content="RealOrNah is a viral friend-quiz platform that lets you test how well your friends actually know you. Built for fun, drama, and real friendships. Free forever.">
     <meta name="author" content="RealOrNah Team">
@@ -758,6 +758,9 @@
                 <span class="iconify" data-icon="ph:chart-bar-bold"></span>
                 My Quiz Stats
             </a>
+            <a href="trending.html" class="menu-item">
+                <span class="iconify" data-icon="ph:trend-up-bold"></span> Trending
+            </a>
             <a href="how-to-use.html" class="menu-item">
                 <span class="iconify" data-icon="ph:question-bold"></span>
                 How to Use
@@ -991,7 +994,7 @@
                 </p>
 
                 <ul class="feat-list">
-                    <li><span class="iconify" data-icon="ph:envelope-bold"></span> <strong style="color:white">Email:</strong>&nbsp;<a href="mailto:hello@realornah.app" style="color:var(--cyan-blast);text-decoration:none">hello@realornah.app</a></li>
+                    <li><span class="iconify" data-icon="ph:envelope-bold"></span> <strong style="color:white">Email:</strong>&nbsp;<a href="/cdn-cgi/l/email-protection#7c14191010133c0e191d10130e121d14521d0c0c" style="color:var(--cyan-blast);text-decoration:none"><span class="__cf_email__" data-cfemail="91f9f4fdfdfed1e3f4f0fdfee3fff0f9bff0e1e1">[email&#160;protected]</span></a></li>
                     <li><span class="iconify" data-icon="ph:instagram-logo-bold"></span> <strong style="color:white">Instagram:</strong>&nbsp;<a href="https://instagram.com" target="_blank" style="color:var(--cyan-blast);text-decoration:none">@realornah</a></li>
                 </ul>
 
@@ -1074,6 +1077,7 @@
     </div>
 </div>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
     /* ── Reading Progress ── */
     (function () {
@@ -1111,13 +1115,41 @@
         else if (open && tStartX > tEndX + 50) closeSidebar();
     });
 
-    /* ── Contact Form ── */
-    function handleSubmit(e) {
+    /* ── Contact Form — /api/contact (Vercel serverless, RESEND_API_KEY in env) ── */
+    async function handleSubmit(e) {
         e.preventDefault();
-        // Hook up your email service (e.g. EmailJS / Formspree) here
-        document.getElementById('contactSuccess').classList.add('show');
-        e.target.reset();
+        const btn     = document.querySelector('.contact-submit');
+        const note    = document.querySelector('.contact-note');
+        const name    = document.getElementById('cName').value.trim();
+        const email   = document.getElementById('cEmail').value.trim();
+        const message = document.getElementById('cMessage').value.trim();
+        if (!name || !email || !message) return;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="iconify" data-icon="ph:circle-notch-bold" style="animation:contactSpin 1s linear infinite;display:inline-block"></span> Sending…';
+        note.textContent = '(We typically respond within 24–48 hours)';
+        note.style.color = '';
+        if (window.Iconify) window.Iconify.scan();
+        try {
+            const res  = await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name,email,message}) });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                document.getElementById('contactSuccess').classList.add('show');
+                e.target.reset();
+            } else {
+                note.textContent = '⚠️ ' + (data.error ?? 'Something went wrong. Please try again.');
+                note.style.color = 'var(--neon-pink)';
+            }
+        } catch {
+            note.textContent = '⚠️ Network error — please check your connection.';
+            note.style.color = 'var(--neon-pink)';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="iconify" data-icon="ph:paper-plane-tilt-bold"></span> Send Message';
+            if (window.Iconify) window.Iconify.scan();
+        }
     }
+    (function(){ const s=document.createElement('style'); s.textContent='@keyframes contactSpin{to{transform:rotate(360deg)}}'; document.head.appendChild(s); })();
+
     function closeSuccess() {
         document.getElementById('contactSuccess').classList.remove('show');
     }
