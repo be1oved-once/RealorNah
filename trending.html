@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trending Quizzes – RealOrNah</title>
+    <meta name="description" content="See the most popular RealOrNah quizzes. Can you beat the top scores?">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e;--sidebar-bg:#0a0118}
+        html,body{height:100%;overflow-x:hidden}
+        body{font-family:'Righteous',cursive;background:var(--deep-bg);color:white;line-height:1.4}
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(131,56,236,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(131,56,236,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");pointer-events:none}
+        .app-container{position:relative;width:100%;height:100%;overflow:hidden}
+        /* Sidebar */
+        .sidebar{position:fixed;top:0;left:0;width:85%;max-width:320px;height:100%;background:var(--sidebar-bg);border-right:2px solid var(--electric-purple);z-index:200;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:1rem;box-shadow:5px 0 30px rgba(0,0,0,.5)}
+        .sidebar.open{transform:translateX(0)}
+        .sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid rgba(131,56,236,.3)}
+        .sidebar-logo{font-family:'Rubik Bubbles',cursive;font-size:1.3rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .close-sidebar{width:40px;height:40px;background:rgba(255,0,110,.2);border:2px solid var(--neon-pink);border-radius:50%;color:var(--neon-pink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s}
+        .close-sidebar:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
+        .sidebar-menu{flex:1;display:flex;flex-direction:column;gap:.5rem}
+        .menu-item{display:flex;align-items:center;gap:1rem;padding:1rem;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;transition:all .3s;font-size:1rem}
+        .menu-item:hover,.menu-item.active{background:rgba(131,56,236,.2);color:var(--cyan-blast)}
+        .sidebar-footer{padding-top:1rem;border-top:1px solid rgba(131,56,236,.3)}
+        .insta-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
+        .insta-link:hover{transform:scale(1.02);box-shadow:0 5px 20px rgba(253,29,29,.4)}
+        .sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
+        .sidebar-overlay.active{opacity:1;visibility:visible}
+        .main-content{width:100%;height:100%;overflow-y:auto;transition:transform .3s ease}
+        .main-content.shifted{transform:translateX(85%)}
+        nav{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;position:sticky;top:0;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
+        .menu-btn{width:42px;height:42px;background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;flex-shrink:0}
+        .menu-btn:hover{background:var(--electric-purple);transform:scale(1.05)}
+        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
+        .nav-cta{font-family:'Rubik Bubbles',cursive;font-size:.7rem;padding:.5rem .875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:20px;color:white;text-decoration:none;transition:all .3s;flex-shrink:0}
+        .nav-cta:hover{transform:scale(1.05);box-shadow:0 5px 15px rgba(255,0,110,.4)}
+        /* Page */
+        .container{max-width:600px;margin:0 auto;padding:1rem .75rem 3rem}
+        .page-header{text-align:center;padding:1.5rem 0 1rem}
+        .page-title{font-family:'Bungee Shade',cursive;font-size:clamp(1.4rem,6vw,2rem);background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.25rem}
+        .page-subtitle{font-family:'Chewy',cursive;font-size:.9rem;color:rgba(255,255,255,.6)}
+        /* Notice banner */
+        .invite-notice{background:rgba(255,190,11,.08);border:1.5px solid rgba(255,190,11,.4);border-radius:14px;padding:.875rem 1rem;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:.6rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.5}
+        .invite-notice .iconify{color:var(--lemon-yellow);flex-shrink:0;font-size:1.1rem;margin-top:1px}
+        /* Sort bar */
+        .sort-bar{display:flex;gap:.5rem;margin-bottom:1.25rem;overflow-x:auto;padding-bottom:.25rem}
+        .sort-btn{white-space:nowrap;padding:.4rem .875rem;border-radius:20px;border:1.5px solid rgba(131,56,236,.4);background:transparent;color:rgba(255,255,255,.6);font-family:'Righteous',cursive;font-size:.75rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:.3rem;flex-shrink:0}
+        .sort-btn.active{border-color:var(--neon-pink);background:rgba(255,0,110,.15);color:white}
+        /* Quiz cards */
+        .trending-list{display:flex;flex-direction:column;gap:1rem}
+        .trend-card{background:var(--card-bg);border:2px solid rgba(131,56,236,.35);border-radius:20px;padding:1.25rem;transition:all .3s;position:relative;overflow:hidden}
+        .trend-card:hover{border-color:var(--neon-pink);transform:translateY(-2px);box-shadow:0 12px 30px rgba(131,56,236,.2)}
+        .trend-rank-strip{position:absolute;top:0;left:0;width:4px;height:100%}
+        .trend-rank-strip.gold{background:linear-gradient(180deg,var(--lemon-yellow),var(--hot-orange))}
+        .trend-rank-strip.silver{background:linear-gradient(180deg,#C0C0C0,#808080)}
+        .trend-rank-strip.bronze{background:linear-gradient(180deg,#CD7F32,#8B4513)}
+        .trend-rank-strip.default{background:linear-gradient(180deg,var(--neon-pink),var(--electric-purple))}
+        .trend-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.75rem}
+        .trend-rank-badge{font-family:'Rubik Bubbles',cursive;font-size:.75rem;padding:.25rem .6rem;border-radius:10px;flex-shrink:0}
+        .rank-gold{background:rgba(255,190,11,.2);color:var(--lemon-yellow);border:1.5px solid var(--lemon-yellow)}
+        .rank-silver{background:rgba(192,192,192,.2);color:#C0C0C0;border:1.5px solid #C0C0C0}
+        .rank-bronze{background:rgba(205,127,50,.2);color:#CD7F32;border:1.5px solid #CD7F32}
+        .rank-default{background:rgba(131,56,236,.2);color:var(--electric-purple);border:1.5px solid var(--electric-purple)}
+        .trend-creator{font-family:'Chewy',cursive;font-size:1.15rem;color:white;flex:1;margin:0 .75rem;line-height:1.2}
+        .trend-fire{font-size:1rem}
+        .trend-stats{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem}
+        .trend-stat{display:flex;align-items:center;gap:.3rem;font-family:'Chewy',cursive;font-size:.82rem;color:rgba(255,255,255,.7);background:var(--input-bg);border-radius:8px;padding:.3rem .6rem}
+        .trend-stat .iconify{color:var(--cyan-blast);font-size:.9rem}
+        .trend-top-score{font-family:'Chewy',cursive;font-size:.82rem;display:flex;align-items:center;gap:.3rem;margin-bottom:.875rem;color:rgba(255,255,255,.6)}
+        .trend-top-score strong{color:var(--lemon-yellow)}
+        .trend-invite-note{display:flex;align-items:center;gap:.4rem;font-family:'Chewy',cursive;font-size:.78rem;color:rgba(255,190,11,.7);background:rgba(255,190,11,.06);border:1px solid rgba(255,190,11,.2);border-radius:8px;padding:.35rem .6rem}
+        /* Loading/empty */
+        .loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 1rem;gap:1rem}
+        .spinner{width:40px;height:40px;border:4px solid rgba(131,56,236,.3);border-top:4px solid var(--neon-pink);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-text{font-family:'Chewy',cursive;font-size:1.1rem;color:var(--cyan-blast)}
+        .empty-state{text-align:center;padding:3rem 1rem}
+        .empty-icon{font-size:3rem;margin-bottom:1rem;color:rgba(131,56,236,.4)}
+        .empty-text{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.5)}
+        footer{text-align:center;padding:2rem 1rem;border-top:1px solid rgba(131,56,236,.2);margin-top:2rem}
+        .footer-logo{font-family:'Rubik Bubbles',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.35rem}
+        .footer-tagline{font-size:.8rem;color:rgba(255,255,255,.4)}
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+
+<div class="app-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Menu</span>
+            <button class="close-sidebar" onclick="closeSidebar()">
+                <span class="iconify" data-icon="ph:x-bold"></span>
+            </button>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="index.html" class="menu-item">
+                <span class="iconify" data-icon="ph:house-bold"></span> Home
+            </a>
+            <a href="create-quiz.html" class="menu-item">
+                <span class="iconify" data-icon="ph:plus-circle-bold"></span> Create New Quiz
+            </a>
+            <a href="my-quizzes.html" class="menu-item">
+                <span class="iconify" data-icon="ph:chart-bar-bold"></span> My Quiz Stats
+            </a>
+            <a href="trending.html" class="menu-item active">
+                <span class="iconify" data-icon="ph:trend-up-bold"></span> Trending
+            </a>
+            <a href="how-to-use.html" class="menu-item">
+                <span class="iconify" data-icon="ph:question-bold"></span> How to Use
+            </a>
+            <a href="about-us.html" class="menu-item">
+                <span class="iconify" data-icon="ph:info-bold"></span> About Us
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="https://instagram.com/realornah" target="_blank" class="insta-link">
+                <span class="iconify" data-icon="ph:instagram-logo-bold"></span> Visit Our Instagram
+            </a>
+        </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <main class="main-content" id="mainContent">
+        <nav>
+            <button class="menu-btn" onclick="openSidebar()">
+                <span class="iconify" data-icon="ph:list-bold"></span>
+            </button>
+            <span class="nav-logo">RealOrNah</span>
+            <a href="create-quiz.html" class="nav-cta">Create</a>
+        </nav>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <span class="iconify" data-icon="ph:trend-up-bold" style="-webkit-text-fill-color:initial;color:var(--hot-orange)"></span>
+                    Trending
+                </h1>
+                <p class="page-subtitle">Hottest quizzes right now · 5+ plays to qualify</p>
+            </div>
+
+            <div class="invite-notice">
+                <span class="iconify" data-icon="ph:lock-simple-bold"></span>
+                <span>Quizzes listed here can <strong>only be played via an invite link</strong> — ask the creator to share theirs with you!</span>
+            </div>
+
+            <div class="sort-bar" id="sortBar">
+                <button class="sort-btn active" onclick="setSort('plays',this)">
+                    <span class="iconify" data-icon="ph:fire-bold"></span> Most Played
+                </button>
+                <button class="sort-btn" onclick="setSort('avg',this)">
+                    <span class="iconify" data-icon="ph:chart-line-up-bold"></span> Top Avg Score
+                </button>
+                <button class="sort-btn" onclick="setSort('questions',this)">
+                    <span class="iconify" data-icon="ph:list-numbers-bold"></span> Most Questions
+                </button>
+                <button class="sort-btn" onclick="setSort('newest',this)">
+                    <span class="iconify" data-icon="ph:clock-bold"></span> Newest
+                </button>
+            </div>
+
+            <div id="trendingList">
+                <div class="loading-screen">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Loading trending quizzes…</div>
+                </div>
+            </div>
+
+            <footer>
+                <div class="footer-logo">RealOrNah</div>
+                <div class="footer-tagline">Real friends. Real scores. Real drama.</div>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<!--- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAVmDJy2Iowj6BVK3HF8sb2FPuew2wBny8",
+    authDomain: "realornah-app.firebaseapp.com",
+    projectId: "realornah-app",
+    storageBucket: "realornah-app.firebasestorage.app",
+    messagingSenderId: "313279191530",
+    appId: "1:313279191530:web:639185b8807f68e24cba93"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+window.fetchTrending = async function() {
+    const snap = await getDocs(collection(db, "quizzes"));
+    return snap.docs.map(d => d.data()).filter(q => (q.plays || 0) >= 5);
+};
+</script>
+
+<script>
+let allTrending = [];
+let currentSort = 'plays';
+
+function openSidebar()  { document.getElementById('sidebar').classList.add('open');    document.getElementById('overlay').classList.add('active');    document.getElementById('mainContent').classList.add('shifted'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); document.getElementById('mainContent').classList.remove('shifted'); }
+
+let tStartX = 0;
+document.addEventListener('touchstart', e => { tStartX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].screenX - tStartX;
+    const open = document.getElementById('sidebar').classList.contains('open');
+    if (!open && dx > 50 && tStartX < 50) openSidebar();
+    if (open  && dx < -50) closeSidebar();
+});
+
+function setSort(type, btn) {
+    currentSort = type;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTrending(sortQuizzes(allTrending, type));
+}
+
+function sortQuizzes(quizzes, type) {
+    const copy = [...quizzes];
+    if (type === 'plays')     return copy.sort((a,b) => (b.plays||0) - (a.plays||0));
+    if (type === 'avg')       return copy.sort((a,b) => avgScore(b) - avgScore(a));
+    if (type === 'questions') return copy.sort((a,b) => (b.questions||[]).length - (a.questions||[]).length);
+    if (type === 'newest')    return copy.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return copy;
+}
+
+function avgScore(q) {
+    const s = q.scores || [];
+    return s.length ? Math.round(s.reduce((acc,p)=>acc+p.score,0)/s.length) : 0;
+}
+
+function topPlayer(q) {
+    const s = (q.scores||[]).slice().sort((a,b)=>b.score-a.score);
+    return s.length ? s[0] : null;
+}
+
+function rankClass(idx) {
+    if (idx === 0) return 'gold';
+    if (idx === 1) return 'silver';
+    if (idx === 2) return 'bronze';
+    return 'default';
+}
+function badgeClass(idx) {
+    if (idx === 0) return 'rank-gold';
+    if (idx === 1) return 'rank-silver';
+    if (idx === 2) return 'rank-bronze';
+    return 'rank-default';
+}
+function rankEmoji(idx) {
+    if (idx === 0) return '<span class="iconify" data-icon="ph:trophy-bold" style="color:var(--lemon-yellow)"></span>';
+    if (idx === 1) return '<span class="iconify" data-icon="ph:medal-bold" style="color:#C0C0C0"></span>';
+    if (idx === 2) return '<span class="iconify" data-icon="ph:medal-bold" style="color:#CD7F32"></span>';
+    return `#${idx+1}`;
+}
+
+function renderTrending(quizzes) {
+    const list = document.getElementById('trendingList');
+    if (quizzes.length === 0) {
+        list.innerHTML = `<div class="empty-state">
+            <div class="empty-icon"><span class="iconify" data-icon="ph:chart-line-bold"></span></div>
+            <div class="empty-text">No trending quizzes yet.<br>Create one and share it to get plays!</div>
+        </div>`;
+        if (window.Iconify) window.Iconify.scan();
+        return;
+    }
+
+    list.innerHTML = quizzes.map((q, idx) => {
+        const plays    = q.plays || 0;
+        const avg      = avgScore(q);
+        const qCount   = (q.questions||[]).length;
+        const top      = topPlayer(q);
+        const timerStr = q.timerSecs ? `${q.timerSecs}s` : 'No timer';
+        const rc       = rankClass(idx);
+        const bc       = badgeClass(idx);
+        const re       = rankEmoji(idx);
+
+        return `<div class="trend-card">
+            <div class="trend-rank-strip ${rc}"></div>
+            <div class="trend-top">
+                <div class="trend-rank-badge ${bc}">${re}</div>
+                <div class="trend-creator">${q.creator}'s Quiz</div>
+                <div class="trend-fire"><span class="iconify" data-icon="ph:fire-bold" style="color:var(--hot-orange)"></span></div>
+            </div>
+            <div class="trend-stats">
+                <div class="trend-stat">
+                    <span class="iconify" data-icon="ph:users-bold"></span> ${plays} play${plays!==1?'s':''}
+                </div>
+                <div class="trend-stat">
+                    <span class="iconify" data-icon="ph:chart-pie-bold"></span> ${avg}% avg
+                </div>
+                <div class="trend-stat">
+                    <span class="iconify" data-icon="ph:list-numbers-bold"></span> ${qCount} question${qCount!==1?'s':''}
+                </div>
+                <div class="trend-stat">
+                    <span class="iconify" data-icon="ph:timer-bold"></span> ${timerStr}
+                </div>
+            </div>
+            ${top ? `<div class="trend-top-score">
+                <span class="iconify" data-icon="ph:crown-bold" style="color:var(--lemon-yellow)"></span>
+                Top score: <strong>${top.name} — ${top.score}%</strong>
+            </div>` : ''}
+            <div class="trend-invite-note">
+                <span class="iconify" data-icon="ph:link-bold"></span>
+                Play only via invite link from the creator
+            </div>
+        </div>`;
+    }).join('');
+
+    if (window.Iconify) window.Iconify.scan();
+}
+
+async function init() {
+    try {
+        allTrending = await window.fetchTrending();
+        renderTrending(sortQuizzes(allTrending, currentSort));
+    } catch(e) {
+        document.getElementById('trendingList').innerHTML = `<div class="empty-state">
+            <div class="empty-icon"><span class="iconify" data-icon="ph:warning-circle-bold"></span></div>
+            <div class="empty-text">Could not load trending quizzes.<br>Please try again later.</div>
+        </div>`;
+        if (window.Iconify) window.Iconify.scan();
+        console.error(e);
+    }
+}
+
+window.onload = () => { init(); if (window.Iconify) window.Iconify.scan(); };
+</script>
+</body>
+</html>
