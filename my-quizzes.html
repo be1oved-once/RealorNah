@@ -171,6 +171,17 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
         .save-edit-btn{width:100%;padding:.875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1rem;cursor:pointer;transition:all .3s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
         .save-edit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,0,110,.4)}
         .action-btn.edit{background:rgba(131,56,236,.15);color:var(--electric-purple);border:1.5px solid var(--electric-purple)}
+        /* Delete Toast */
+        .delete-toast{position:fixed;bottom:-70vh;left:50%;transform:translateX(-50%);z-index:500;background:var(--card-bg);border:2px solid var(--neon-pink);border-radius:20px;padding:1rem 1.25rem;width:calc(100% - 2rem);max-width:400px;box-shadow:0 8px 40px rgba(255,0,110,.35);transition:bottom .35s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;gap:.75rem}
+        .delete-toast.show{bottom:1.5rem}
+        .delete-toast-msg{display:flex;align-items:center;gap:.65rem;font-family:'Chewy',cursive;font-size:1.05rem;color:white}
+        .delete-toast-icon{width:36px;height:36px;background:rgba(255,0,110,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--neon-pink);font-size:1.1rem;flex-shrink:0}
+        .delete-toast-actions{display:flex;gap:.6rem}
+        .toast-btn{flex:1;padding:.6rem;border-radius:12px;border:none;font-family:'Righteous',cursive;font-size:.85rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.35rem}
+        .toast-btn.confirm{background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));color:white;box-shadow:0 4px 15px rgba(255,0,110,.3)}
+        .toast-btn.confirm:hover{transform:scale(1.03);box-shadow:0 6px 20px rgba(255,0,110,.5)}
+        .toast-btn.cancel{background:rgba(131,56,236,.15);color:rgba(255,255,255,.8);border:1.5px solid rgba(131,56,236,.4)}
+        .toast-btn.cancel:hover{background:rgba(131,56,236,.3);color:white}
     </style>
 </head>
 <body>
@@ -335,6 +346,22 @@ window.fetchAllQuizzesForTrending = async function() {
 };
 </script>
 
+<!-- Delete Confirmation Toast -->
+<div class="delete-toast" id="deleteToast">
+    <div class="delete-toast-msg">
+        <div class="delete-toast-icon"><span class="iconify" data-icon="ph:trash-bold"></span></div>
+        <span>Delete this quiz? This <strong>cannot</strong> be undone.</span>
+    </div>
+    <div class="delete-toast-actions">
+        <button class="toast-btn cancel" onclick="cancelDeleteToast()">
+            <span class="iconify" data-icon="ph:x-bold"></span> Cancel
+        </button>
+        <button class="toast-btn confirm" id="toastConfirmBtn" onclick="confirmDeleteToast()">
+            <span class="iconify" data-icon="ph:trash-bold"></span> Yes, Delete
+        </button>
+    </div>
+</div>
+
 <script>
 let loadedQuizzes = [];
 
@@ -464,8 +491,36 @@ function closeStats() {
     document.getElementById('statsModal').classList.remove('active');
 }
 
-async function deleteQuiz(quizId) {
-    if (!confirm('Delete this quiz? This cannot be undone.')) return;
+let _pendingDeleteId = null;
+let _toastTimeout   = null;
+
+function deleteQuiz(quizId) {
+    _pendingDeleteId = quizId;
+    const toast = document.getElementById('deleteToast');
+    toast.classList.add('show');
+    if (window.Iconify) window.Iconify.scan();
+    // Auto-dismiss after 8s if no action
+    clearTimeout(_toastTimeout);
+    _toastTimeout = setTimeout(cancelDeleteToast, 8000);
+}
+
+function cancelDeleteToast() {
+    clearTimeout(_toastTimeout);
+    _pendingDeleteId = null;
+    document.getElementById('deleteToast').classList.remove('show');
+}
+
+async function confirmDeleteToast() {
+    if (!_pendingDeleteId) return;
+    clearTimeout(_toastTimeout);
+    const quizId = _pendingDeleteId;
+    _pendingDeleteId = null;
+
+    const btn = document.getElementById('toastConfirmBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="iconify" data-icon="ph:circle-notch-bold" style="animation:spin .8s linear infinite;display:inline-block"></span> Deleting…';
+    if (window.Iconify) window.Iconify.scan();
+
     try {
         await window.deleteQuizFromDB(quizId);
         const ids = JSON.parse(localStorage.getItem('myQuizIds') || '[]').filter(id => id !== quizId);
@@ -474,7 +529,14 @@ async function deleteQuiz(quizId) {
         updateTopStats(loadedQuizzes);
         renderQuizzes(document.getElementById('quizList'), loadedQuizzes);
         if (window.Iconify) window.Iconify.scan();
-    } catch(e) { alert('Could not delete quiz. Try again.'); console.error(e); }
+    } catch(e) {
+        alert('Could not delete quiz. Try again.');
+        console.error(e);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="iconify" data-icon="ph:trash-bold"></span> Yes, Delete';
+        document.getElementById('deleteToast').classList.remove('show');
+    }
 }
 
 document.getElementById('statsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeStats(); });
