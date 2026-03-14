@@ -227,7 +227,35 @@
             </div>
         </footer>
     </div>
+<script src="https://cdn.jsdelivr.net/npm/disable-devtool"></script>
+<script>
+document.addEventListener("contextmenu", function(e){
+e.preventDefault();
+});
+document.addEventListener("keydown", function(e){
 
+if(
+e.key === "F12" ||
+(e.ctrlKey && e.shiftKey && e.key === "I") ||
+(e.ctrlKey && e.shiftKey && e.key === "J") ||
+(e.ctrlKey && e.shiftKey && e.key === "C") ||
+(e.ctrlKey && e.key === "U")
+){
+e.preventDefault();
+}
+
+});
+DisableDevtool({
+ondevtoolopen:function(){
+alert("Developer tools detected!");
+}
+});
+</script>
+<script>
+setInterval(function(){
+debugger;
+},200);
+</script>
     <script>
         if (window.Iconify) window.Iconify.scan();
     </script>
