@@ -225,8 +225,36 @@
         .icon-modal.active{opacity:1;visibility:visible}
         .icon-modal-content{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:520px;height:80vh;overflow-y:auto;}
         .icon-modal-title{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--lemon-yellow);margin-bottom:1rem;text-align:center}
-        .icons-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding-bottom:20px;}
-        .icon-btn{background:#1a0b2e;border:2px solid rgba(131,56,236,.4);border-radius:16px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:.25s;font-size:12px;color:white;min-height:80px;}
+        .icons-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+padding-bottom:20px;
+align-items:stretch;
+}
+
+.icon-btn{
+background:#1a0b2e;
+border:2px solid rgba(131,56,236,.4);
+border-radius:16px;
+padding:14px 8px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:6px;
+cursor:pointer;
+transition:.25s;
+font-size:12px;
+color:white;
+aspect-ratio:1/1;
+}
+
+.icon-btn span:last-child{
+font-size:11px;
+text-align:center;
+line-height:1.1;
+}
         .icon-btn:hover,.icon-btn.selected{border-color:var(--neon-pink);background:rgba(255,0,110,.1);transform:scale(1.05);}
         .icon-btn .icon-preview{font-size:2rem}
         /* Success Popup */
@@ -255,8 +283,8 @@
         .saving-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
         .error-msg{background:rgba(255,0,110,.1);border:1.5px solid var(--neon-pink);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:var(--neon-pink);margin-bottom:.75rem;display:none}
         /* Timer toggle */
-        .timer-toggle-wrap{background:var(--card-bg);border:2px solid rgba(131,56,236,.3);border-radius:16px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-        .timer-toggle-label{font-family:'Chewy',cursive;font-size:.95rem;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:.5rem}
+        .timer-toggle-wrap{background:var(--card-bg);border:2px solid rgba(131,56,236,.3);border-radius:14px;padding:.65rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+        .timer-toggle-label{font-family:'Chewy',cursive;font-size:.82rem;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:.35rem;white-space:nowrap}
         .timer-toggle-btn{display:flex;gap:.4rem}
         .ttb{padding:.4rem .75rem;border-radius:10px;border:2px solid transparent;font-family:'Righteous',cursive;font-size:.75rem;cursor:pointer;transition:all .25s;background:rgba(131,56,236,.15);color:rgba(255,255,255,.6)}
         .ttb.active{border-color:var(--cyan-blast);background:rgba(6,255,165,.15);color:var(--cyan-blast)}
@@ -309,7 +337,23 @@ transition:all .3s;
 transform:scale(1.03);
 box-shadow:0 8px 25px rgba(255,77,141,.5);
 }
+.icon-category{
+grid-column:1/-1;
+display:flex;
+align-items:center;
+gap:8px;
+font-family:'Chewy',cursive;
+font-size:14px;
+color:var(--cyan-blast);
+margin:12px 0 4px;
+padding-left:4px;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
 
+.icon-category .iconify{
+font-size:18px;
+color:var(--lemon-yellow);
+}
         /* ── Suggestion / Prefill button ── */
         .suggestion-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.75rem}
         .suggestion-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:rgba(255,190,11,.1);border:2px solid rgba(255,190,11,.4);border-radius:12px;color:var(--lemon-yellow);font-family:'Righteous',cursive;font-size:.78rem;cursor:pointer;transition:all .3s;white-space:nowrap;flex-shrink:0}
@@ -335,7 +379,7 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                 <span class="iconify" data-icon="ph:house-bold"></span>
                 Home
             </a>
-            <a href="create-quiz.html" class="menu-item">
+            <a href="create-quiz.html" class="menu-item active">
                 <span class="iconify" data-icon="ph:plus-circle-bold"></span>
                 Create New Quiz
             </a>
@@ -350,7 +394,7 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                 <span class="iconify" data-icon="ph:question-bold"></span>
                 How to Use
             </a>
-            <a href="about-us.html" class="menu-item active">
+            <a href="about-us.html" class="menu-item">
                 <span class="iconify" data-icon="ph:info-bold"></span>
                 About Us
             </a>
@@ -644,12 +688,70 @@ document.addEventListener('touchend',   e => {
 
 // ── Build icon grid ───────────────────────────────────────────
 const grid = document.getElementById('iconsGrid');
-ICONS.forEach(item => {
-    const btn = document.createElement('button');
-    btn.className = 'icon-btn';
-    btn.innerHTML = `<span class="icon-preview iconify" data-icon="${item.icon}"></span><span>${item.label}</span>`;
-    btn.onclick = () => selectIcon(item.icon, btn);
-    grid.appendChild(btn);
+
+const ICON_CATEGORIES = [
+{
+title:"Food",
+icon:"ph:hamburger-bold",
+items:ICONS.slice(0,18)
+},
+{
+title:"Drinks",
+icon:"ph:coffee-bold",
+items:ICONS.slice(18,24)
+},
+{
+title:"Sports",
+icon:"ph:soccer-ball-bold",
+items:ICONS.slice(24,32)
+},
+{
+title:"Entertainment",
+icon:"ph:music-notes-bold",
+items:ICONS.slice(32,42)
+},
+{
+title:"Places",
+icon:"ph:airplane-takeoff-bold",
+items:ICONS.slice(42,51)
+},
+{
+title:"Animals",
+icon:"ph:cat-bold",
+items:ICONS.slice(51,58)
+},
+{
+title:"Fun",
+icon:"ph:sparkle-bold",
+items:ICONS.slice(58)
+}
+];
+
+ICON_CATEGORIES.forEach(cat=>{
+
+const header=document.createElement("div");
+header.className="icon-category";
+header.innerHTML=`
+<span class="iconify" data-icon="${cat.icon}"></span>
+<span>${cat.title}</span>
+`;
+
+grid.appendChild(header);
+
+cat.items.forEach(item=>{
+const btn=document.createElement("button");
+btn.className="icon-btn";
+
+btn.innerHTML=`
+<span class="icon-preview iconify" data-icon="${item.icon}"></span>
+<span>${item.label}</span>
+`;
+
+btn.onclick=()=>selectIcon(item.icon,btn);
+
+grid.appendChild(btn);
+});
+
 });
 
 // ── Render TEXT options ───────────────────────────────────────
@@ -848,11 +950,12 @@ function updateProgress() {
 function checkGenerateButton() {
     const name = document.getElementById('creatorName').value.trim();
     let valid = 0;
+    let firstBlockReason = '';
+
     document.querySelectorAll('.question-card').forEach(card => {
         const qNum = parseInt(card.id.split('-')[1]);
         const qText = card.querySelector(`#q-text-${qNum}`)?.value.trim();
         const hasCorrect = correctAnswers[qNum] !== undefined;
-        // Check at least 2 options have text (for text type) OR icons chosen (image type)
         const isImage = document.getElementById(`type-image-${qNum}`)?.classList.contains('active');
         let filledOpts = 0;
         for (let i = 0; i < 4; i++) {
@@ -861,30 +964,44 @@ function checkGenerateButton() {
             if (isImage) { if (icon || (inp && inp.value.trim())) filledOpts++; }
             else { if (inp && inp.value.trim()) filledOpts++; }
         }
-        if (qText && filledOpts >= 2 && hasCorrect) valid++;
+        const qValid = qText && filledOpts >= 2 && hasCorrect;
+        if (qValid) {
+            valid++;
+        } else if (!firstBlockReason) {
+            if (!name) {
+                firstBlockReason = 'Enter your name first';
+            } else if (!qText) {
+                firstBlockReason = `Question ${qNum}: Add a question text`;
+            } else if (filledOpts < 2) {
+                firstBlockReason = `Question ${qNum}: Add at least 2 options`;
+            } else if (!hasCorrect) {
+                firstBlockReason = `Question ${qNum}: Select the correct answer`;
+            }
+        }
     });
+
     const can = name && valid >= 3;
     document.getElementById('generateBtn').disabled = !can;
     const ct = document.getElementById('questionCount');
+
     if (can) {
-    ct.textContent = `Ready! (${valid} question${valid!==1?'s':''})`;
-    ct.style.color = 'var(--cyan-blast)';
-}
-else {
-    const totalQuestions = document.querySelectorAll('.question-card').length;
-
-if (name && totalQuestions >= 3 && valid === 0) {
-    ct.textContent = 'Choose correct option first';
-}
-else {
-    const need = Math.max(0, 3 - valid);
-    ct.textContent = name ?
-        `Add ${need} more valid question${need!==1?'s':''}` :
-        'Enter your name first';
-}
-
-    ct.style.color = 'rgba(255,255,255,.6)';
-}
+        ct.textContent = `Ready! (${valid} question${valid !== 1 ? 's' : ''})`;
+        ct.style.color = 'var(--cyan-blast)';
+    } else {
+        if (!name) {
+            ct.textContent = 'Enter your name first';
+        } else if (valid >= 3) {
+            ct.textContent = `Ready! (${valid} questions)`;
+        } else {
+            const need = Math.max(0, 3 - valid);
+            if (firstBlockReason) {
+                ct.textContent = firstBlockReason;
+            } else {
+                ct.textContent = `${need} more valid question${need !== 1 ? 's' : ''} needed`;
+            }
+        }
+        ct.style.color = 'rgba(255,255,255,.6)';
+    }
 }
 
 // ── Timer toggle ──────────────────────────────────────────────
@@ -978,48 +1095,86 @@ function previewQuiz() {
 }
 
 
-// ── Prefill suggestions ───────────────────────────────────────
+// ── Prefill suggestions ─────────────────────────────────────
 const SUGGESTION_BANK = [
-    {
-        question: "What is my go-to comfort food?",
-        options: ["Pizza 🍕", "Biryani 🍛", "Maggi 🍜", "Ice Cream 🍦"],
-        correct: 0
-    },
-    {
-        question: "How do I spend a typical Sunday?",
-        options: ["Sleeping all day", "Binge watching shows", "Hanging out with friends", "Gaming"],
-        correct: 1
-    },
-    {
-        question: "What is my biggest pet peeve?",
-        options: ["People being late", "Loud chewing", "Slow internet", "Unsolicited advice"],
-        correct: 2
-    },
-    {
-        question: "Which of these best describes my music taste?",
-        options: ["Bollywood only 🎵", "English pop & indie", "Whatever's trending", "Lo-fi & chill beats"],
-        correct: 3
-    },
-    {
-        question: "What would I most likely spend ₹500 on?",
-        options: ["Food", "Clothes", "Save it 💸", "Games or apps"],
-        correct: 0
-    },
-    {
-        question: "What's my default reaction to bad news?",
-        options: ["Cry immediately", "Pretend I'm fine", "Rant to my best friend", "Go silent"],
-        correct: 1
-    },
-    {
-        question: "Which social app am I most active on?",
-        options: ["Instagram", "WhatsApp", "YouTube", "Snapchat"],
-        correct: 0
-    }
+
+{
+question:"What is my go-to comfort food?",
+options:["Pizza 🍕","Biryani 🍛","Maggi 🍜","Ice Cream 🍦"],
+correct:0
+},
+
+{
+question:"How do I usually spend my Sunday?",
+options:["Sleeping 😴","Watching series 📺","Hanging with friends 🧑‍🤝‍🧑","Gaming 🎮"],
+correct:1
+},
+
+{
+question:"What annoys me the most?",
+options:["Slow internet 🐢","People being late ⏰","Loud chewing 🤢","Unnecessary drama 🎭"],
+correct:0
+},
+
+{
+question:"What type of music do I enjoy the most?",
+options:["Bollywood 🎶","English pop 🎧","Rap 🔥","Lo-fi chill 🎵"],
+correct:3
+},
+
+{
+question:"What would I most likely spend ₹500 on?",
+options:["Food 🍔","Clothes 👕","Games 🎮","Saving money 💰"],
+correct:0
+},
+
+{
+question:"Which social media app do I use the most?",
+options:["Instagram 📸","WhatsApp 💬","YouTube ▶","Snapchat 👻"],
+correct:0
+},
+
+{
+question:"What is my dream travel destination?",
+options:["Paris 🗼","Maldives 🏝","Japan 🗾","Dubai 🏙"],
+correct:2
+},
+
+{
+question:"What is my biggest fear?",
+options:["Heights 🏔","Darkness 🌑","Snakes 🐍","Public speaking 🎤"],
+correct:1
+},
+
+{
+question:"Which season do I like the most?",
+options:["Summer ☀","Winter ❄","Rainy 🌧","Spring 🌸"],
+correct:1
+},
+
+{
+question:"What is my favorite movie genre?",
+options:["Comedy 😂","Horror 👻","Action 💥","Romance ❤️"],
+correct:0
+},
+
+{
+question:"What would I do if I had a free day?",
+options:["Sleep all day 🛏","Watch movies 🎬","Go outside 🌳","Play games 🎮"],
+correct:2
+},
+
+{
+question:"Which describes my personality best?",
+options:["Funny 😆","Calm 😌","Adventurous 🌍","Serious 🤓"],
+correct:0
+}
+
 ];
 
 function fillSuggestions() {
     // Pick 3 random unique suggestions from the bank
-    const pool = [...SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 3);
+    const pool = [...SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 5);
 
     // Clear existing questions first (keep questionCount in sync)
     document.getElementById('questionsContainer').innerHTML = '';
