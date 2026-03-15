@@ -1,9 +1,3 @@
 {
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/u/:username",
-      "destination": "/public-profile.html"
-    }
-  ]
+  "cleanUrls": true
 }
