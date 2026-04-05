@@ -354,12 +354,14 @@ border-bottom:1px solid rgba(255,255,255,.1);
 font-size:18px;
 color:var(--lemon-yellow);
 }
-        /* ── Suggestion / Prefill button ── */
-        .suggestion-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.75rem}
-        .suggestion-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:rgba(255,190,11,.1);border:2px solid rgba(255,190,11,.4);border-radius:12px;color:var(--lemon-yellow);font-family:'Righteous',cursive;font-size:.78rem;cursor:pointer;transition:all .3s;white-space:nowrap;flex-shrink:0}
-        .suggestion-btn:hover{background:rgba(255,190,11,.2);border-color:var(--lemon-yellow);transform:translateY(-2px);box-shadow:0 5px 15px rgba(255,190,11,.25)}
-        .suggestion-btn .iconify{font-size:1rem}
-        .suggestion-hint{font-family:'Chewy',cursive;font-size:.75rem;color:rgba(255,255,255,.4);line-height:1.4}
+        /* ── Suggestion bar ── */
+        .suggestion-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.75rem;background:rgba(131,56,236,.08);border:1.5px solid rgba(131,56,236,.25);border-radius:14px;padding:.6rem .9rem}
+        .suggestion-btn{display:flex;align-items:center;gap:.45rem;padding:.45rem .9rem;background:linear-gradient(135deg,rgba(131,56,236,.3),rgba(255,0,110,.2));border:1.5px solid var(--electric-purple);border-radius:10px;color:white;font-family:'Righteous',cursive;font-size:.76rem;cursor:pointer;transition:all .28s;white-space:nowrap;flex-shrink:0;letter-spacing:.3px}
+        .suggestion-btn:hover{background:linear-gradient(135deg,rgba(131,56,236,.5),rgba(255,0,110,.35));border-color:var(--neon-pink);transform:translateY(-1px);box-shadow:0 4px 14px rgba(131,56,236,.35)}
+        .suggestion-btn:active{transform:translateY(0)}
+        .suggestion-btn.loading{opacity:.6;pointer-events:none}
+        .suggestion-btn .iconify{font-size:.95rem}
+        .suggestion-hint{font-family:'Righteous',cursive;font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.45;letter-spacing:.1px}
     </style>
 </head>
 <body>
@@ -491,8 +493,8 @@ color:var(--lemon-yellow);
 
             <!-- Suggestion bar -->
             <div class="suggestion-bar">
-                <p class="suggestion-hint">Need inspiration? Auto-fill 3 starter questions and customise from there.</p>
-                <button class="suggestion-btn" onclick="fillSuggestions()">
+                <p class="suggestion-hint">Auto-fill 3 starter questions.</p>
+                <button class="suggestion-btn" id="suggestionBtn" onclick="fillSuggestions()">
                     <span class="iconify" data-icon="ph:magic-wand-bold"></span>
                     Suggest
                 </button>
@@ -1114,114 +1116,306 @@ function previewQuiz() {
 }
 
 
-// ── Prefill suggestions ─────────────────────────────────────
-const SUGGESTION_BANK = [
+// ── Icon-mode suggestion bank (no keyboard emojis, icon keys only) ─────────
+const ICON_SUGGESTION_BANK = [
 
 {
 question:"What is my go-to comfort food?",
-options:["Pizza 🍕","Biryani 🍛","Maggi 🍜","Ice Cream 🍦"],
+options:[
+    {icon:"twemoji:pizza",          label:"Pizza"},
+    {icon:"twemoji:spaghetti",      label:"Pasta"},
+    {icon:"twemoji:hamburger",      label:"Burger"},
+    {icon:"twemoji:ice-cream",      label:"Ice Cream"}
+],
 correct:0
 },
 
 {
 question:"How do I usually spend my Sunday?",
-options:["Sleeping 😴","Watching series 📺","Hanging with friends 🧑‍🤝‍🧑","Gaming 🎮"],
+options:[
+    {icon:"twemoji:sleeping-face",  label:"Sleeping"},
+    {icon:"twemoji:television",     label:"Watching Series"},
+    {icon:"twemoji:video-game",     label:"Gaming"},
+    {icon:"twemoji:person-biking",  label:"Going Out"}
+],
+correct:0
+},
+
+{
+question:"Which season fits my vibe the most?",
+options:[
+    {icon:"twemoji:sun",            label:"Summer"},
+    {icon:"twemoji:snowflake",      label:"Winter"},
+    {icon:"twemoji:cloud-with-rain",label:"Rainy"},
+    {icon:"twemoji:cherry-blossom", label:"Spring"}
+],
 correct:1
-},
-
-{
-question:"What annoys me the most?",
-options:["Slow internet 🐢","People being late ⏰","Loud chewing 🤢","Unnecessary drama 🎭"],
-correct:0
-},
-
-{
-question:"What type of music do I enjoy the most?",
-options:["Bollywood 🎶","English pop 🎧","Rap 🔥","Lo-fi chill 🎵"],
-correct:3
-},
-
-{
-question:"What would I most likely spend ₹500 on?",
-options:["Food 🍔","Clothes 👕","Games 🎮","Saving money 💰"],
-correct:0
-},
-
-{
-question:"Which social media app do I use the most?",
-options:["Instagram 📸","WhatsApp 💬","YouTube ▶","Snapchat 👻"],
-correct:0
 },
 
 {
 question:"What is my dream travel destination?",
-options:["Paris 🗼","Maldives 🏝","Japan 🗾","Dubai 🏙"],
-correct:2
-},
-
-{
-question:"What is my biggest fear?",
-options:["Heights 🏔","Darkness 🌑","Snakes 🐍","Public speaking 🎤"],
-correct:1
-},
-
-{
-question:"Which season do I like the most?",
-options:["Summer ☀","Winter ❄","Rainy 🌧","Spring 🌸"],
-correct:1
-},
-
-{
-question:"What is my favorite movie genre?",
-options:["Comedy 😂","Horror 👻","Action 💥","Romance ❤️"],
+options:[
+    {icon:"twemoji:beach-with-umbrella", label:"Beach"},
+    {icon:"twemoji:mountain",       label:"Mountains"},
+    {icon:"twemoji:cityscape",      label:"City"},
+    {icon:"twemoji:camping",        label:"Camping"}
+],
 correct:0
 },
 
 {
-question:"What would I do if I had a free day?",
-options:["Sleep all day 🛏","Watch movies 🎬","Go outside 🌳","Play games 🎮"],
+question:"Pick my go-to drink.",
+options:[
+    {icon:"twemoji:hot-beverage",   label:"Coffee"},
+    {icon:"twemoji:bubble-tea",     label:"Bubble Tea"},
+    {icon:"twemoji:tropical-drink", label:"Juice"},
+    {icon:"twemoji:teacup-without-handle", label:"Tea"}
+],
+correct:0
+},
+
+{
+question:"What do I do when I'm stressed?",
+options:[
+    {icon:"twemoji:headphone",      label:"Music"},
+    {icon:"twemoji:books",          label:"Reading"},
+    {icon:"twemoji:video-game",     label:"Gaming"},
+    {icon:"twemoji:person-biking",  label:"Exercise"}
+],
+correct:0
+},
+
+{
+question:"Which animal matches my personality?",
+options:[
+    {icon:"twemoji:lion",           label:"Lion"},
+    {icon:"twemoji:cat",            label:"Cat"},
+    {icon:"twemoji:dog",            label:"Dog"},
+    {icon:"twemoji:panda",          label:"Panda"}
+],
 correct:2
 },
 
 {
-question:"Which describes my personality best?",
-options:["Funny 😆","Calm 😌","Adventurous 🌍","Serious 🤓"],
+question:"What is my favourite type of music?",
+options:[
+    {icon:"twemoji:guitar",         label:"Rock"},
+    {icon:"twemoji:studio-microphone", label:"Hip-Hop"},
+    {icon:"twemoji:musical-notes",  label:"Pop"},
+    {icon:"twemoji:headphone",      label:"Lo-fi"}
+],
+correct:2
+},
+
+{
+question:"What would I pick as a cheat meal?",
+options:[
+    {icon:"twemoji:pizza",          label:"Pizza"},
+    {icon:"twemoji:hot-dog",        label:"Hot Dog"},
+    {icon:"twemoji:taco",           label:"Taco"},
+    {icon:"twemoji:doughnut",       label:"Donut"}
+],
 correct:0
+},
+
+{
+question:"What is my favourite way to chill?",
+options:[
+    {icon:"twemoji:clapper-board",  label:"Movies"},
+    {icon:"twemoji:video-game",     label:"Gaming"},
+    {icon:"twemoji:books",          label:"Reading"},
+    {icon:"twemoji:artist-palette", label:"Creating"}
+],
+correct:0
+},
+
+{
+question:"What sport do I enjoy most?",
+options:[
+    {icon:"twemoji:soccer-ball",    label:"Soccer"},
+    {icon:"twemoji:basketball",     label:"Basketball"},
+    {icon:"twemoji:tennis",         label:"Tennis"},
+    {icon:"twemoji:bowling",        label:"Bowling"}
+],
+correct:0
+},
+
+{
+question:"Pick my ideal Friday night plan.",
+options:[
+    {icon:"twemoji:party-popper",   label:"Party"},
+    {icon:"twemoji:television",     label:"Netflix"},
+    {icon:"twemoji:restaurant",     label:"Dinner Out"},
+    {icon:"twemoji:video-game",     label:"Gaming Night"}
+],
+correct:1
 }
 
 ];
 
-function fillSuggestions() {
-    // Pick 3 random unique suggestions from the bank
-    const pool = [...SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 5);
+// ── Suggested name pool ──────────────────────────────────────
+const SUGGESTED_NAMES = [
+    "Alex","Jordan","Sam","Taylor","Morgan","Casey","Riley","Avery",
+    "Quinn","Blake","Reese","Skylar","Drew","Peyton","Jamie","Dakota"
+];
 
-    // Clear existing questions first (keep questionCount in sync)
-    document.getElementById('questionsContainer').innerHTML = '';
-    Object.keys(correctAnswers).forEach(k => delete correctAnswers[k]);
-    Object.keys(selectedIcons).forEach(k => delete selectedIcons[k]);
-    questionCount = 0;
+// ── Fill suggestions — detects current question type ─────────
+async function fillSuggestions() {
+    const btn = document.getElementById('suggestionBtn');
+
+    // Detect mode from question 1 (if it exists) else default to text
+    const firstCard = document.querySelector('.question-card');
+    const firstId   = firstCard ? parseInt(firstCard.id.split('-')[1]) : null;
+    const isImageMode = firstId
+        ? document.getElementById(`type-image-${firstId}`)?.classList.contains('active')
+        : false;
+
+    if (isImageMode) {
+        _fillImageSuggestions();
+    } else {
+        await _fillTextSuggestionsGroq(btn);
+    }
+}
+
+// ── IMAGE mode: use icon bank ────────────────────────────────
+function _fillImageSuggestions() {
+    const pool = [...ICON_SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 3);
+
+    _clearQuestions();
 
     pool.forEach(s => {
-        addQuestion(); // increments questionCount, creates card with id = questionCount
+        addQuestion();
         const qId = questionCount;
+
+        // Switch to image mode
+        switchType(qId, 'image');
 
         // Fill question text
         const qInput = document.getElementById(`q-text-${qId}`);
         if (qInput) qInput.value = s.question;
 
-        // Fill option labels
+        // Fill icons + labels
         s.options.forEach((opt, i) => {
-            const el = document.getElementById(`q${qId}-label${i}`);
-            if (el) el.value = opt;
+            // Set icon
+            const picker = document.getElementById(`img-${qId}-${i}`);
+            if (picker) {
+                picker.innerHTML = `<span class="iconify" data-icon="${opt.icon}" style="font-size:2rem"></span>`;
+                picker.classList.add('has-image');
+                selectedIcons[`${qId}-${i}`] = opt.icon;
+            }
+            // Set label
+            const labelEl = document.getElementById(`q${qId}-label${i}`);
+            if (labelEl) labelEl.value = opt.label;
         });
 
-        // Set correct answer (simulate click on the correct option row)
-        selectTextOption(qId, s.correct);
+        selectImageOption(qId, s.correct);
     });
 
-    // Scroll to first question
-    document.getElementById('questionsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    _postFill();
+}
 
+// ── TEXT mode: call Groq AI serverless function ──────────────
+async function _fillTextSuggestionsGroq(btn) {
+    btn.classList.add('loading');
+    btn.innerHTML = '<span class="iconify" data-icon="ph:spinner-bold" style="animation:spin .7s linear infinite"></span> Generating...';
+    if (window.Iconify) window.Iconify.scan();
+
+    try {
+        const res = await fetch('/api/groq-ai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt: `Generate exactly 3 fun, playful "how well do you know me" quiz questions. Each must be a different life topic (food, habits, personality, preferences, dreams, etc). Always fresh, never repeat the same questions.
+
+Return ONLY valid JSON — no markdown, no preamble. Format:
+[
+  {
+    "question": "Question text here?",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "correct": 0
+  }
+]
+
+Rules:
+- Options must be short (1-5 words max)
+- No emojis anywhere
+- Playful, relatable tone
+- correct is the index (0-3) of the right answer — pick any plausible answer
+- Vary the correct index (do not always use 0)`
+            })
+        });
+
+        const data = await res.json();
+        let questions = null;
+
+        // Parse the AI response
+        try {
+            const raw = data.result || data.text || data.content || '';
+            const cleaned = raw.replace(/```json|```/gi, '').trim();
+            questions = JSON.parse(cleaned);
+        } catch(e) {
+            console.error('Groq parse error:', e);
+            throw new Error('Could not parse AI response');
+        }
+
+        if (!Array.isArray(questions) || questions.length < 3) {
+            throw new Error('Insufficient questions returned');
+        }
+
+        _clearQuestions();
+
+        questions.slice(0, 3).forEach(s => {
+            addQuestion();
+            const qId = questionCount;
+
+            const qInput = document.getElementById(`q-text-${qId}`);
+            if (qInput) qInput.value = s.question;
+
+            s.options.slice(0, 4).forEach((opt, i) => {
+                const el = document.getElementById(`q${qId}-label${i}`);
+                if (el) el.value = opt;
+            });
+
+            selectTextOption(qId, s.correct ?? 0);
+        });
+
+        _postFill();
+
+    } catch(err) {
+        console.error('Groq suggestion error:', err);
+        // Graceful fallback: just show a hint toast
+        const bar = document.querySelector('.suggestion-hint');
+        if (bar) {
+            const orig = bar.textContent;
+            bar.textContent = 'Could not connect to AI. Check your API route.';
+            bar.style.color = 'var(--neon-pink)';
+            setTimeout(() => { bar.textContent = orig; bar.style.color = ''; }, 3000);
+        }
+    } finally {
+        btn.classList.remove('loading');
+        btn.innerHTML = '<span class="iconify" data-icon="ph:lightning-bold"></span> Suggest';
+        if (window.Iconify) window.Iconify.scan();
+    }
+}
+
+// ── Shared helpers ───────────────────────────────────────────
+function _clearQuestions() {
+    document.getElementById('questionsContainer').innerHTML = '';
+    Object.keys(correctAnswers).forEach(k => delete correctAnswers[k]);
+    Object.keys(selectedIcons).forEach(k => delete selectedIcons[k]);
+    questionCount = 0;
+}
+
+function _postFill() {
+    // Fill name if empty
+    const nameInput = document.getElementById('creatorName');
+    if (nameInput && !nameInput.value.trim()) {
+        const pick = SUGGESTED_NAMES[Math.floor(Math.random() * SUGGESTED_NAMES.length)];
+        nameInput.value = pick;
+    }
+
+    if (window.Iconify) window.Iconify.scan();
+    document.getElementById('questionsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
     updateProgress();
     checkGenerateButton();
 }
@@ -1327,7 +1521,6 @@ window.onload = () => {
     if (window.Iconify) window.Iconify.scan();
 };
 </script>
-<!-- QRCode library for QR generation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </body>
 </html>
