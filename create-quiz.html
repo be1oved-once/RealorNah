@@ -359,7 +359,6 @@ color:var(--lemon-yellow);
         .suggestion-btn{display:flex;align-items:center;gap:.45rem;padding:.45rem .9rem;background:linear-gradient(135deg,rgba(131,56,236,.3),rgba(255,0,110,.2));border:1.5px solid var(--electric-purple);border-radius:10px;color:white;font-family:'Righteous',cursive;font-size:.76rem;cursor:pointer;transition:all .28s;white-space:nowrap;flex-shrink:0;letter-spacing:.3px}
         .suggestion-btn:hover{background:linear-gradient(135deg,rgba(131,56,236,.5),rgba(255,0,110,.35));border-color:var(--neon-pink);transform:translateY(-1px);box-shadow:0 4px 14px rgba(131,56,236,.35)}
         .suggestion-btn:active{transform:translateY(0)}
-        .suggestion-btn.loading{opacity:.6;pointer-events:none}
         .suggestion-btn .iconify{font-size:.95rem}
         .suggestion-hint{font-family:'Righteous',cursive;font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.45;letter-spacing:.1px}
     </style>
@@ -493,9 +492,9 @@ color:var(--lemon-yellow);
 
             <!-- Suggestion bar -->
             <div class="suggestion-bar">
-                <p class="suggestion-hint">Auto-fill 3 starter questions.</p>
+                <p class="suggestion-hint">Auto-fill 3 starter questions based on your current question type — customise freely after.</p>
                 <button class="suggestion-btn" id="suggestionBtn" onclick="fillSuggestions()">
-                    <span class="iconify" data-icon="ph:magic-wand-bold"></span>
+                    <span class="iconify" data-icon="ph:lightning-bold"></span>
                     Suggest
                 </button>
             </div>
@@ -1111,146 +1110,61 @@ function drawQR(canvas, text) {
 // ── Preview quiz ──────────────────────────────────────────────
 function previewQuiz() {
     if (!generatedQuizId) return;
-    const url = `${location.origin}/quiz.html?id=${generatedQuizId}&preview=1`;
+    const url = `${location.origin}/quiz?id=${generatedQuizId}&preview=1`;
     window.open(url, '_blank');
 }
 
 
-// ── Icon-mode suggestion bank (no keyboard emojis, icon keys only) ─────────
+// ════════════════════════════════════════════════════════════
+//  SUGGESTION BANKS
+// ════════════════════════════════════════════════════════════
+
+// ── TEXT-ONLY bank (20 questions) ────────────────────────────
+const TEXT_SUGGESTION_BANK = [
+{question:"What is my go-to comfort food?",options:["Pizza","Biryani","Maggi","Ice Cream"],correct:0},
+{question:"How do I usually spend my Sunday?",options:["Sleeping all day","Binge-watching","Hanging with friends","Gaming"],correct:1},
+{question:"What annoys me the most?",options:["Slow internet","People being late","Loud chewing","Unnecessary drama"],correct:0},
+{question:"What type of music do I vibe with most?",options:["Bollywood","English pop","Rap","Lo-fi chill"],correct:3},
+{question:"Which social media app is always open on my phone?",options:["Instagram","WhatsApp","YouTube","Snapchat"],correct:0},
+{question:"What is my dream travel destination?",options:["Paris","Maldives","Japan","Dubai"],correct:2},
+{question:"What is my biggest fear?",options:["Heights","Darkness","Snakes","Public speaking"],correct:1},
+{question:"Which season do I love most?",options:["Summer","Winter","Rainy","Spring"],correct:1},
+{question:"What is my favourite movie genre?",options:["Comedy","Horror","Action","Romance"],correct:0},
+{question:"What would I do on a completely free day?",options:["Sleep till noon","Watch movies","Go explore outside","Play games"],correct:2},
+{question:"Which word describes me best?",options:["Funny","Calm","Adventurous","Serious"],correct:0},
+{question:"What is my most used phrase?",options:["Let's go!","Whatever","Same","I'm tired"],correct:3},
+{question:"How do I react when I'm angry?",options:["Go silent","Rant to a friend","Listen to music","Sleep it off"],correct:0},
+{question:"What is my biggest guilty pleasure?",options:["Junk food","Reality TV","Online shopping","Social media scrolling"],correct:0},
+{question:"Which superpower would I want?",options:["Fly","Teleport","Read minds","Invisibility"],correct:1},
+{question:"What time do I usually wake up?",options:["Before 7 AM","7-9 AM","9-11 AM","After 11 AM"],correct:2},
+{question:"What would I spend a surprise bonus on?",options:["Travel","Shopping","Savings","Food"],correct:0},
+{question:"What is my go-to midnight snack?",options:["Chips","Leftovers","Fruits","I don't snack"],correct:0},
+{question:"Which pet would I most likely own?",options:["Dog","Cat","Fish","No pets"],correct:0},
+{question:"How do I handle a boring lecture or meeting?",options:["Pay full attention","Doodle","Phone under the table","Sleep"],correct:2},
+];
+
+// ── IMAGE/ICON bank (20 questions) ───────────────────────────
 const ICON_SUGGESTION_BANK = [
-
-{
-question:"What is my go-to comfort food?",
-options:[
-    {icon:"twemoji:pizza",          label:"Pizza"},
-    {icon:"twemoji:spaghetti",      label:"Pasta"},
-    {icon:"twemoji:hamburger",      label:"Burger"},
-    {icon:"twemoji:ice-cream",      label:"Ice Cream"}
-],
-correct:0
-},
-
-{
-question:"How do I usually spend my Sunday?",
-options:[
-    {icon:"twemoji:sleeping-face",  label:"Sleeping"},
-    {icon:"twemoji:television",     label:"Watching Series"},
-    {icon:"twemoji:video-game",     label:"Gaming"},
-    {icon:"twemoji:person-biking",  label:"Going Out"}
-],
-correct:0
-},
-
-{
-question:"Which season fits my vibe the most?",
-options:[
-    {icon:"twemoji:sun",            label:"Summer"},
-    {icon:"twemoji:snowflake",      label:"Winter"},
-    {icon:"twemoji:cloud-with-rain",label:"Rainy"},
-    {icon:"twemoji:cherry-blossom", label:"Spring"}
-],
-correct:1
-},
-
-{
-question:"What is my dream travel destination?",
-options:[
-    {icon:"twemoji:beach-with-umbrella", label:"Beach"},
-    {icon:"twemoji:mountain",       label:"Mountains"},
-    {icon:"twemoji:cityscape",      label:"City"},
-    {icon:"twemoji:camping",        label:"Camping"}
-],
-correct:0
-},
-
-{
-question:"Pick my go-to drink.",
-options:[
-    {icon:"twemoji:hot-beverage",   label:"Coffee"},
-    {icon:"twemoji:bubble-tea",     label:"Bubble Tea"},
-    {icon:"twemoji:tropical-drink", label:"Juice"},
-    {icon:"twemoji:teacup-without-handle", label:"Tea"}
-],
-correct:0
-},
-
-{
-question:"What do I do when I'm stressed?",
-options:[
-    {icon:"twemoji:headphone",      label:"Music"},
-    {icon:"twemoji:books",          label:"Reading"},
-    {icon:"twemoji:video-game",     label:"Gaming"},
-    {icon:"twemoji:person-biking",  label:"Exercise"}
-],
-correct:0
-},
-
-{
-question:"Which animal matches my personality?",
-options:[
-    {icon:"twemoji:lion",           label:"Lion"},
-    {icon:"twemoji:cat",            label:"Cat"},
-    {icon:"twemoji:dog",            label:"Dog"},
-    {icon:"twemoji:panda",          label:"Panda"}
-],
-correct:2
-},
-
-{
-question:"What is my favourite type of music?",
-options:[
-    {icon:"twemoji:guitar",         label:"Rock"},
-    {icon:"twemoji:studio-microphone", label:"Hip-Hop"},
-    {icon:"twemoji:musical-notes",  label:"Pop"},
-    {icon:"twemoji:headphone",      label:"Lo-fi"}
-],
-correct:2
-},
-
-{
-question:"What would I pick as a cheat meal?",
-options:[
-    {icon:"twemoji:pizza",          label:"Pizza"},
-    {icon:"twemoji:hot-dog",        label:"Hot Dog"},
-    {icon:"twemoji:taco",           label:"Taco"},
-    {icon:"twemoji:doughnut",       label:"Donut"}
-],
-correct:0
-},
-
-{
-question:"What is my favourite way to chill?",
-options:[
-    {icon:"twemoji:clapper-board",  label:"Movies"},
-    {icon:"twemoji:video-game",     label:"Gaming"},
-    {icon:"twemoji:books",          label:"Reading"},
-    {icon:"twemoji:artist-palette", label:"Creating"}
-],
-correct:0
-},
-
-{
-question:"What sport do I enjoy most?",
-options:[
-    {icon:"twemoji:soccer-ball",    label:"Soccer"},
-    {icon:"twemoji:basketball",     label:"Basketball"},
-    {icon:"twemoji:tennis",         label:"Tennis"},
-    {icon:"twemoji:bowling",        label:"Bowling"}
-],
-correct:0
-},
-
-{
-question:"Pick my ideal Friday night plan.",
-options:[
-    {icon:"twemoji:party-popper",   label:"Party"},
-    {icon:"twemoji:television",     label:"Netflix"},
-    {icon:"twemoji:restaurant",     label:"Dinner Out"},
-    {icon:"twemoji:video-game",     label:"Gaming Night"}
-],
-correct:1
-}
-
+{question:"What is my go-to comfort food?",options:[{icon:"twemoji:pizza",label:"Pizza"},{icon:"twemoji:spaghetti",label:"Pasta"},{icon:"twemoji:hamburger",label:"Burger"},{icon:"twemoji:ice-cream",label:"Ice Cream"}],correct:0},
+{question:"How do I usually spend my Sunday?",options:[{icon:"twemoji:sleeping-face",label:"Sleeping"},{icon:"twemoji:television",label:"Watching Series"},{icon:"twemoji:video-game",label:"Gaming"},{icon:"twemoji:person-biking",label:"Going Out"}],correct:0},
+{question:"Which season fits my vibe?",options:[{icon:"twemoji:sun",label:"Summer"},{icon:"twemoji:snowflake",label:"Winter"},{icon:"twemoji:cloud-with-rain",label:"Rainy"},{icon:"twemoji:cherry-blossom",label:"Spring"}],correct:1},
+{question:"What is my dream travel destination?",options:[{icon:"twemoji:beach-with-umbrella",label:"Beach"},{icon:"twemoji:mountain",label:"Mountains"},{icon:"twemoji:cityscape",label:"City"},{icon:"twemoji:camping",label:"Camping"}],correct:0},
+{question:"What is my go-to drink?",options:[{icon:"twemoji:hot-beverage",label:"Coffee"},{icon:"twemoji:bubble-tea",label:"Bubble Tea"},{icon:"twemoji:tropical-drink",label:"Juice"},{icon:"twemoji:teacup-without-handle",label:"Tea"}],correct:0},
+{question:"What do I do when stressed?",options:[{icon:"twemoji:headphone",label:"Music"},{icon:"twemoji:books",label:"Reading"},{icon:"twemoji:video-game",label:"Gaming"},{icon:"twemoji:person-biking",label:"Exercise"}],correct:0},
+{question:"Which animal matches my personality?",options:[{icon:"twemoji:lion",label:"Lion"},{icon:"twemoji:cat",label:"Cat"},{icon:"twemoji:dog",label:"Dog"},{icon:"twemoji:panda",label:"Panda"}],correct:2},
+{question:"What is my favourite music genre?",options:[{icon:"twemoji:guitar",label:"Rock"},{icon:"twemoji:studio-microphone",label:"Hip-Hop"},{icon:"twemoji:musical-notes",label:"Pop"},{icon:"twemoji:headphone",label:"Lo-fi"}],correct:2},
+{question:"What is my cheat meal pick?",options:[{icon:"twemoji:pizza",label:"Pizza"},{icon:"twemoji:hot-dog",label:"Hot Dog"},{icon:"twemoji:taco",label:"Taco"},{icon:"twemoji:doughnut",label:"Donut"}],correct:0},
+{question:"What is my favourite way to chill?",options:[{icon:"twemoji:clapper-board",label:"Movies"},{icon:"twemoji:video-game",label:"Gaming"},{icon:"twemoji:books",label:"Reading"},{icon:"twemoji:artist-palette",label:"Art"}],correct:0},
+{question:"What sport do I enjoy most?",options:[{icon:"twemoji:soccer-ball",label:"Soccer"},{icon:"twemoji:basketball",label:"Basketball"},{icon:"twemoji:tennis",label:"Tennis"},{icon:"twemoji:bowling",label:"Bowling"}],correct:0},
+{question:"What is my ideal Friday night?",options:[{icon:"twemoji:party-popper",label:"Party"},{icon:"twemoji:television",label:"Netflix"},{icon:"twemoji:sushi",label:"Dinner Out"},{icon:"twemoji:video-game",label:"Gaming Night"}],correct:1},
+{question:"Which pet would I most likely have?",options:[{icon:"twemoji:dog",label:"Dog"},{icon:"twemoji:cat",label:"Cat"},{icon:"twemoji:rabbit",label:"Rabbit"},{icon:"twemoji:panda",label:"No Pet"}],correct:0},
+{question:"What is my midnight snack?",options:[{icon:"twemoji:cookie",label:"Cookies"},{icon:"twemoji:chocolate-bar",label:"Chocolate"},{icon:"twemoji:banana",label:"Fruit"},{icon:"twemoji:pizza",label:"Leftover Pizza"}],correct:1},
+{question:"Which superpower would I choose?",options:[{icon:"twemoji:airplane",label:"Fly"},{icon:"twemoji:rocket",label:"Teleport"},{icon:"twemoji:sparkles",label:"Read Minds"},{icon:"twemoji:star",label:"Invisibility"}],correct:1},
+{question:"What would I splurge money on?",options:[{icon:"twemoji:airplane",label:"Travel"},{icon:"twemoji:shortcake",label:"Food"},{icon:"twemoji:guitar",label:"Gadgets"},{icon:"twemoji:crown",label:"Fashion"}],correct:0},
+{question:"What do I do when bored?",options:[{icon:"twemoji:video-game",label:"Gaming"},{icon:"twemoji:musical-notes",label:"Music"},{icon:"twemoji:camera",label:"Scrolling"},{icon:"twemoji:books",label:"Reading"}],correct:2},
+{question:"Which dessert am I most like?",options:[{icon:"twemoji:ice-cream",label:"Ice Cream"},{icon:"twemoji:shortcake",label:"Cake"},{icon:"twemoji:doughnut",label:"Donut"},{icon:"twemoji:candy",label:"Candy"}],correct:0},
+{question:"What is my go-to workout?",options:[{icon:"twemoji:person-biking",label:"Cycling"},{icon:"twemoji:swimmer",label:"Swimming"},{icon:"twemoji:soccer-ball",label:"Football"},{icon:"twemoji:ping-pong",label:"Table Tennis"}],correct:0},
+{question:"Where would I rather be right now?",options:[{icon:"twemoji:beach-with-umbrella",label:"Beach"},{icon:"twemoji:house",label:"Home"},{icon:"twemoji:cityscape",label:"City"},{ icon:"twemoji:mountain",label:"Mountains"}],correct:1},
 ];
 
 // ── Suggested name pool ──────────────────────────────────────
@@ -1259,51 +1173,61 @@ const SUGGESTED_NAMES = [
     "Quinn","Blake","Reese","Skylar","Drew","Peyton","Jamie","Dakota"
 ];
 
-// ── Fill suggestions — detects current question type ─────────
-async function fillSuggestions() {
-    const btn = document.getElementById('suggestionBtn');
-
-    // Detect mode from question 1 (if it exists) else default to text
+// ── Fill suggestions — detects mode of first question card ───
+function fillSuggestions() {
     const firstCard = document.querySelector('.question-card');
     const firstId   = firstCard ? parseInt(firstCard.id.split('-')[1]) : null;
     const isImageMode = firstId
         ? document.getElementById(`type-image-${firstId}`)?.classList.contains('active')
         : false;
 
-    if (isImageMode) {
-        _fillImageSuggestions();
-    } else {
-        await _fillTextSuggestionsGroq(btn);
-    }
+    isImageMode ? _fillImageSuggestions() : _fillTextSuggestions();
 }
 
-// ── IMAGE mode: use icon bank ────────────────────────────────
-function _fillImageSuggestions() {
-    const pool = [...ICON_SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 3);
-
+// ── TEXT mode ────────────────────────────────────────────────
+function _fillTextSuggestions() {
+    const pool = [...TEXT_SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 3);
     _clearQuestions();
 
     pool.forEach(s => {
         addQuestion();
         const qId = questionCount;
 
-        // Switch to image mode
-        switchType(qId, 'image');
-
-        // Fill question text
         const qInput = document.getElementById(`q-text-${qId}`);
         if (qInput) qInput.value = s.question;
 
-        // Fill icons + labels
         s.options.forEach((opt, i) => {
-            // Set icon
+            const el = document.getElementById(`q${qId}-label${i}`);
+            if (el) el.value = opt;
+        });
+
+        selectTextOption(qId, s.correct);
+    });
+
+    _postFill();
+}
+
+// ── IMAGE mode ───────────────────────────────────────────────
+function _fillImageSuggestions() {
+    const pool = [...ICON_SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 3);
+    _clearQuestions();
+
+    pool.forEach(s => {
+        addQuestion();
+        const qId = questionCount;
+
+        switchType(qId, 'image');
+
+        const qInput = document.getElementById(`q-text-${qId}`);
+        if (qInput) qInput.value = s.question;
+
+        s.options.forEach((opt, i) => {
             const picker = document.getElementById(`img-${qId}-${i}`);
             if (picker) {
                 picker.innerHTML = `<span class="iconify" data-icon="${opt.icon}" style="font-size:2rem"></span>`;
                 picker.classList.add('has-image');
                 selectedIcons[`${qId}-${i}`] = opt.icon;
             }
-            // Set label
             const labelEl = document.getElementById(`q${qId}-label${i}`);
             if (labelEl) labelEl.value = opt.label;
         });
@@ -1312,90 +1236,6 @@ function _fillImageSuggestions() {
     });
 
     _postFill();
-}
-
-// ── TEXT mode: call Groq AI serverless function ──────────────
-async function _fillTextSuggestionsGroq(btn) {
-    btn.classList.add('loading');
-    btn.innerHTML = '<span class="iconify" data-icon="ph:spinner-bold" style="animation:spin .7s linear infinite"></span> Generating...';
-    if (window.Iconify) window.Iconify.scan();
-
-    try {
-        const res = await fetch('/api/groq-ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                prompt: `Generate exactly 3 fun, playful "how well do you know me" quiz questions. Each must be a different life topic (food, habits, personality, preferences, dreams, etc). Always fresh, never repeat the same questions.
-
-Return ONLY valid JSON — no markdown, no preamble. Format:
-[
-  {
-    "question": "Question text here?",
-    "options": ["Option A", "Option B", "Option C", "Option D"],
-    "correct": 0
-  }
-]
-
-Rules:
-- Options must be short (1-5 words max)
-- No emojis anywhere
-- Playful, relatable tone
-- correct is the index (0-3) of the right answer — pick any plausible answer
-- Vary the correct index (do not always use 0)`
-            })
-        });
-
-        const data = await res.json();
-        let questions = null;
-
-        // Parse the AI response
-        try {
-            const raw = data.result || data.text || data.content || '';
-            const cleaned = raw.replace(/```json|```/gi, '').trim();
-            questions = JSON.parse(cleaned);
-        } catch(e) {
-            console.error('Groq parse error:', e);
-            throw new Error('Could not parse AI response');
-        }
-
-        if (!Array.isArray(questions) || questions.length < 3) {
-            throw new Error('Insufficient questions returned');
-        }
-
-        _clearQuestions();
-
-        questions.slice(0, 3).forEach(s => {
-            addQuestion();
-            const qId = questionCount;
-
-            const qInput = document.getElementById(`q-text-${qId}`);
-            if (qInput) qInput.value = s.question;
-
-            s.options.slice(0, 4).forEach((opt, i) => {
-                const el = document.getElementById(`q${qId}-label${i}`);
-                if (el) el.value = opt;
-            });
-
-            selectTextOption(qId, s.correct ?? 0);
-        });
-
-        _postFill();
-
-    } catch(err) {
-        console.error('Groq suggestion error:', err);
-        // Graceful fallback: just show a hint toast
-        const bar = document.querySelector('.suggestion-hint');
-        if (bar) {
-            const orig = bar.textContent;
-            bar.textContent = 'Could not connect to AI. Check your API route.';
-            bar.style.color = 'var(--neon-pink)';
-            setTimeout(() => { bar.textContent = orig; bar.style.color = ''; }, 3000);
-        }
-    } finally {
-        btn.classList.remove('loading');
-        btn.innerHTML = '<span class="iconify" data-icon="ph:lightning-bold"></span> Suggest';
-        if (window.Iconify) window.Iconify.scan();
-    }
 }
 
 // ── Shared helpers ───────────────────────────────────────────
@@ -1407,13 +1247,10 @@ function _clearQuestions() {
 }
 
 function _postFill() {
-    // Fill name if empty
     const nameInput = document.getElementById('creatorName');
     if (nameInput && !nameInput.value.trim()) {
-        const pick = SUGGESTED_NAMES[Math.floor(Math.random() * SUGGESTED_NAMES.length)];
-        nameInput.value = pick;
+        nameInput.value = SUGGESTED_NAMES[Math.floor(Math.random() * SUGGESTED_NAMES.length)];
     }
-
     if (window.Iconify) window.Iconify.scan();
     document.getElementById('questionsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
     updateProgress();
@@ -1468,7 +1305,7 @@ async function generateQuiz() {
         // Push updated IDs to PIN sync
         if (window.PinSync && window.PinSync._db) window.PinSync.pushToFirestore();
         document.getElementById('savingOverlay').classList.remove('active');
-        const link = `${location.origin}/quiz.html?id=${generatedQuizId}`;
+        const link = `${location.origin}/quiz?id=${generatedQuizId}`;
         document.getElementById('quizLinkText').textContent = link;
         document.getElementById('errorMsg').style.display = 'none';
         document.getElementById('successPopup').classList.add('active');
