@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Create Quiz - RealorNah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e;--sidebar-bg:#0a0118}
+        html,body{height:100%;overflow-x:hidden}
+        body{font-family:'Righteous',cursive;background:var(--deep-bg);color:white;line-height:1.4}
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(131,56,236,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(131,56,236,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");pointer-events:none}
+        .app-container{position:relative;width:100%;height:100%;overflow:hidden}
+        /* Sidebar */
+        .sidebar{position:fixed;top:0;left:0;width:85%;max-width:320px;height:100%;background:var(--sidebar-bg);border-right:2px solid var(--electric-purple);z-index:200;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:1rem;box-shadow:5px 0 30px rgba(0,0,0,.5)}
+        .sidebar.open{transform:translateX(0)}
+        .sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid rgba(131,56,236,.3)}
+        .sidebar-logo{font-family:'Rubik Bubbles',cursive;font-size:1.3rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .close-sidebar{width:40px;height:40px;background:rgba(255,0,110,.2);border:2px solid var(--neon-pink);border-radius:50%;color:var(--neon-pink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s}
+        .close-sidebar:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
+        .sidebar-menu{flex:1;display:flex;flex-direction:column;gap:.5rem}
+        .menu-item{display:flex;align-items:center;gap:1rem;padding:1rem;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;transition:all .3s;font-size:1rem}
+        .menu-item:hover,.menu-item.active{background:rgba(131,56,236,.2);color:var(--cyan-blast)}
+        .sidebar-footer{padding-top:1rem;border-top:1px solid rgba(131,56,236,.3)}
+        .insta-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
+        .insta-link:hover{transform:scale(1.02);box-shadow:0 5px 20px rgba(253,29,29,.4)}
+        .sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
+        .sidebar-overlay.active{opacity:1;visibility:visible}
+        .main-content{width:100%;height:100%;overflow-y:auto;transition:transform .3s ease}
+        .main-content.shifted{transform:translateX(85%)}
+        /* Nav */
+        nav{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;position:sticky;top:0;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
+        .menu-btn{width:42px;height:42px;background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;flex-shrink:0}
+        .menu-btn:hover{background:var(--electric-purple);transform:scale(1.05)}
+        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
+        .nav-progress{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.7)}
+        .progress-bar{width:70px;height:5px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-pink),var(--hot-orange));width:0%;transition:width .5s ease;box-shadow:0 0 10px var(--neon-pink)}
+        /* Container */
+        .container{max-width:600px;margin:0 auto;padding:1rem .75rem 6rem}
+        .page-header{text-align:center;padding:1rem 0}
+        .page-title{font-family:'Bungee Shade',cursive;font-size:clamp(1.4rem,6vw,2rem);background:linear-gradient(135deg,var(--cyan-blast),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.25rem}
+        .page-subtitle{font-family:'Chewy',cursive;font-size:.9rem;color:rgba(255,255,255,.7)}
+        .creator-section{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:16px;padding:1.25rem;margin-bottom:1rem}
+        .section-label{display:inline-block;background:var(--electric-purple);color:white;padding:.25rem .75rem;border-radius:15px;font-size:.7rem;margin-bottom:.75rem;transform:rotate(-1deg)}
+        .input-group{margin-bottom:.5rem}
+        .input-label{display:block;margin-bottom:.4rem;color:var(--cyan-blast);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+        .text-input{width:100%;padding:.75rem 1rem;background:var(--input-bg);border:2px solid rgba(131,56,236,.3);border-radius:12px;color:white;font-family:'Righteous',cursive;font-size:.95rem;transition:all .3s;outline:none}
+        .text-input:focus{border-color:var(--neon-pink);box-shadow:0 0 15px rgba(255,0,110,.3)}
+        .text-input::placeholder{color:rgba(255,255,255,.4)}
+        .questions-container{display:flex;flex-direction:column;gap:1rem}
+        .question-card{background:var(--card-bg);border:2px solid transparent;border-radius:20px;padding:1.25rem;position:relative;animation:slideIn .4s ease;transition:opacity .3s,transform .3s}
+        @keyframes slideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        .question-card:nth-child(odd){border-color:var(--neon-pink)}
+        .question-card:nth-child(even){border-color:var(--cyan-blast)}
+        .question-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+        .question-number{font-family:'Rubik Bubbles',cursive;font-size:.9rem;color:var(--lemon-yellow);background:rgba(255,190,11,.1);padding:.4rem .8rem;border-radius:12px;border:1.5px solid var(--lemon-yellow)}
+        .question-type-toggle{display:flex;gap:.5rem;margin-bottom:.75rem}
+        .type-btn{flex:1;padding:.5rem;background:rgba(131,56,236,.2);border:2px solid transparent;border-radius:10px;color:rgba(255,255,255,.7);font-family:'Righteous',cursive;font-size:.75rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.3rem}
+        .type-btn.active{border-color:var(--neon-pink);background:rgba(255,0,110,.2);color:white}
+        .delete-btn{background:rgba(255,0,110,.2);border:1.5px solid var(--neon-pink);color:var(--neon-pink);width:32px;height:32px;border-radius:50%;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+        .delete-btn:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
+
+        /* ── TEXT OPTIONS ── */
+        .options-container{display:flex;flex-direction:column;gap:.6rem}
+
+        .option-text-only{
+            background:var(--input-bg);
+            border:2px solid rgba(255,255,255,.1);
+            border-radius:12px;
+            padding:.75rem 1rem;
+            display:flex;
+            align-items:center;
+            gap:.75rem;
+            cursor:pointer;
+            transition:all .25s;
+            position:relative;
+        }
+        .option-text-only:hover{border-color:var(--electric-purple);}
+        .option-text-only.selected-correct{
+            border-color:var(--cyan-blast);
+            box-shadow:0 0 15px rgba(6,255,165,.3);
+        }
+
+        .option-letter{
+            width:28px;height:28px;
+            background:rgba(131,56,236,.3);
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-family:'Rubik Bubbles',cursive;font-size:.8rem;
+            color:var(--cyan-blast);flex-shrink:0;
+        }
+
+        .option-input{
+            flex:1;
+            background:transparent;border:none;
+            border-bottom:2px solid rgba(255,255,255,.2);
+            color:white;font-family:'Righteous',cursive;
+            font-size:.9rem;padding:.25rem 0;outline:none;
+            min-width:0;
+        }
+        .option-input:focus{border-bottom-color:var(--neon-pink)}
+
+        /* Right-side tick circle */
+        .radio-hidden{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+
+        .correct-selector{
+            width:26px;height:26px;
+            border-radius:50%;
+            border:2px solid rgba(131,56,236,.5);
+            display:flex;align-items:center;justify-content:center;
+            flex-shrink:0;
+            cursor:pointer;
+            transition:all .25s;
+            background:transparent;
+            margin-left:auto; /* pushes to right for text options */
+            position:relative;
+        }
+        .correct-selector .tick-icon{
+            font-size:14px;
+            opacity:0;
+            transform:scale(0);
+            transition:all .2s;
+            color:var(--deep-bg);
+            font-weight:bold;
+            line-height:1;
+        }
+        .option-text-only.selected-correct .correct-selector{
+            background:var(--cyan-blast);
+            border-color:var(--cyan-blast);
+            box-shadow:0 0 10px rgba(6,255,165,.6);
+        }
+        .option-text-only.selected-correct .correct-selector .tick-icon{
+            opacity:1;transform:scale(1);
+        }
+
+        /* ── IMAGE/ICON OPTIONS ── */
+        .options-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:12px;
+        }
+        .option-grid{
+            background:var(--input-bg);
+            border:2px solid rgba(255,255,255,.1);
+            border-radius:14px;
+            padding:10px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:6px;
+            cursor:pointer;
+            transition:.25s;
+            position:relative;
+        }
+        .option-grid:hover{border-color:var(--electric-purple);transform:translateY(-3px);}
+        .option-grid.selected-correct{
+            border-color:var(--cyan-blast);
+            box-shadow:0 0 14px rgba(6,255,165,.45);
+        }
+
+        /* Top-right tick badge on image options */
+        .grid-tick{
+            position:absolute;
+            top:6px;right:6px;
+            width:22px;height:22px;
+            border-radius:50%;
+            border:2px solid rgba(131,56,236,.5);
+            background:transparent;
+            display:flex;align-items:center;justify-content:center;
+            transition:all .25s;
+            pointer-events:none;
+        }
+        .grid-tick .tick-icon{
+            font-size:12px;
+            opacity:0;transform:scale(0);
+            transition:all .2s;
+            color:var(--deep-bg);font-weight:bold;line-height:1;
+        }
+        .option-grid.selected-correct .grid-tick{
+            background:var(--cyan-blast);
+            border-color:var(--cyan-blast);
+            box-shadow:0 0 8px rgba(6,255,165,.6);
+        }
+        .option-grid.selected-correct .grid-tick .tick-icon{
+            opacity:1;transform:scale(1);
+        }
+
+        .image-picker{
+            width:60px;height:60px;
+            background:rgba(131,56,236,.2);
+            border:2px dashed var(--electric-purple);
+            border-radius:10px;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .3s;
+            font-size:1.6rem;
+        }
+        .image-picker:hover{background:rgba(131,56,236,.4);border-style:solid}
+        .image-picker.has-image{border-style:solid;border-color:var(--neon-pink);background:rgba(255,0,110,.1)}
+        .option-grid .option-input{width:100%;text-align:center;font-size:.8rem;border-bottom:1px solid rgba(255,255,255,.15);}
+
+        .add-question-btn{width:100%;padding:1rem;background:transparent;border:2.5px dashed var(--electric-purple);border-radius:16px;color:var(--electric-purple);font-family:'Rubik Bubbles',cursive;font-size:1rem;cursor:pointer;transition:all .3s;margin:1rem 0;display:flex;align-items:center;justify-content:center;gap:.5rem}
+        .add-question-btn:hover{background:rgba(131,56,236,.1);border-color:var(--neon-pink);color:var(--neon-pink)}
+        .generate-section{position:fixed;bottom:0;left:0;right:0;background:rgba(13,2,33,.98);padding:1rem;border-top:2px solid var(--hot-orange);box-shadow:0 -10px 30px rgba(0,0,0,.5);text-align:center;backdrop-filter:blur(10px);z-index:50}
+        .generate-btn{width:100%;max-width:400px;padding:1rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:16px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 8px 25px rgba(251,86,7,.4);display:flex;align-items:center;justify-content:center;gap:.5rem;margin:0 auto}
+        .generate-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 35px rgba(251,86,7,.6)}
+        .generate-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+        .question-count{font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.4rem}
+        /* Icon Modal */
+        .icon-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(5px);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
+        .icon-modal.active{opacity:1;visibility:visible}
+        .icon-modal-content{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:520px;height:80vh;overflow-y:auto;}
+        .icon-modal-title{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--lemon-yellow);margin-bottom:1rem;text-align:center}
+        .icons-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+padding-bottom:20px;
+align-items:stretch;
+}
+
+.icon-btn{
+background:#1a0b2e;
+border:2px solid rgba(131,56,236,.4);
+border-radius:16px;
+padding:14px 8px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:6px;
+cursor:pointer;
+transition:.25s;
+font-size:12px;
+color:white;
+aspect-ratio:1/1;
+}
+
+.icon-btn span:last-child{
+font-size:11px;
+text-align:center;
+line-height:1.1;
+}
+        .icon-btn:hover,.icon-btn.selected{border-color:var(--neon-pink);background:rgba(255,0,110,.1);transform:scale(1.05);}
+        .icon-btn .icon-preview{font-size:2rem}
+        /* Success Popup */
+        .success-popup{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(8px);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s;padding:1rem}
+        .success-popup.active{opacity:1;visibility:visible}
+        .success-content{background:var(--card-bg);border:2px solid var(--cyan-blast);border-radius:24px;padding:2rem 1.5rem;width:100%;max-width:400px;text-align:center;animation:popIn .4s ease}
+        @keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+        .success-icon{font-size:3rem;margin-bottom:1rem}
+        .success-title{font-family:'Bungee Shade',cursive;font-size:1.5rem;background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+        .success-subtitle{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:1.25rem}
+        .quiz-link-box{background:var(--input-bg);border:2px solid var(--electric-purple);border-radius:12px;padding:.875rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+        .quiz-link-text{flex:1;font-size:.8rem;color:var(--lemon-yellow);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:break-all}
+        .copy-btn{background:var(--electric-purple);border:none;border-radius:8px;padding:.4rem .6rem;cursor:pointer;color:white;font-size:.85rem;transition:all .3s;white-space:nowrap}
+        .copy-btn:hover{background:var(--neon-pink);transform:scale(1.05)}
+        .share-row{display:flex;gap:.75rem;margin-bottom:1rem;justify-content:center}
+        .share-btn{flex:1;max-width:140px;padding:.7rem .5rem;border:none;border-radius:12px;color:white;font-family:'Righteous',cursive;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:all .3s}
+        .share-btn.whatsapp{background:linear-gradient(135deg,#25D366,#128C7E)}
+        .share-btn.telegram{background:linear-gradient(135deg,#0088cc,#005fa3)}
+        .share-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+        .close-success-btn{background:transparent;border:2px solid rgba(255,255,255,.2);border-radius:12px;color:rgba(255,255,255,.6);padding:.6rem 1.5rem;cursor:pointer;font-family:'Righteous',cursive;font-size:.85rem;transition:all .3s}
+        .close-success-btn:hover{border-color:var(--neon-pink);color:var(--neon-pink)}
+        .saving-overlay{position:fixed;inset:0;background:rgba(13,2,33,.9);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;opacity:0;visibility:hidden;transition:all .3s}
+        .saving-overlay.active{opacity:1;visibility:visible}
+        .saving-spinner{width:50px;height:50px;border:4px solid rgba(131,56,236,.3);border-top:4px solid var(--neon-pink);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .saving-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
+        .error-msg{background:rgba(255,0,110,.1);border:1.5px solid var(--neon-pink);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:var(--neon-pink);margin-bottom:.75rem;display:none}
+        /* Timer toggle */
+        .timer-toggle-wrap{background:var(--card-bg);border:2px solid rgba(131,56,236,.3);border-radius:14px;padding:.65rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+        .timer-toggle-label{font-family:'Chewy',cursive;font-size:.82rem;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:.35rem;white-space:nowrap}
+        .timer-toggle-btn{display:flex;gap:.4rem}
+        .ttb{padding:.4rem .75rem;border-radius:10px;border:2px solid transparent;font-family:'Righteous',cursive;font-size:.75rem;cursor:pointer;transition:all .25s;background:rgba(131,56,236,.15);color:rgba(255,255,255,.6)}
+        .ttb.active{border-color:var(--cyan-blast);background:rgba(6,255,165,.15);color:var(--cyan-blast)}
+        .timer-sec-wrap{display:flex;align-items:center;gap:.5rem;opacity:0;pointer-events:none;transition:opacity .3s}
+        .timer-sec-wrap.show{opacity:1;pointer-events:all}
+        /* Custom timer dropdown */
+        .custom-select-wrap{position:relative}
+        .custom-select-btn{display:flex;align-items:center;gap:.4rem;background:var(--input-bg);border:2px solid rgba(131,56,236,.4);border-radius:10px;color:white;font-family:'Righteous',cursive;font-size:.82rem;padding:.3rem .7rem;cursor:pointer;transition:all .25s;user-select:none;white-space:nowrap}
+        .custom-select-btn:hover,.custom-select-btn.open{border-color:var(--neon-pink);background:rgba(255,0,110,.07)}
+        .custom-select-btn .cs-arrow{font-size:.6rem;opacity:.6;transition:transform .2s}
+        .custom-select-btn.open .cs-arrow{transform:rotate(180deg)}
+        .custom-select-menu{position:absolute;top:calc(100% + 5px);right:0;background:#1a0b2e;border:2px solid var(--electric-purple);border-radius:12px;overflow:hidden;z-index:200;min-width:110px;box-shadow:0 8px 24px rgba(0,0,0,.6);display:none}
+        .custom-select-menu.open{display:block;animation:dropIn .15s ease}
+        @keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+        .cs-option{padding:.5rem .875rem;font-family:'Righteous',cursive;font-size:.8rem;color:rgba(255,255,255,.75);cursor:pointer;transition:background .15s}
+        .cs-option:hover{background:rgba(131,56,236,.25);color:white}
+        .cs-option.selected{color:var(--cyan-blast);background:rgba(6,255,165,.08)}
+        /* QR code */
+        .qr-wrap{text-align:center;margin-bottom:.875rem}
+        .qr-label{font-family:'Chewy',cursive;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.4rem}
+        #qrCanvas{border-radius:12px;background:white;padding:8px;display:block;margin:0 auto}
+        .brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+margin-top: 5px;
+}
+
+.brand-logo{
+width:26px;
+height:26px;
+border-radius:6px;
+object-fit:cover;
+box-shadow:0 3px 8px rgba(0,0,0,.3);
+}
+.brand-link{
+display:flex;
+align-items:center;
+gap:.75rem;
+padding:.875rem;
+background:linear-gradient(135deg,#ff4d8d,#ff758f);
+border-radius:12px;
+color:white;
+text-decoration:none;
+font-size:.9rem;
+transition:all .3s;
+}
+
+.brand-link:hover{
+transform:scale(1.03);
+box-shadow:0 8px 25px rgba(255,77,141,.5);
+}
+.icon-category{
+grid-column:1/-1;
+display:flex;
+align-items:center;
+gap:8px;
+font-family:'Chewy',cursive;
+font-size:14px;
+color:var(--cyan-blast);
+margin:12px 0 4px;
+padding-left:4px;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.icon-category .iconify{
+font-size:18px;
+color:var(--lemon-yellow);
+}
+        /* ── Suggestion / Prefill button ── */
+        .suggestion-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.75rem}
+        .suggestion-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:rgba(255,190,11,.1);border:2px solid rgba(255,190,11,.4);border-radius:12px;color:var(--lemon-yellow);font-family:'Righteous',cursive;font-size:.78rem;cursor:pointer;transition:all .3s;white-space:nowrap;flex-shrink:0}
+        .suggestion-btn:hover{background:rgba(255,190,11,.2);border-color:var(--lemon-yellow);transform:translateY(-2px);box-shadow:0 5px 15px rgba(255,190,11,.25)}
+        .suggestion-btn .iconify{font-size:1rem}
+        .suggestion-hint{font-family:'Chewy',cursive;font-size:.75rem;color:rgba(255,255,255,.4);line-height:1.4}
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+
+<div class="app-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Menu</span>
+            <button class="close-sidebar" onclick="closeSidebar()">
+                <span class="iconify" data-icon="ph:x-bold"></span>
+            </button>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="index.html" class="menu-item">
+                <span class="iconify" data-icon="ph:house-bold"></span>
+                Home
+            </a>
+            <a href="create-quiz.html" class="menu-item active">
+                <span class="iconify" data-icon="ph:plus-circle-bold"></span>
+                Create New Quiz
+            </a>
+            <a href="my-quizzes.html" class="menu-item">
+                <span class="iconify" data-icon="ph:chart-bar-bold"></span>
+                My Quiz Stats
+            </a>
+            <a href="trending.html" class="menu-item">
+                <span class="iconify" data-icon="ph:trend-up-bold"></span> Trending
+            </a>
+            <a href="how-to-use.html" class="menu-item">
+                <span class="iconify" data-icon="ph:question-bold"></span>
+                How to Use
+            </a>
+            <a href="about-us.html" class="menu-item">
+                <span class="iconify" data-icon="ph:info-bold"></span>
+                About Us
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="https://instagram.com/preetsaw_07" target="_blank" class="insta-link">
+                <span class="iconify" data-icon="ph:instagram-logo-bold"></span>Visit Our Instagram
+            </a>
+<a href="https://doyouknowme.vercel.com" target="_blank" class="insta-link brand-link">
+<img src="/assets/DYKMlogo.png" class="brand-logo">
+<span>Visit DoYouKnowMe</span>
+</a>
+        </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <main class="main-content" id="mainContent">
+        <nav>
+            <button class="menu-btn" onclick="openSidebar()">
+                <span class="iconify" data-icon="ph:list-bold"></span>
+            </button>
+            <span class="nav-logo">RealorNah</span>
+            <button class="pin-nav-btn" id="pinNavBtn" onclick="PinSync.open()" title="Quiz Sync PIN">
+                <span class="iconify" data-icon="ph:key-bold"></span>
+                <div class="pin-active-dot"></div>
+            </button>
+            <div class="nav-progress">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <span id="progressText">0%</span>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Create Your Quiz</h1>
+                <p class="page-subtitle">Set your answers — let friends guess!</p>
+            </div>
+
+            <div class="creator-section">
+                <span class="section-label">YOUR INFO</span>
+                <div class="input-group">
+                    <label class="input-label">Your Name *</label>
+                    <input type="text" class="text-input" id="creatorName" placeholder="e.g. Aman, Priya..." maxlength="30" autocomplete="off">
+                </div>
+                <div class="input-group" style="margin-top:.5rem">
+                    <label class="input-label" style="display:flex;align-items:center;gap:.4rem">
+                        <span class="iconify" data-icon="ph:bell-bold" style="color:var(--lemon-yellow)"></span>
+                        Your Email <span style="color:rgba(255,255,255,.35);font-size:.65rem;text-transform:none;letter-spacing:0">(optional)</span>
+                    </label>
+                    <input type="email" class="text-input" id="creatorEmail" placeholder="Get notified when friends play..." autocomplete="off">
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:.5rem;margin-top:.6rem;background:rgba(255,190,11,.07);border:1.5px solid rgba(255,190,11,.25);border-radius:10px;padding:.6rem .75rem">
+                    <span class="iconify" data-icon="ph:info-bold" style="color:var(--lemon-yellow);flex-shrink:0;margin-top:1px;font-size:1rem"></span>
+                    <p style="font-family:'Chewy',cursive;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.5;margin:0">
+                        Fill your email to receive a notification when your quiz gets played. We'll ping you every 7 plays — no spam, ever.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timer-toggle-wrap">
+                <div class="timer-toggle-label">
+                    <span class="iconify" data-icon="ph:timer-bold" style="color:var(--cyan-blast)"></span>
+                    Per-question timer
+                </div>
+                <div style="display:flex;align-items:center;gap:.75rem">
+                    <div class="timer-sec-wrap" id="timerSecWrap">
+                        <div class="custom-select-wrap">
+                            <div class="custom-select-btn" id="csBtn" onclick="toggleCsMenu()">
+                                <span class="iconify" data-icon="ph:clock-bold" style="font-size:.9rem;color:var(--cyan-blast)"></span>
+                                <span id="csLabel">20s</span>
+                                <span class="cs-arrow">▼</span>
+                            </div>
+                            <div class="custom-select-menu" id="csMenu">
+                                <div class="cs-option" onclick="selectSecs(10)">10s</div>
+                                <div class="cs-option" onclick="selectSecs(15)">15s</div>
+                                <div class="cs-option selected" onclick="selectSecs(20)">20s</div>
+                                <div class="cs-option" onclick="selectSecs(30)">30s</div>
+                                <div class="cs-option" onclick="selectSecs(45)">45s</div>
+                                <div class="cs-option" onclick="selectSecs(60)">60s</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timer-toggle-btn">
+                        <button class="ttb active" id="ttbOff" onclick="setTimer(false)">
+                            <span class="iconify" data-icon="ph:minus-circle-bold"></span>
+                        </button>
+                        <button class="ttb" id="ttbOn" onclick="setTimer(true)">
+                            <span class="iconify" data-icon="ph:check-circle-bold"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggestion bar -->
+            <div class="suggestion-bar">
+                <p class="suggestion-hint">Need inspiration? Auto-fill 3 starter questions and customise from there.</p>
+                <button class="suggestion-btn" onclick="fillSuggestions()">
+                    <span class="iconify" data-icon="ph:magic-wand-bold"></span>
+                    Suggest
+                </button>
+            </div>
+
+            <div class="questions-container" id="questionsContainer"></div>
+
+            <button class="add-question-btn" id="addQuestionBtn" onclick="addQuestion()">
+                <span class="iconify" data-icon="ph:plus-bold"></span>
+                Add Question
+            </button>
+<br>
+            <div class="generate-section">
+                <button class="generate-btn" id="generateBtn" onclick="generateQuiz()" disabled>
+                    <span class="iconify" data-icon="ph:rocket-launch-bold"></span>
+                    Generate My Quiz Link
+                </button>
+                <div class="question-count" id="questionCount">Enter your name first</div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Icon Picker Modal -->
+<div class="icon-modal" id="iconModal">
+    <div class="icon-modal-content">
+        <div class="icon-modal-title">Choose an Icon</div>
+        <div class="icons-grid" id="iconsGrid"></div>
+    </div>
+</div>
+
+<!-- Saving Overlay -->
+<div class="saving-overlay" id="savingOverlay">
+    <div class="saving-spinner"></div>
+    <div class="saving-text">Saving your quiz...</div>
+</div>
+
+<!-- Success Popup -->
+<div class="success-popup" id="successPopup">
+    <div class="success-content">
+        <div class="success-icon"><span class="iconify" data-icon="ph:confetti-bold" style="color:var(--cyan-blast)"></span></div>
+        <div class="success-title">Quiz Created!</div>
+        <div class="success-subtitle">Share the link with your friends</div>
+        <div class="error-msg" id="errorMsg"></div>
+        <!-- QR Code -->
+        <div class="qr-wrap">
+            <div class="qr-label"><span class="iconify" data-icon="ph:qr-code-bold"></span> Scan to play</div>
+            <canvas id="qrCanvas" width="140" height="140"></canvas>
+        </div>
+        <div class="quiz-link-box">
+            <span class="quiz-link-text" id="quizLinkText"></span>
+            <button class="copy-btn" onclick="copyLink()">
+                <span class="iconify" data-icon="ph:copy-bold"></span>
+            </button>
+        </div>
+        <div class="share-row">
+            <button class="share-btn whatsapp" onclick="shareWhatsApp()">
+                <span class="iconify" data-icon="ph:whatsapp-logo-bold"></span> WhatsApp
+            </button>
+            <button class="share-btn telegram" onclick="shareTelegram()">
+                <span class="iconify" data-icon="ph:telegram-logo-bold"></span> Telegram
+            </button>
+        </div>
+        <button class="share-btn" style="width:100%;margin-bottom:.75rem;background:linear-gradient(135deg,var(--electric-purple),#5b21b6);max-width:none" onclick="previewQuiz()">
+            <span class="iconify" data-icon="ph:eye-bold"></span> Preview Quiz
+        </button>
+        <button class="close-success-btn" onclick="closeSuccess()">Create Another Quiz</button>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAVmDJy2Iowj6BVK3HF8sb2FPuew2wBny8",
+    authDomain: "realornah-app.firebaseapp.com",
+    projectId: "realornah-app",
+    storageBucket: "realornah-app.firebasestorage.app",
+    messagingSenderId: "313279191530",
+    appId: "1:313279191530:web:639185b8807f68e24cba93"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+window.saveQuizToFirestore = async function(quizData) {
+    const ref = doc(collection(db, "quizzes"), quizData.quizId);
+    await setDoc(ref, quizData);
+};
+// Expose db for PIN sync
+window._pinSyncDb = db;
+</script>
+
+<!-- PIN Sync Module -->
+<script src="pin-sync.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var waitForDb = setInterval(function() {
+        if (window._pinSyncDb) {
+            clearInterval(waitForDb);
+            PinSync.init(window._pinSyncDb, 'pins', 'myQuizIds');
+        }
+    }, 100);
+});
+</script>
+
+<script>
+const ICONS = [
+
+/* Food */
+{icon:"twemoji:pizza",label:"Pizza"},
+{icon:"twemoji:hamburger",label:"Burger"},
+{icon:"twemoji:hot-dog",label:"Hot Dog"},
+{icon:"twemoji:taco",label:"Taco"},
+{icon:"twemoji:burrito",label:"Burrito"},
+{icon:"twemoji:sushi",label:"Sushi"},
+{icon:"twemoji:spaghetti",label:"Pasta"},
+{icon:"twemoji:fried-shrimp",label:"Shrimp"},
+{icon:"twemoji:ice-cream",label:"Ice Cream"},
+{icon:"twemoji:shortcake",label:"Cake"},
+{icon:"twemoji:chocolate-bar",label:"Chocolate"},
+{icon:"twemoji:doughnut",label:"Donut"},
+{icon:"twemoji:candy",label:"Candy"},
+{icon:"twemoji:cookie",label:"Cookie"},
+{icon:"twemoji:red-apple",label:"Apple"},
+{icon:"twemoji:banana",label:"Banana"},
+{icon:"twemoji:watermelon",label:"Watermelon"},
+{icon:"twemoji:strawberry",label:"Strawberry"},
+
+/* Drinks */
+{icon:"twemoji:hot-beverage",label:"Coffee"},
+{icon:"twemoji:teacup-without-handle",label:"Tea"},
+{icon:"twemoji:bubble-tea",label:"Bubble Tea"},
+{icon:"twemoji:tropical-drink",label:"Cocktail"},
+{icon:"twemoji:beer-mug",label:"Beer"},
+{icon:"twemoji:clinking-beer-mugs",label:"Cheers"},
+
+/* Sports */
+{icon:"twemoji:soccer-ball",label:"Soccer"},
+{icon:"twemoji:basketball",label:"Basketball"},
+{icon:"twemoji:american-football",label:"Football"},
+{icon:"twemoji:tennis",label:"Tennis"},
+{icon:"twemoji:ping-pong",label:"Ping Pong"},
+{icon:"twemoji:bowling",label:"Bowling"},
+{icon:"twemoji:swimmer",label:"Swimming"},
+{icon:"twemoji:person-biking",label:"Cycling"},
+
+/* Entertainment */
+{icon:"twemoji:guitar",label:"Guitar"},
+{icon:"twemoji:musical-notes",label:"Music"},
+{icon:"twemoji:studio-microphone",label:"Microphone"},
+{icon:"twemoji:headphone",label:"Headphones"},
+{icon:"twemoji:clapper-board",label:"Movies"},
+{icon:"twemoji:television",label:"TV"},
+{icon:"twemoji:video-game",label:"Gaming"},
+{icon:"twemoji:artist-palette",label:"Art"},
+{icon:"twemoji:books",label:"Books"},
+{icon:"twemoji:camera",label:"Camera"},
+
+/* Places */
+{icon:"twemoji:beach-with-umbrella",label:"Beach"},
+{icon:"twemoji:mountain",label:"Mountain"},
+{icon:"twemoji:camping",label:"Camping"},
+{icon:"twemoji:cityscape",label:"City"},
+{icon:"twemoji:house",label:"Home"},
+{icon:"twemoji:school",label:"School"},
+{icon:"twemoji:office-building",label:"Office"},
+{icon:"twemoji:airplane",label:"Travel"},
+{icon:"twemoji:rocket",label:"Rocket"},
+
+/* Animals */
+{icon:"twemoji:dog",label:"Dog"},
+{icon:"twemoji:cat",label:"Cat"},
+{icon:"twemoji:rabbit",label:"Rabbit"},
+{icon:"twemoji:panda",label:"Panda"},
+{icon:"twemoji:lion",label:"Lion"},
+{icon:"twemoji:tiger",label:"Tiger"},
+{icon:"twemoji:monkey",label:"Monkey"},
+
+/* Emotions / Fun */
+{icon:"twemoji:red-heart",label:"Love"},
+{icon:"twemoji:two-hearts",label:"Couple"},
+{icon:"twemoji:sparkles",label:"Sparkles"},
+{icon:"twemoji:fire",label:"Fire"},
+{icon:"twemoji:rainbow",label:"Rainbow"},
+{icon:"twemoji:star",label:"Star"},
+{icon:"twemoji:crown",label:"Crown"},
+{icon:"twemoji:trophy",label:"Trophy"},
+{icon:"twemoji:party-popper",label:"Party"}
+
+];
+
+let questionCount = 0;
+let selectedIcons = {};
+let currentIconTarget = null;
+let generatedQuizId = null;
+
+// ── Sidebar ───────────────────────────────────────────────────
+function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); document.getElementById('mainContent').classList.add('shifted'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); document.getElementById('mainContent').classList.remove('shifted'); }
+
+let tStartX = 0;
+document.addEventListener('touchstart', e => { tStartX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].screenX - tStartX;
+    const open = document.getElementById('sidebar').classList.contains('open');
+    if (!open && dx > 50 && tStartX < 50) openSidebar();
+    if (open  && dx < -50) closeSidebar();
+});
+
+// ── Build icon grid ───────────────────────────────────────────
+const grid = document.getElementById('iconsGrid');
+
+const ICON_CATEGORIES = [
+{
+title:"Food",
+icon:"ph:hamburger-bold",
+items:ICONS.slice(0,18)
+},
+{
+title:"Drinks",
+icon:"ph:coffee-bold",
+items:ICONS.slice(18,24)
+},
+{
+title:"Sports",
+icon:"ph:soccer-ball-bold",
+items:ICONS.slice(24,32)
+},
+{
+title:"Entertainment",
+icon:"ph:music-notes-bold",
+items:ICONS.slice(32,42)
+},
+{
+title:"Places",
+icon:"ph:airplane-takeoff-bold",
+items:ICONS.slice(42,51)
+},
+{
+title:"Animals",
+icon:"ph:cat-bold",
+items:ICONS.slice(51,58)
+},
+{
+title:"Fun",
+icon:"ph:sparkle-bold",
+items:ICONS.slice(58)
+}
+];
+
+ICON_CATEGORIES.forEach(cat=>{
+
+const header=document.createElement("div");
+header.className="icon-category";
+header.innerHTML=`
+<span class="iconify" data-icon="${cat.icon}"></span>
+<span>${cat.title}</span>
+`;
+
+grid.appendChild(header);
+
+cat.items.forEach(item=>{
+const btn=document.createElement("button");
+btn.className="icon-btn";
+
+btn.innerHTML=`
+<span class="icon-preview iconify" data-icon="${item.icon}"></span>
+<span>${item.label}</span>
+`;
+
+btn.onclick=()=>selectIcon(item.icon,btn);
+
+grid.appendChild(btn);
+});
+
+});
+
+// ── Render TEXT options ───────────────────────────────────────
+function renderTextOptions(qId) {
+    const letters = ['A','B','C','D'];
+    return letters.map((l, i) => `
+        <div class="option-text-only" id="opt-wrap-${qId}-${i}" onclick="selectTextOption(${qId}, ${i})">
+            <div class="option-letter">${l}</div>
+            <input
+                type="text"
+                class="option-input"
+                id="q${qId}-label${i}"
+                placeholder="Option ${l}..."
+                maxlength="40"
+                oninput="checkGenerateButton()"
+                onclick="event.stopPropagation()">
+            <div class="correct-selector" id="sel-${qId}-${i}">
+                <span class="tick-icon">✓</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ── Render IMAGE options ──────────────────────────────────────
+function renderImageOptions(qId) {
+    return `
+    <div class="options-grid">
+        ${[0,1,2,3].map(i => `
+        <div class="option-grid" id="opt-wrap-${qId}-${i}" onclick="selectImageOption(${qId}, ${i})">
+            <div class="grid-tick" id="sel-${qId}-${i}">
+                <span class="tick-icon">✓</span>
+            </div>
+            <div class="image-picker" id="img-${qId}-${i}" onclick="openIconPicker(${qId},${i},event)">
+                <span class="iconify" data-icon="ph:image-bold"></span>
+            </div>
+            <input
+                type="text"
+                class="option-input"
+                id="q${qId}-label${i}"
+                placeholder="(optional)"
+                maxlength="30"
+                oninput="checkGenerateButton()"
+                onclick="event.stopPropagation()">
+        </div>
+        `).join('')}
+    </div>`;
+}
+
+// ── Selection handlers ────────────────────────────────────────
+// Track correct answer per question
+const correctAnswers = {}; // { qId: selectedIndex }
+
+function selectTextOption(qId, idx) {
+    correctAnswers[qId] = idx;
+    for (let i = 0; i < 4; i++) {
+        const wrap = document.getElementById(`opt-wrap-${qId}-${i}`);
+        if (wrap) wrap.classList.toggle('selected-correct', i === idx);
+    }
+    checkGenerateButton();
+}
+
+function selectImageOption(qId, idx) {
+    correctAnswers[qId] = idx;
+    for (let i = 0; i < 4; i++) {
+        const wrap = document.getElementById(`opt-wrap-${qId}-${i}`);
+        if (wrap) wrap.classList.toggle('selected-correct', i === idx);
+    }
+    checkGenerateButton();
+}
+
+// ── Question builder ──────────────────────────────────────────
+function addQuestion() {
+    if (questionCount >= 10) return;
+    questionCount++;
+    const id = questionCount;
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `question-${id}`;
+    card.innerHTML = `
+        <div class="question-header">
+            <span class="question-number">Question ${id}</span>
+            <button class="delete-btn" onclick="deleteQuestion(${id})">
+                <span class="iconify" data-icon="ph:trash-bold"></span>
+            </button>
+        </div>
+        <div class="question-type-toggle">
+            <button class="type-btn active" id="type-text-${id}" onclick="switchType(${id},'text')">
+                <span class="iconify" data-icon="ph:text-aa-bold"></span> Text Only
+            </button>
+            <button class="type-btn" id="type-image-${id}" onclick="switchType(${id},'image')">
+                <span class="iconify" data-icon="ph:image-bold"></span> With Icons
+            </button>
+        </div>
+        <div class="input-group">
+            <input type="text" class="text-input" id="q-text-${id}" placeholder="e.g. What is my favourite food?" maxlength="100"
+                oninput="checkGenerateButton()">
+        </div>
+        <div class="options-container" id="options-${id}">
+            ${renderTextOptions(id)}
+        </div>`;
+    document.getElementById('questionsContainer').appendChild(card);
+
+    if (document.querySelectorAll('.question-card').length >= 10) {
+        document.getElementById('addQuestionBtn').style.display = 'none';
+    }
+    updateProgress();
+    checkGenerateButton();
+    if (window.Iconify) window.Iconify.scan();
+}
+
+function switchType(qId, type) {
+    document.getElementById(`type-text-${qId}`).classList.toggle('active', type === 'text');
+    document.getElementById(`type-image-${qId}`).classList.toggle('active', type === 'image');
+    // Clear stored answer when switching type
+    delete correctAnswers[qId];
+    document.getElementById(`options-${qId}`).innerHTML =
+        type === 'text' ? renderTextOptions(qId) : renderImageOptions(qId);
+    if (window.Iconify) window.Iconify.scan();
+    checkGenerateButton();
+}
+
+function deleteQuestion(id) {
+    const card = document.getElementById(`question-${id}`);
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(-100%)';
+    delete correctAnswers[id];
+    setTimeout(() => {
+        card.remove();
+        renumberQuestions();
+        updateProgress();
+        checkGenerateButton();
+        if (questionCount < 10) document.getElementById('addQuestionBtn').style.display = 'flex';
+    }, 300);
+}
+
+function renumberQuestions() {
+    // Full rebuild of IDs after deletion
+    const cards = document.querySelectorAll('.question-card');
+    const newAnswers = {};
+    cards.forEach((card, idx) => {
+        const newNum = idx + 1;
+        const oldNum = parseInt(card.id.split('-')[1]);
+        if (correctAnswers[oldNum] !== undefined) newAnswers[newNum] = correctAnswers[oldNum];
+        card.id = `question-${newNum}`;
+        card.querySelector('.question-number').textContent = `Question ${newNum}`;
+        card.querySelectorAll('[id]').forEach(el => {
+            el.id = el.id.replace(new RegExp(`(^|\\D)${oldNum}(\\D|$)`,'g'), `$1${newNum}$2`);
+        });
+        card.querySelectorAll('[onclick]').forEach(el => {
+            el.setAttribute('onclick', el.getAttribute('onclick').replace(new RegExp(`\\b${oldNum}\\b`,'g'), newNum));
+        });
+        card.querySelectorAll('[name]').forEach(el => {
+            el.name = el.name.replace(new RegExp(`\\b${oldNum}\\b`,'g'), newNum);
+        });
+    });
+    Object.keys(correctAnswers).forEach(k => delete correctAnswers[k]);
+    Object.assign(correctAnswers, newAnswers);
+    questionCount = cards.length;
+}
+
+// ── Icon picker ───────────────────────────────────────────────
+function openIconPicker(qNum, optNum, event) {
+    event.stopPropagation();
+    currentIconTarget = { question: qNum, option: optNum };
+    document.getElementById('iconModal').classList.add('active');
+}
+function closeIconPicker() {
+    document.getElementById('iconModal').classList.remove('active');
+    currentIconTarget = null;
+}
+function selectIcon(icon, btn) {
+    if (!currentIconTarget) return;
+    const { question, option } = currentIconTarget;
+    const picker = document.getElementById(`img-${question}-${option}`);
+    picker.innerHTML = `<span class="iconify" data-icon="${icon}" style="font-size:2rem"></span>`;
+    picker.classList.add('has-image');
+    selectedIcons[`${question}-${option}`] = icon;
+    document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    if (window.Iconify) window.Iconify.scan();
+    setTimeout(closeIconPicker, 200);
+}
+
+// ── Progress & validation ─────────────────────────────────────
+function updateProgress() {
+    const name = document.getElementById('creatorName').value;
+    const questions = document.querySelectorAll('.question-card').length;
+    let p = 0;
+    if (name) p += 20;
+    p += Math.min((questions / 5) * 80, 80);
+    document.getElementById('progressFill').style.width = p + '%';
+    document.getElementById('progressText').textContent = Math.round(p) + '%';
+}
+
+function checkGenerateButton() {
+    const name = document.getElementById('creatorName').value.trim();
+    let valid = 0;
+    let firstBlockReason = '';
+
+    document.querySelectorAll('.question-card').forEach(card => {
+        const qNum = parseInt(card.id.split('-')[1]);
+        const qText = card.querySelector(`#q-text-${qNum}`)?.value.trim();
+        const hasCorrect = correctAnswers[qNum] !== undefined;
+        const isImage = document.getElementById(`type-image-${qNum}`)?.classList.contains('active');
+        let filledOpts = 0;
+        for (let i = 0; i < 4; i++) {
+            const inp = document.getElementById(`q${qNum}-label${i}`);
+            const icon = selectedIcons[`${qNum}-${i}`];
+            if (isImage) { if (icon || (inp && inp.value.trim())) filledOpts++; }
+            else { if (inp && inp.value.trim()) filledOpts++; }
+        }
+        const qValid = qText && filledOpts >= 2 && hasCorrect;
+        if (qValid) {
+            valid++;
+        } else if (!firstBlockReason) {
+            if (!name) {
+                firstBlockReason = 'Enter your name first';
+            } else if (!qText) {
+                firstBlockReason = `Question ${qNum}: Add a question text`;
+            } else if (filledOpts < 2) {
+                firstBlockReason = `Question ${qNum}: Add at least 2 options`;
+            } else if (!hasCorrect) {
+                firstBlockReason = `Question ${qNum}: Select the correct answer`;
+            }
+        }
+    });
+
+    const can = name && valid >= 3;
+    document.getElementById('generateBtn').disabled = !can;
+    const ct = document.getElementById('questionCount');
+
+    if (can) {
+        ct.textContent = `Ready! (${valid} question${valid !== 1 ? 's' : ''})`;
+        ct.style.color = 'var(--cyan-blast)';
+    } else {
+        if (!name) {
+            ct.textContent = 'Enter your name first';
+        } else if (valid >= 3) {
+            ct.textContent = `Ready! (${valid} questions)`;
+        } else {
+            const need = Math.max(0, 3 - valid);
+            if (firstBlockReason) {
+                ct.textContent = firstBlockReason;
+            } else {
+                ct.textContent = `${need} more valid question${need !== 1 ? 's' : ''} needed`;
+            }
+        }
+        ct.style.color = 'rgba(255,255,255,.6)';
+    }
+}
+
+// ── Timer toggle ──────────────────────────────────────────────
+let timerEnabled = false;
+let selectedTimerSecs = 20;
+
+function setTimer(on) {
+    timerEnabled = on;
+    document.getElementById('ttbOff').classList.toggle('active', !on);
+    document.getElementById('ttbOn').classList.toggle('active', on);
+    document.getElementById('timerSecWrap').classList.toggle('show', on);
+    if (!on) closeCsMenu();
+    if (window.Iconify) window.Iconify.scan();
+}
+
+function toggleCsMenu() {
+    const btn  = document.getElementById('csBtn');
+    const menu = document.getElementById('csMenu');
+    const isOpen = menu.classList.contains('open');
+    btn.classList.toggle('open', !isOpen);
+    menu.classList.toggle('open', !isOpen);
+}
+
+function closeCsMenu() {
+    document.getElementById('csBtn')?.classList.remove('open');
+    document.getElementById('csMenu')?.classList.remove('open');
+}
+
+function selectSecs(val) {
+    selectedTimerSecs = val;
+    document.getElementById('csLabel').textContent = val + 's';
+    document.querySelectorAll('.cs-option').forEach(el => {
+        el.classList.toggle('selected', parseInt(el.textContent) === val);
+    });
+    closeCsMenu();
+}
+
+document.addEventListener('click', e => {
+    if (!e.target.closest('.custom-select-wrap')) closeCsMenu();
+});
+
+// ── QR Code — draw directly onto the canvas element ──────────
+function drawQR(canvas, text) {
+    // Clear any previous QR first
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    // Remove any old qrcodejs-injected img sibling
+    const old = canvas.parentElement.querySelector('img[alt="Scan me!"], img[alt=""]');
+    if (old) old.remove();
+    try {
+        // qrcodejs can receive a DOM element — it will inject a <canvas> inside it.
+        // But we already have our canvas, so we wrap it in a visible temp div,
+        // let qrcodejs generate into that, then copy to our canvas.
+        const tmp = document.createElement('div');
+        tmp.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:140px;height:140px';
+        document.body.appendChild(tmp);
+        new QRCode(tmp, {
+            text,
+            width: 140,
+            height: 140,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+        // qrcodejs renders synchronously into a <canvas> inside tmp
+        function copyAndClean() {
+            const src = tmp.querySelector('canvas') || tmp.querySelector('img');
+            if (!src) { setTimeout(copyAndClean, 50); return; }
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 140, 140);
+            if (src.tagName === 'CANVAS') {
+                ctx.drawImage(src, 0, 0, 140, 140);
+            } else {
+                // img fallback — wait for load
+                if (!src.complete) { src.onload = () => { ctx.drawImage(src, 0, 0, 140, 140); document.body.removeChild(tmp); }; return; }
+                ctx.drawImage(src, 0, 0, 140, 140);
+            }
+            document.body.removeChild(tmp);
+        }
+        setTimeout(copyAndClean, 80);
+    } catch(e) {
+        console.error('QR generation failed:', e);
+    }
+}
+
+// ── Preview quiz ──────────────────────────────────────────────
+function previewQuiz() {
+    if (!generatedQuizId) return;
+    const url = `${location.origin}/quiz.html?id=${generatedQuizId}&preview=1`;
+    window.open(url, '_blank');
+}
+
+
+// ── Prefill suggestions ─────────────────────────────────────
+const SUGGESTION_BANK = [
+
+{
+question:"What is my go-to comfort food?",
+options:["Pizza 🍕","Biryani 🍛","Maggi 🍜","Ice Cream 🍦"],
+correct:0
+},
+
+{
+question:"How do I usually spend my Sunday?",
+options:["Sleeping 😴","Watching series 📺","Hanging with friends 🧑‍🤝‍🧑","Gaming 🎮"],
+correct:1
+},
+
+{
+question:"What annoys me the most?",
+options:["Slow internet 🐢","People being late ⏰","Loud chewing 🤢","Unnecessary drama 🎭"],
+correct:0
+},
+
+{
+question:"What type of music do I enjoy the most?",
+options:["Bollywood 🎶","English pop 🎧","Rap 🔥","Lo-fi chill 🎵"],
+correct:3
+},
+
+{
+question:"What would I most likely spend ₹500 on?",
+options:["Food 🍔","Clothes 👕","Games 🎮","Saving money 💰"],
+correct:0
+},
+
+{
+question:"Which social media app do I use the most?",
+options:["Instagram 📸","WhatsApp 💬","YouTube ▶","Snapchat 👻"],
+correct:0
+},
+
+{
+question:"What is my dream travel destination?",
+options:["Paris 🗼","Maldives 🏝","Japan 🗾","Dubai 🏙"],
+correct:2
+},
+
+{
+question:"What is my biggest fear?",
+options:["Heights 🏔","Darkness 🌑","Snakes 🐍","Public speaking 🎤"],
+correct:1
+},
+
+{
+question:"Which season do I like the most?",
+options:["Summer ☀","Winter ❄","Rainy 🌧","Spring 🌸"],
+correct:1
+},
+
+{
+question:"What is my favorite movie genre?",
+options:["Comedy 😂","Horror 👻","Action 💥","Romance ❤️"],
+correct:0
+},
+
+{
+question:"What would I do if I had a free day?",
+options:["Sleep all day 🛏","Watch movies 🎬","Go outside 🌳","Play games 🎮"],
+correct:2
+},
+
+{
+question:"Which describes my personality best?",
+options:["Funny 😆","Calm 😌","Adventurous 🌍","Serious 🤓"],
+correct:0
+}
+
+];
+
+function fillSuggestions() {
+    // Pick 3 random unique suggestions from the bank
+    const pool = [...SUGGESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 5);
+
+    // Clear existing questions first (keep questionCount in sync)
+    document.getElementById('questionsContainer').innerHTML = '';
+    Object.keys(correctAnswers).forEach(k => delete correctAnswers[k]);
+    Object.keys(selectedIcons).forEach(k => delete selectedIcons[k]);
+    questionCount = 0;
+
+    pool.forEach(s => {
+        addQuestion(); // increments questionCount, creates card with id = questionCount
+        const qId = questionCount;
+
+        // Fill question text
+        const qInput = document.getElementById(`q-text-${qId}`);
+        if (qInput) qInput.value = s.question;
+
+        // Fill option labels
+        s.options.forEach((opt, i) => {
+            const el = document.getElementById(`q${qId}-label${i}`);
+            if (el) el.value = opt;
+        });
+
+        // Set correct answer (simulate click on the correct option row)
+        selectTextOption(qId, s.correct);
+    });
+
+    // Scroll to first question
+    document.getElementById('questionsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    updateProgress();
+    checkGenerateButton();
+}
+
+async function generateQuiz() {
+    const name = document.getElementById('creatorName').value.trim();
+    generatedQuizId = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    const timerSecs = timerEnabled ? selectedTimerSecs : 0;
+    const creatorEmail = (document.getElementById('creatorEmail').value || '').trim();
+
+    const quizData = {
+        creator: name,
+        quizId: generatedQuizId,
+        createdAt: new Date().toISOString(),
+        plays: 0,
+        timerSecs,
+        creatorEmail, // stored so notify.js can email them — empty string if not filled
+        questions: []
+    };
+
+    document.querySelectorAll('.question-card').forEach((card, idx) => {
+        const qNum   = idx + 1;
+        const qText  = card.querySelector(`#q-text-${qNum}`)?.value.trim();
+        const isImage = document.getElementById(`type-image-${qNum}`)?.classList.contains('active');
+        const options = [];
+
+        for (let i = 0; i < 4; i++) {
+            const labelEl = document.getElementById(`q${qNum}-label${i}`);
+            const label = labelEl ? labelEl.value.trim() : "";
+            const opt = {};
+            if (label) opt.text = label;
+            if (isImage) opt.icon = selectedIcons[`${qNum}-${i}`] || 'ph:question';
+            options.push(opt);
+        }
+
+        const correct = correctAnswers[qNum] ?? 0;
+
+        if (qText && options.length >= 2) {
+            quizData.questions.push({ question: qText, type: isImage ? 'image' : 'text', options, correct });
+        }
+    });
+
+    document.getElementById('savingOverlay').classList.add('active');
+    try {
+        await window.saveQuizToFirestore(quizData);
+        const myIds = JSON.parse(localStorage.getItem('myQuizIds') || '[]');
+        if (!myIds.includes(generatedQuizId)) myIds.push(generatedQuizId);
+        localStorage.setItem('myQuizIds', JSON.stringify(myIds));
+        // Push updated IDs to PIN sync
+        if (window.PinSync && window.PinSync._db) window.PinSync.pushToFirestore();
+        document.getElementById('savingOverlay').classList.remove('active');
+        const link = `${location.origin}/quiz.html?id=${generatedQuizId}`;
+        document.getElementById('quizLinkText').textContent = link;
+        document.getElementById('errorMsg').style.display = 'none';
+        document.getElementById('successPopup').classList.add('active');
+        // Draw QR code after popup is visible
+        setTimeout(() => drawQR(document.getElementById('qrCanvas'), link), 300);
+        if (window.Iconify) window.Iconify.scan();
+    } catch(e) {
+        document.getElementById('savingOverlay').classList.remove('active');
+        document.getElementById('errorMsg').textContent = '⚠️ Could not save quiz. Check Firebase config.';
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('successPopup').classList.add('active');
+        console.error('Firestore error:', e);
+    }
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(document.getElementById('quizLinkText').textContent).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.innerHTML = '<span class="iconify" data-icon="ph:check-bold"></span>';
+        if (window.Iconify) window.Iconify.scan();
+        setTimeout(() => { btn.innerHTML = '<span class="iconify" data-icon="ph:copy-bold"></span>'; if (window.Iconify) window.Iconify.scan(); }, 2000);
+    });
+}
+function shareWhatsApp() {
+    const link = document.getElementById('quizLinkText').textContent;
+    window.open(`https://wa.me/?text=${encodeURIComponent('Take my quiz and see how well you know me! ' + link)}`, '_blank');
+}
+function shareTelegram() {
+    const link = document.getElementById('quizLinkText').textContent;
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Take my quiz and see how well you know me!')}`, '_blank');
+}
+function closeSuccess() {
+    document.getElementById('successPopup').classList.remove('active');
+    document.getElementById('creatorName').value = '';
+    document.getElementById('questionsContainer').innerHTML = '';
+    Object.keys(selectedIcons).forEach(k => delete selectedIcons[k]);
+    Object.keys(correctAnswers).forEach(k => delete correctAnswers[k]);
+    questionCount = 0;
+    document.getElementById('addQuestionBtn').style.display = 'flex';
+    addQuestion(); updateProgress(); checkGenerateButton();
+}
+
+document.getElementById('creatorName').addEventListener('input', () => { updateProgress(); checkGenerateButton(); });
+document.getElementById('iconModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeIconPicker(); });
+document.getElementById('successPopup').addEventListener('click', e => { if (e.target === e.currentTarget) closeSuccess(); });
+
+window.onload = () => {
+    addQuestion();
+    setTimer(false); // init timer toggle state
+    if (window.Iconify) window.Iconify.scan();
+};
+</script>
+<!-- QRCode library for QR generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body>
+</html>
