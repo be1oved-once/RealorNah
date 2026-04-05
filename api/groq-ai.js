@@ -1,9 +1,17 @@
-// api/groq-ai.js — Vercel Serverless Function
-// Proxies requests to Groq API so the key stays server-side.
-// Expects: POST { prompt: string }
-// Returns: { result: string }
+// api/groq-ai.js — Vercel Serverless Function (CommonJS)
+// Place this file at: /api/groq-ai.js in your project root.
+// Set GROQ_API_KEY in Vercel dashboard → Settings → Environment Variables.
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
+    // CORS headers (in case you call from a different origin)
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -15,7 +23,7 @@ export default async function handler(req, res) {
 
     const GROQ_API_KEY = process.env.GROQ_API_KEY;
     if (!GROQ_API_KEY) {
-        return res.status(500).json({ error: 'GROQ_API_KEY env variable not set' });
+        return res.status(500).json({ error: 'GROQ_API_KEY env variable not set on server' });
     }
 
     try {
@@ -30,22 +38,22 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are a quiz question generator. You only output valid JSON arrays — no markdown, no preamble, no explanation.'
+                        content: 'You are a quiz question generator. Output ONLY a valid JSON array. No markdown, no backticks, no explanation whatsoever.'
                     },
                     {
                         role: 'user',
                         content: prompt
                     }
                 ],
-                temperature: 1.0,
+                temperature: 1.1,
                 max_tokens: 800
             })
         });
 
         if (!groqRes.ok) {
-            const err = await groqRes.text();
-            console.error('Groq API error:', err);
-            return res.status(502).json({ error: 'Groq API request failed', detail: err });
+            const errText = await groqRes.text();
+            console.error('Groq API error:', groqRes.status, errText);
+            return res.status(502).json({ error: 'Groq API request failed', detail: errText });
         }
 
         const data = await groqRes.json();
@@ -54,7 +62,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ result });
 
     } catch (err) {
-        console.error('Serverless function error:', err);
+        console.error('Handler error:', err);
         return res.status(500).json({ error: 'Internal server error', detail: err.message });
     }
-}
+};
