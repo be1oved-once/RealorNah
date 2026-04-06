@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Take This Friendship Quiz — Can You Score 100%? | RealorNah</title>
-    <meta name="description" content="Your friend dared you to take their friendship quiz on RealorNah. How well do YOU know them? Take the test and find out your Bestie Tier 🔥">
+    <meta name="description" content="Your friend dared you to take their friendship quiz on RealorNah. How well do YOU know them? Take the test and find out your Bestie Tier.">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="Your friend challenged you to their quiz 👀">
-    <meta property="og:description" content="Most people can't score above 70%. Can you? Take the RealorNah friendship quiz and prove you're a real one 🔥">
+    <meta property="og:title" content="Your friend challenged you to their quiz">
+    <meta property="og:description" content="Most people can't score above 70%. Can you? Take the RealorNah friendship quiz and prove you're a real one.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://realornah.app/og-quiz.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -15,22 +15,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
-    <!-- Basic favicon -->
-<link rel="icon" href="/favicon/favicon.ico" sizes="any">
-
-<!-- PNG favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-
-<!-- Apple / iOS -->
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-
-<!-- Android / Chrome -->
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
-
-<!-- Web manifest -->
-<link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e}
@@ -45,12 +36,12 @@
         .progress-bar{width:70px;height:5px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
         .progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-pink),var(--hot-orange));width:0%;transition:width .5s ease;box-shadow:0 0 10px var(--neon-pink)}
         .container{max-width:500px;margin:0 auto;padding:55px .75rem 1rem;min-height:100vh}
-        /* Loading / Error screens */
+        /* Loading / Error */
         .loading-screen,.error-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);text-align:center;gap:1rem}
         .spinner{width:50px;height:50px;border:4px solid rgba(131,56,236,.3);border-top:4px solid var(--neon-pink);border-radius:50%;animation:spin .8s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
         .loading-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
-        .error-icon{font-size:3rem}
+        .error-icon{font-size:3rem;color:var(--neon-pink)}
         .error-title{font-family:'Bungee Shade',cursive;font-size:1.4rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .error-text{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.7)}
         /* Intro */
@@ -64,7 +55,7 @@
         .name-input{width:100%;padding:.8rem 1rem;background:var(--input-bg);border:2px solid var(--electric-purple);border-radius:12px;color:white;font-family:'Righteous',cursive;font-size:.95rem;text-align:center;outline:none;transition:all .3s}
         .name-input:focus{border-color:var(--neon-pink);box-shadow:0 0 15px rgba(255,0,110,.3)}
         .name-input::placeholder{color:rgba(255,255,255,.4)}
-        .start-btn{padding:.875rem 2.5rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 8px 25px rgba(255,0,110,.4)}
+        .start-btn{padding:.875rem 2.5rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 8px 25px rgba(255,0,110,.4);display:flex;align-items:center;gap:.5rem}
         .start-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,0,110,.6)}
         .start-btn:disabled{opacity:.5;cursor:not-allowed}
         .quiz-meta{margin-top:.75rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.6)}
@@ -113,16 +104,13 @@
         .result-actions{display:flex;flex-direction:column;gap:.75rem}
         .action-btn{padding:1rem;border-radius:14px;border:none;font-family:'Rubik Bubbles',cursive;font-size:1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem}
         .action-btn.primary{background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));color:white;box-shadow:0 8px 25px rgba(255,0,110,.3)}
-        .action-btn.secondary{background:transparent;border:2px solid var(--electric-purple);color:white;
-            margin-bottom: 10px;
-        }
+        .action-btn.secondary{background:transparent;border:2px solid var(--electric-purple);color:white;margin-bottom:10px}
         .action-btn:hover{transform:translateY(-2px)}
         /* confetti */
         .confetti{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:fall linear forwards;z-index:999}
         @keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}
-        /* loading screen (between questions and results) */
         .mid-loading{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);gap:1rem;text-align:center}
-        /* ── TIMER ── */
+        /* Timer */
         .timer-wrap{display:flex;align-items:center;justify-content:flex-end;gap:.4rem;margin-bottom:.5rem}
         .timer-svg{transform:rotate(-90deg);flex-shrink:0}
         .timer-bg{fill:none;stroke:rgba(131,56,236,.25);stroke-width:4}
@@ -131,9 +119,9 @@
         .timer-text{font-family:'Rubik Bubbles',cursive;font-size:1rem;color:white;min-width:22px;text-align:center}
         .timer-text.urgent{color:var(--neon-pink);animation:tPulse .4s infinite alternate}
         @keyframes tPulse{from{transform:scale(1)}to{transform:scale(1.15)}}
-        /* ── PREVIEW BANNER ── */
+        /* Preview Banner */
         .preview-banner{background:linear-gradient(135deg,var(--lemon-yellow),var(--hot-orange));color:#0d0221;padding:.5rem 1rem;text-align:center;font-family:'Chewy',cursive;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.4rem;position:sticky;top:50px;z-index:90}
-        /* ── SHARE SHEET ── */
+        /* Share Sheet */
         .share-sheet{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:600;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
         .share-sheet.active{opacity:1;visibility:visible}
         .share-sheet-inner{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:24px 24px 0 0;padding:1.5rem;width:100%;max-width:480px;animation:slideUp .3s ease}
@@ -150,7 +138,7 @@
         .share-app-btn.more{background:linear-gradient(135deg,#374151,#1f2937)}
         .share-cancel{width:100%;padding:.75rem;background:transparent;border:2px solid rgba(255,255,255,.15);border-radius:12px;color:rgba(255,255,255,.6);font-family:'Righteous',cursive;font-size:.9rem;cursor:pointer;transition:all .3s}
         .share-cancel:hover{border-color:var(--neon-pink);color:var(--neon-pink)}
-        /* ── ANSWER BREAKDOWN ── */
+        /* Answer Breakdown */
         .breakdown-section{background:var(--card-bg);border:2px solid rgba(131,56,236,.4);border-radius:20px;padding:1.25rem;margin-bottom:1.25rem}
         .breakdown-title{font-family:'Chewy',cursive;font-size:1.1rem;color:var(--lemon-yellow);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
         .breakdown-item{border-radius:14px;padding:.875rem;margin-bottom:.65rem;border:2px solid transparent}
@@ -163,9 +151,9 @@
         .breakdown-your.wrong{color:var(--neon-pink)}
         .breakdown-correct-lbl{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.55);font-family:'Chewy',cursive;font-size:.78rem}
         #scorecardCanvas{display:none}
-        /* ── BESTIE TIER BADGE ── */
+        /* Bestie Tier Badge */
         .bestie-tier-badge{display:flex;flex-direction:column;align-items:center;margin-bottom:1.25rem;animation:fadeIn .6s ease}
-        .tier-emoji-large{font-size:3.5rem;margin-bottom:.25rem;animation:tierPop .5s ease .3s both}
+        .tier-icon-large{font-size:3.5rem;margin-bottom:.25rem;animation:tierPop .5s ease .3s both;display:flex;align-items:center;justify-content:center}
         @keyframes tierPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
         .tier-name{font-family:'Bungee Shade',cursive;font-size:1.4rem;margin-bottom:.2rem}
         .tier-name.soulmate{background:linear-gradient(135deg,gold,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -176,10 +164,8 @@
         .tier-tagline{font-family:'Chewy',cursive;font-size:.9rem;color:rgba(255,255,255,.6)}
         .avg-score-bar{background:var(--card-bg);border:1.5px solid rgba(131,56,236,.3);border-radius:12px;padding:.75rem 1rem;margin-bottom:1rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.7);text-align:center}
         .avg-score-bar strong{color:var(--cyan-blast)}
-        /* ── REVENGE QUIZ BUTTON ── */
+        /* Revenge Button */
         .revenge-btn{width:100%;padding:1.1rem;background:linear-gradient(135deg,#7c3aed,var(--neon-pink));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.05rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;margin-bottom:.75rem;box-shadow:0 8px 25px rgba(124,58,237,.4);position:relative;overflow:hidden}
-        .revenge-btn::before{content:'😈';position:absolute;right:1rem;font-size:1.3rem;animation:wiggle 1s infinite}
-        @keyframes wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
         .revenge-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,0,110,.5)}
         .revenge-hint{font-family:'Chewy',cursive;font-size:.78rem;color:rgba(255,255,255,.45);text-align:center;margin-bottom:.75rem}
     </style>
@@ -188,10 +174,9 @@
 <div class="bg-grid"></div>
 <div class="noise"></div>
 
-<!-- Preview mode banner (shown when ?preview=1) -->
 <div class="preview-banner" id="previewBanner" style="display:none">
     <span class="iconify" data-icon="ph:eye-bold"></span>
-    Preview Mode — answers won't be saved to the database
+    Preview Mode — answers won't be saved
     <span class="iconify" data-icon="ph:eye-bold"></span>
 </div>
 
@@ -204,35 +189,35 @@
 </nav>
 
 <div class="container">
-    <!-- Loading -->
     <div class="loading-screen" id="loadingScreen">
         <div class="spinner"></div>
         <div class="loading-text">Loading quiz...</div>
     </div>
 
-    <!-- Error -->
     <div class="error-screen" id="errorScreen" style="display:none">
-<div class="error-icon">
-    <span class="iconify" data-icon="ph:smiley-sad-bold"></span>
-</div>
+        <div class="error-icon"><span class="iconify" data-icon="ph:smiley-sad-bold"></span></div>
         <div class="error-title">Quiz Not Found</div>
         <div class="error-text">This quiz link may be invalid or expired.</div>
-        <a href="index.html" style="margin-top:1rem;color:var(--cyan-blast);font-family:'Chewy',cursive;font-size:1rem">← Back to Home</a>
+        <a href="index.html" style="margin-top:1rem;color:var(--cyan-blast);font-family:'Chewy',cursive;font-size:1rem;display:flex;align-items:center;gap:.4rem">
+            <span class="iconify" data-icon="ph:arrow-left-bold"></span> Back to Home
+        </a>
     </div>
 
-    <!-- Intro -->
     <div class="intro-screen" id="introScreen" style="display:none">
-        <div class="creator-avatar">🎯</div>
+        <div class="creator-avatar">
+            <span class="iconify" data-icon="ph:target-bold" style="color:white;font-size:2rem"></span>
+        </div>
         <div class="intro-title" id="introTitle">Quiz by Someone</div>
         <div class="intro-subtitle" id="introSubtitle">How well do you know them?<br>Answer all questions to find out!</div>
         <div class="name-input-wrapper">
             <input type="text" class="name-input" id="playerName" placeholder="Your name..." maxlength="25" autocomplete="off">
         </div>
-        <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Let's Go! 🚀</button>
+        <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>
+            <span class="iconify" data-icon="ph:rocket-launch-bold"></span> Let's Go!
+        </button>
         <div class="quiz-meta" id="quizMeta"></div>
     </div>
 
-    <!-- Question -->
     <div class="question-screen" id="questionScreen">
         <div class="question-counter" id="questionCounter"></div>
         <div class="timer-wrap" id="timerWrap" style="display:none">
@@ -246,19 +231,16 @@
         <div class="options-grid" id="optionsGrid"></div>
     </div>
 
-    <!-- Mid Loading -->
     <div class="mid-loading" id="midLoading">
         <div class="spinner"></div>
         <div class="loading-text">Calculating results...</div>
     </div>
 
-    <!-- Results -->
     <div class="result-screen" id="resultScreen">
         <div class="score-circle-container">
             <svg class="score-svg" width="160" height="160" viewBox="0 0 160 160">
                 <circle class="score-bg" cx="80" cy="80" r="70"/>
-                <circle class="score-circle" cx="80" cy="80" r="70" id="scoreCircle"
-                    stroke="url(#scoreGrad)"/>
+                <circle class="score-circle" cx="80" cy="80" r="70" id="scoreCircle" stroke="url(#scoreGrad)"/>
                 <defs>
                     <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" style="stop-color:#ff006e"/>
@@ -270,6 +252,7 @@
                 <div class="score-percent" id="scorePercent">0%</div>
             </div>
         </div>
+
         <div class="result-message" id="resultMessage"></div>
         <div class="result-subtitle" id="resultSubtitle"></div>
 
@@ -280,14 +263,12 @@
             <div id="leaderboardList"></div>
         </div>
 
-        <!-- BESTIE TIER BADGE -->
         <div class="bestie-tier-badge" id="bestieTierBadge" style="display:none">
-            <div class="tier-emoji-large" id="tierEmojiLarge"></div>
+            <div class="tier-icon-large" id="tierIconLarge"></div>
             <div class="tier-name" id="tierNameEl"></div>
             <div class="tier-tagline" id="tierTagline"></div>
         </div>
 
-        <!-- AVG SCORE CONTEXT -->
         <div class="avg-score-bar" id="avgScoreBar" style="display:none"></div>
 
         <div class="result-actions">
@@ -295,19 +276,18 @@
                 <span class="iconify" data-icon="ph:share-network-bold"></span> Share My Score
             </button>
 
-            <!-- REVENGE QUIZ — The Viral Loop -->
             <a id="revengeBtn" href="create-quiz.html" class="revenge-btn">
                 <span class="iconify" data-icon="ph:arrow-counter-clockwise-bold"></span>
                 Now Make THEM Sweat — Create Your Quiz
+                <span class="iconify" data-icon="ph:devil-bold" style="position:absolute;right:1rem;font-size:1.3rem;animation:wiggle 1s infinite"></span>
             </a>
-            <div class="revenge-hint">Challenge them back in 2 minutes ↑ This is the move.</div>
+            <div class="revenge-hint">Challenge them back in 2 minutes — This is the move.</div>
 
             <a href="index.html" class="action-btn secondary" style="text-decoration:none">
                 <span class="iconify" data-icon="ph:house-bold"></span> Back to Home
             </a>
         </div>
 
-        <!-- Answer Breakdown -->
         <div class="breakdown-section" id="breakdownSection" style="display:none">
             <div class="breakdown-title">
                 <span class="iconify" data-icon="ph:list-checks-bold"></span> Answer Breakdown
@@ -317,30 +297,24 @@
     </div>
 </div>
 
-<!-- Hidden canvas for scorecard image generation -->
 <canvas id="scorecardCanvas" width="800" height="450"></canvas>
 
-<!-- Share Sheet -->
 <div class="share-sheet" id="shareSheet">
     <div class="share-sheet-inner">
         <div class="share-sheet-title">Share Your Score</div>
         <div class="share-sheet-sub" id="shareSheetSub">You scored on this quiz!</div>
         <div class="share-btns-row">
             <button class="share-app-btn wa" onclick="shareScorecard('whatsapp')">
-                <span class="sab-icon iconify" data-icon="ph:whatsapp-logo-bold"></span>
-                WhatsApp
+                <span class="sab-icon iconify" data-icon="ph:whatsapp-logo-bold"></span>WhatsApp
             </button>
             <button class="share-app-btn tg" onclick="shareScorecard('telegram')">
-                <span class="sab-icon iconify" data-icon="ph:telegram-logo-bold"></span>
-                Telegram
+                <span class="sab-icon iconify" data-icon="ph:telegram-logo-bold"></span>Telegram
             </button>
             <button class="share-app-btn cp" onclick="shareScorecard('copy')">
-                <span class="sab-icon iconify" data-icon="ph:copy-bold"></span>
-                Copy Link
+                <span class="sab-icon iconify" data-icon="ph:copy-bold"></span>Copy Link
             </button>
             <button class="share-app-btn more" onclick="shareScorecard('native')">
-                <span class="sab-icon iconify" data-icon="ph:export-bold"></span>
-                More
+                <span class="sab-icon iconify" data-icon="ph:export-bold"></span>More
             </button>
         </div>
         <button class="share-cancel" onclick="closeShareSheet()">
@@ -349,551 +323,318 @@
     </div>
 </div>
 
+<style>
+@keyframes wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+</style>
+
 <!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc, arrayUnion, increment }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// ── PASTE YOUR FIREBASE CONFIG HERE ──────────────────────────
-const firebaseConfig = {
-    apiKey: "AIzaSyAVmDJy2Iowj6BVK3HF8sb2FPuew2wBny8",
-    authDomain: "realornah-app.firebaseapp.com",
-    projectId: "realornah-app",
-    storageBucket: "realornah-app.firebasestorage.app",
-    messagingSenderId: "313279191530",
-    appId: "1:313279191530:web:639185b8807f68e24cba93"
-};
-// ─────────────────────────────────────────────────────────────
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
-
-window._db = db;
-
-window.loadQuiz = async function(quizId) {
-    const snap = await getDoc(doc(db, "quizzes", quizId));
-    if (!snap.exists()) return null;
-    return snap.data();
-};
-
-window.saveScore = async function(quizId, playerName, score) {
-    const ref = doc(db, "quizzes", quizId);
-    await updateDoc(ref, {
-        plays: increment(1),
-        scores: arrayUnion({ name: playerName, score, playedAt: new Date().toISOString() })
-    });
-};
-
-window.getLeaderboard = async function(quizId) {
-    const snap = await getDoc(doc(db, "quizzes", quizId));
-    if (!snap.exists()) return [];
-    return snap.data().scores || [];
-};
+const firebaseConfig={apiKey:"AIzaSyAVmDJy2Iowj6BVK3HF8sb2FPuew2wBny8",authDomain:"realornah-app.firebaseapp.com",projectId:"realornah-app",storageBucket:"realornah-app.firebasestorage.app",messagingSenderId:"313279191530",appId:"1:313279191530:web:639185b8807f68e24cba93"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+window._db=db;
+window.loadQuiz=async function(quizId){const snap=await getDoc(doc(db,"quizzes",quizId));if(!snap.exists())return null;return snap.data();};
+window.saveScore=async function(quizId,playerName,score){const ref=doc(db,"quizzes",quizId);await updateDoc(ref,{plays:increment(1),scores:arrayUnion({name:playerName,score,playedAt:new Date().toISOString()})});};
+window.getLeaderboard=async function(quizId){const snap=await getDoc(doc(db,"quizzes",quizId));if(!snap.exists())return[];return snap.data().scores||[];};
 </script>
 
 <script>
-let quiz         = null;
-let currentQ     = 0;
-let score        = 0;
-let playerName   = '';
-let canAnswer    = true;
-let quizId       = null;
-let isPreview    = false;
-let playerAnswers = []; // {questionIdx, chosen, correct}
+let quiz=null,currentQ=0,score=0,playerName='',canAnswer=true,quizId=null,isPreview=false;
+let playerAnswers=[];
+let timerSecs=0,timerInterval=null;
+const TIMER_DASH=138;
 
-// Timer state
-let timerSecs    = 0;
-let timerInterval= null;
-const TIMER_DASH = 138; // 2*PI*r for r=22
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let audioCtx=null;
+function getAudio(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx;}
+function playCorrect(){try{const c=getAudio(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.setValueAtTime(600,c.currentTime);o.frequency.exponentialRampToValueAtTime(900,c.currentTime+.15);g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.3);o.start();o.stop(c.currentTime+.3);}catch(e){}}
+function playWrong(){try{const c=getAudio(),o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.connect(g);g.connect(c.destination);o.frequency.setValueAtTime(220,c.currentTime);o.frequency.exponentialRampToValueAtTime(110,c.currentTime+.25);g.gain.setValueAtTime(.25,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.35);o.start();o.stop(c.currentTime+.35);}catch(e){}}
 
-// Sounds
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let audioCtx = null;
-function getAudio() { if (!audioCtx) audioCtx = new AudioCtx(); return audioCtx; }
-function playCorrect() {
-    try {
-        const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
-        o.connect(g); g.connect(ctx.destination);
-        o.frequency.setValueAtTime(600, ctx.currentTime);
-        o.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
-        g.gain.setValueAtTime(0.3, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-        o.start(); o.stop(ctx.currentTime + 0.3);
-    } catch(e){}
-}
-function playWrong() {
-    try {
-        const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
-        o.type = 'sawtooth'; o.connect(g); g.connect(ctx.destination);
-        o.frequency.setValueAtTime(220, ctx.currentTime);
-        o.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.25);
-        g.gain.setValueAtTime(0.25, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-        o.start(); o.stop(ctx.currentTime + 0.35);
-    } catch(e){}
+const params=new URLSearchParams(location.search);
+quizId=params.get('id');
+isPreview=params.get('preview')==='1';
+
+async function init(){
+    if(!quizId){showError();return;}
+    try{
+        quiz=await window.loadQuiz(quizId);
+        if(!quiz){showError();return;}
+        document.getElementById('loadingScreen').style.display='none';
+        if(isPreview)document.getElementById('previewBanner').style.display='flex';
+        document.getElementById('introTitle').textContent=`Quiz by ${quiz.creator}`;
+        document.getElementById('introSubtitle').textContent=`How well do you know ${quiz.creator}?\nAnswer all ${quiz.questions.length} questions!`;
+        document.getElementById('quizMeta').innerHTML=`${quiz.questions.length} questions${quiz.timerSecs?` · <span class="iconify" data-icon="ph:timer-bold"></span> ${quiz.timerSecs}s/q`:''} · Good luck!`;
+        document.getElementById('introScreen').style.display='flex';
+        document.title=`${quiz.creator}'s Quiz - RealorNah`;
+        if(window.Iconify)window.Iconify.scan();
+    }catch(e){showError();console.error(e);}
 }
 
-const params   = new URLSearchParams(location.search);
-quizId         = params.get('id');
-isPreview      = params.get('preview') === '1';
+function showError(){document.getElementById('loadingScreen').style.display='none';document.getElementById('errorScreen').style.display='flex';if(window.Iconify)window.Iconify.scan();}
 
-async function init() {
-    if (!quizId) { showError(); return; }
-    try {
-        quiz = await window.loadQuiz(quizId);
-        if (!quiz) { showError(); return; }
-        document.getElementById('loadingScreen').style.display = 'none';
+document.getElementById('playerName').addEventListener('input',function(){document.getElementById('startBtn').disabled=this.value.trim()==='';});
 
-        if (isPreview) {
-            document.getElementById('previewBanner').style.display = 'flex';
-        }
-
-        document.getElementById('introTitle').textContent    = `Quiz by ${quiz.creator}`;
-        document.getElementById('introSubtitle').textContent = `How well do you know ${quiz.creator}?\nAnswer all ${quiz.questions.length} questions!`;
-        document.getElementById('quizMeta').textContent      = `${quiz.questions.length} questions${quiz.timerSecs ? ' · ⏱ ' + quiz.timerSecs + 's/q' : ''} · Good luck!`;
-        document.getElementById('introScreen').style.display = 'flex';
-        document.title = `${quiz.creator}'s Quiz - RealorNah`;
-    } catch(e) { showError(); console.error(e); }
+function startQuiz(){
+    playerName=document.getElementById('playerName').value.trim();
+    if(!playerName)return;
+    playerAnswers=[];
+    document.getElementById('introScreen').style.display='none';
+    document.getElementById('questionScreen').style.display='block';
+    showQuestion();updateNavProgress();
 }
 
-function showError() {
-    document.getElementById('loadingScreen').style.display = 'none';
-    document.getElementById('errorScreen').style.display  = 'flex';
-}
-
-document.getElementById('playerName').addEventListener('input', function() {
-    document.getElementById('startBtn').disabled = this.value.trim() === '';
-});
-
-function startQuiz() {
-    playerName    = document.getElementById('playerName').value.trim();
-    if (!playerName) return;
-    playerAnswers = [];
-    document.getElementById('introScreen').style.display    = 'none';
-    document.getElementById('questionScreen').style.display = 'block';
-    showQuestion();
-    updateNavProgress();
-}
-
-function showQuestion() {
+function showQuestion(){
     clearInterval(timerInterval);
-    const q = quiz.questions[currentQ];
-    document.getElementById('questionCounter').textContent = `Question ${currentQ + 1} / ${quiz.questions.length}`;
-    document.getElementById('questionText').textContent    = q.question;
-    const grid = document.getElementById('optionsGrid');
-    grid.innerHTML = '';
-    const letters = ['A','B','C','D'];
-
-    q.options.forEach((opt, idx) => {
+    const q=quiz.questions[currentQ];
+    document.getElementById('questionCounter').textContent=`Question ${currentQ+1} / ${quiz.questions.length}`;
+    document.getElementById('questionText').textContent=q.question;
+    const grid=document.getElementById('optionsGrid');
+    grid.innerHTML='';
+    const letters=['A','B','C','D'];
+    q.options.forEach((opt,idx)=>{
         let card;
-        if (q.type === 'image') {
-            card = document.createElement('div');
-            card.className = 'option-with-image';
-            card.innerHTML = `
-                <div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div>
-                <div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div>
-                <div class="option-image-box"><span class="iconify" data-icon="${opt.icon}"></span></div>
-                <div class="option-text">${opt.text}</div>`;
-        } else {
-            card = document.createElement('div');
-            card.className = 'option-text-only';
-            card.innerHTML = `
-                <div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div>
-                <div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div>
-                <div class="option-label">
-                    <span class="option-letter">${letters[idx]}</span>
-                    <span>${opt.text}</span>
-                </div>`;
+        if(q.type==='image'){
+            card=document.createElement('div');
+            card.className='option-with-image';
+            card.innerHTML=`<div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div><div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div><div class="option-image-box"><span class="iconify" data-icon="${opt.icon}"></span></div><div class="option-text">${opt.text||''}</div>`;
+        }else{
+            card=document.createElement('div');
+            card.className='option-text-only';
+            card.innerHTML=`<div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div><div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div><div class="option-label"><span class="option-letter">${letters[idx]}</span><span>${opt.text||''}</span></div>`;
         }
-        card.onclick = () => selectAnswer(idx, card);
+        card.onclick=()=>selectAnswer(idx,card);
         grid.appendChild(card);
     });
-
-    if (window.Iconify) window.Iconify.scan();
-    canAnswer = true;
-
-    // Timer
-    if (quiz.timerSecs && quiz.timerSecs > 0) {
-        startTimer(quiz.timerSecs);
-    }
+    if(window.Iconify)window.Iconify.scan();
+    canAnswer=true;
+    if(quiz.timerSecs&&quiz.timerSecs>0)startTimer(quiz.timerSecs);
 }
 
-function startTimer(secs) {
-    clearInterval(timerInterval); // always clear before starting fresh
-    timerSecs = secs;
-    const wrap   = document.getElementById('timerWrap');
-    const circle = document.getElementById('timerCircle');
-    const txt    = document.getElementById('timerText');
-    wrap.style.display = 'flex';
-    txt.textContent = timerSecs;
-    circle.style.strokeDashoffset = 0;
-    circle.classList.remove('urgent');
-    txt.className = 'timer-text';
-
-    timerInterval = setInterval(() => {
+function startTimer(secs){
+    clearInterval(timerInterval);
+    timerSecs=secs;
+    const wrap=document.getElementById('timerWrap'),circle=document.getElementById('timerCircle'),txt=document.getElementById('timerText');
+    wrap.style.display='flex';txt.textContent=timerSecs;circle.style.strokeDashoffset=0;circle.classList.remove('urgent');txt.className='timer-text';
+    timerInterval=setInterval(()=>{
         timerSecs--;
-        const pct = timerSecs / secs; // use local secs not quiz.timerSecs to avoid stale ref
-        circle.style.strokeDashoffset = TIMER_DASH * (1 - pct);
-        txt.textContent = timerSecs;
-        if (timerSecs <= 5) {
-            txt.className = 'timer-text urgent';
-            circle.classList.add('urgent');
-        }
-        if (timerSecs <= 0) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            wrap.style.display = 'none';
-            if (canAnswer) {
-                canAnswer = false;
-                const allCards = document.querySelectorAll('.option-with-image, .option-text-only');
-                playWrong();
-                allCards[quiz.questions[currentQ].correct].classList.add('correct');
-                allCards.forEach(c => c.classList.add('disabled'));
-                playerAnswers.push({ qIdx: currentQ, chosen: -1, correct: quiz.questions[currentQ].correct });
-                setTimeout(() => {
-                    currentQ++;
-                    if (currentQ < quiz.questions.length) { showQuestion(); updateNavProgress(); }
-                    else showMidLoading();
-                }, 1000);
+        const pct=timerSecs/secs;
+        circle.style.strokeDashoffset=TIMER_DASH*(1-pct);
+        txt.textContent=timerSecs;
+        if(timerSecs<=5){txt.className='timer-text urgent';circle.classList.add('urgent');}
+        if(timerSecs<=0){
+            clearInterval(timerInterval);timerInterval=null;wrap.style.display='none';
+            if(canAnswer){
+                canAnswer=false;
+                const all=document.querySelectorAll('.option-with-image,.option-text-only');
+                playWrong();all[quiz.questions[currentQ].correct].classList.add('correct');all.forEach(c=>c.classList.add('disabled'));
+                playerAnswers.push({qIdx:currentQ,chosen:-1,correct:quiz.questions[currentQ].correct});
+                setTimeout(()=>{currentQ++;if(currentQ<quiz.questions.length){showQuestion();updateNavProgress();}else showMidLoading();},1000);
             }
         }
-    }, 1000);
+    },1000);
 }
 
-function selectAnswer(selectedIdx, cardEl) {
-    if (!canAnswer) return;
-    canAnswer = false;
-    clearInterval(timerInterval);
-    document.getElementById('timerWrap').style.display = 'none';
-
-    const q = quiz.questions[currentQ];
-    const isCorrect = selectedIdx === q.correct;
-    const allCards  = document.querySelectorAll('.option-with-image, .option-text-only');
-
-    playerAnswers.push({ qIdx: currentQ, chosen: selectedIdx, correct: q.correct });
-
-    if (isCorrect) { score++; cardEl.classList.add('correct'); playCorrect(); }
-    else           { cardEl.classList.add('wrong'); allCards[q.correct].classList.add('correct'); playWrong(); }
-
-    allCards.forEach(c => c.classList.add('disabled'));
-    setTimeout(() => {
-        currentQ++;
-        if (currentQ < quiz.questions.length) { showQuestion(); updateNavProgress(); }
-        else showMidLoading();
-    }, 1000);
+function selectAnswer(selectedIdx,cardEl){
+    if(!canAnswer)return;canAnswer=false;
+    clearInterval(timerInterval);document.getElementById('timerWrap').style.display='none';
+    const q=quiz.questions[currentQ];
+    const isCorrect=selectedIdx===q.correct;
+    const allCards=document.querySelectorAll('.option-with-image,.option-text-only');
+    playerAnswers.push({qIdx:currentQ,chosen:selectedIdx,correct:q.correct});
+    if(isCorrect){score++;cardEl.classList.add('correct');playCorrect();}
+    else{cardEl.classList.add('wrong');allCards[q.correct].classList.add('correct');playWrong();}
+    allCards.forEach(c=>c.classList.add('disabled'));
+    setTimeout(()=>{currentQ++;if(currentQ<quiz.questions.length){showQuestion();updateNavProgress();}else showMidLoading();},1000);
 }
 
-function updateNavProgress() {
-    const pct = (currentQ / quiz.questions.length) * 100;
-    document.getElementById('navProgress').style.width    = pct + '%';
-    document.getElementById('quizProgressText').textContent = `${currentQ + 1}/${quiz.questions.length}`;
+function updateNavProgress(){
+    const pct=(currentQ/quiz.questions.length)*100;
+    document.getElementById('navProgress').style.width=pct+'%';
+    document.getElementById('quizProgressText').textContent=`${currentQ+1}/${quiz.questions.length}`;
 }
 
-function showMidLoading() {
-    document.getElementById('questionScreen').style.display = 'none';
-    document.getElementById('midLoading').style.display    = 'flex';
-    document.getElementById('navProgress').style.width     = '100%';
+function showMidLoading(){
+    document.getElementById('questionScreen').style.display='none';
+    document.getElementById('midLoading').style.display='flex';
+    document.getElementById('navProgress').style.width='100%';
     saveAndShowResults();
 }
 
-async function saveAndShowResults() {
-    const percentage = Math.round((score / quiz.questions.length) * 100);
-
-    if (!isPreview) {
-        try { await window.saveScore(quizId, playerName, percentage); } catch(e) { console.error(e); }
-
-        // Fire play-count notification to creator (silent — never blocks UI)
-        try {
-            const fresh = await window.loadQuiz(quizId);
-            const newPlays = fresh?.plays || 0;
-            if (fresh?.creatorEmail && newPlays > 0 && newPlays % 3 === 0) {
-                fetch('/api/notify', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        creatorEmail: fresh.creatorEmail,
-                        creatorName:  fresh.creator,
-                        quizId,
-                        plays:        newPlays,
-                        quizLink:     `${location.origin}/quiz.html?id=${quizId}`,
-                    }),
-                }).catch(() => {}); // fire and forget
+async function saveAndShowResults(){
+    const percentage=Math.round((score/quiz.questions.length)*100);
+    if(!isPreview){
+        try{await window.saveScore(quizId,playerName,percentage);}catch(e){console.error(e);}
+        try{
+            const fresh=await window.loadQuiz(quizId);
+            const newPlays=fresh?.plays||0;
+            if(fresh?.creatorEmail&&newPlays>0&&newPlays%3===0){
+                fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({creatorEmail:fresh.creatorEmail,creatorName:fresh.creator,quizId,plays:newPlays,quizLink:`${location.origin}/quiz.html?id=${quizId}`})}).catch(()=>{});
             }
-        } catch(e) { /* silent */ }
+        }catch(e){}
     }
+    let allScores=[];
+    if(!isPreview){try{allScores=await window.getLeaderboard(quizId);}catch(e){}}
+    document.getElementById('midLoading').style.display='none';
+    document.getElementById('resultScreen').style.display='block';
+    document.getElementById('scorePercent').textContent=percentage+'%';
+    setTimeout(()=>{document.getElementById('scoreCircle').style.strokeDashoffset=440-(440*percentage)/100;},100);
 
-    let allScores = [];
-    if (!isPreview) {
-        try { allScores = await window.getLeaderboard(quizId); } catch(e) {}
-    }
-
-    document.getElementById('midLoading').style.display   = 'none';
-    document.getElementById('resultScreen').style.display = 'block';
-
-    document.getElementById('scorePercent').textContent = percentage + '%';
-    setTimeout(() => {
-        const circle = document.getElementById('scoreCircle');
-        circle.style.strokeDashoffset = 440 - (440 * percentage) / 100;
-    }, 100);
-
-    const tiers = [
-        [90, {emoji:'👑', name:'Soulmate',             cls:'soulmate',    tag:`You know ${quiz.creator} better than they know themselves!`,    confetti:true}],
-        [71, {emoji:'🔥', name:'Best Friend Forever',  cls:'bff',         tag:`Real one. The group chat MVP.`,                                  confetti:true}],
-        [51, {emoji:'😊', name:'Good Friend',           cls:'good',        tag:`You know ${quiz.creator} pretty well. Not bad.`}],
-        [31, {emoji:'🤔', name:'Suspicious Friend',     cls:'suspicious',  tag:`Do you even know ${quiz.creator}? We have questions.`}],
-        [0,  {emoji:'💀', name:'Fake Friend Detected',  cls:'fake',        tag:`You're basically a stranger. The audacity.`}],
+    const tiers=[
+        [90,{icon:'ph:crown-bold',iconColor:'gold',         name:'Soulmate',          cls:'soulmate',   tag:`You know ${quiz.creator} better than they know themselves!`,confetti:true}],
+        [71,{icon:'ph:fire-bold', iconColor:'var(--cyan-blast)', name:'Best Friend Forever',cls:'bff',  tag:`Real one. The group chat MVP.`,confetti:true}],
+        [51,{icon:'ph:smiley-bold',iconColor:'#a78bfa',     name:'Good Friend',        cls:'good',      tag:`You know ${quiz.creator} pretty well. Not bad.`}],
+        [31,{icon:'ph:question-bold',iconColor:'var(--lemon-yellow)',name:'Suspicious Friend',cls:'suspicious',tag:`Do you even know ${quiz.creator}? We have questions.`}],
+        [0, {icon:'ph:skull-bold',iconColor:'var(--neon-pink)', name:'Fake Friend Detected',cls:'fake',tag:`You're basically a stranger. The audacity.`}],
     ];
-    const [, tier] = tiers.find(([t]) => percentage >= t);
+    const [,tier]=tiers.find(([t])=>percentage>=t);
 
-    // Show Bestie Tier badge
-    const badgeEl = document.getElementById('bestieTierBadge');
-    const emojiEl = document.getElementById('tierEmojiLarge');
-    const nameEl  = document.getElementById('tierNameEl');
-    const tagEl   = document.getElementById('tierTagline');
-    emojiEl.textContent = tier.emoji;
-    nameEl.textContent  = tier.name;
-    nameEl.className    = `tier-name ${tier.cls}`;
-    tagEl.textContent   = tier.tag;
-    badgeEl.style.display = 'flex';
+    const badgeEl=document.getElementById('bestieTierBadge');
+    document.getElementById('tierIconLarge').innerHTML=`<span class="iconify" data-icon="${tier.icon}" style="color:${tier.iconColor};font-size:3.5rem"></span>`;
+    document.getElementById('tierNameEl').textContent=tier.name;
+    document.getElementById('tierNameEl').className=`tier-name ${tier.cls}`;
+    document.getElementById('tierTagline').textContent=tier.tag;
+    badgeEl.style.display='flex';
 
-    // Legacy message fields (keep for scorecard)
-    document.getElementById('resultMessage').textContent  = `${tier.emoji} ${tier.name}`;
-    document.getElementById('resultSubtitle').textContent = tier.tag;
+    document.getElementById('resultMessage').textContent=tier.name;
+    document.getElementById('resultSubtitle').textContent=tier.tag;
 
-    // Avg score context
-    const allScoresArr = allScores.map(s => s.score || 0);
-    if (allScoresArr.length > 1) {
-        const avg = Math.round(allScoresArr.reduce((a,b)=>a+b,0)/allScoresArr.length);
-        const avgBar = document.getElementById('avgScoreBar');
-        avgBar.style.display = 'block';
-        if (percentage > avg) {
-            avgBar.innerHTML = `You scored <strong>${percentage}%</strong> — above the average of <strong>${avg}%</strong> 👏 Only ${allScoresArr.filter(s=>s>=percentage).length} out of ${allScoresArr.length} people beat your score!`;
-        } else {
-            avgBar.innerHTML = `The average score on this quiz is <strong>${avg}%</strong>. You scored <strong>${percentage}%</strong>. Think you can do better? 👀`;
-        }
+    const allScoresArr=allScores.map(s=>s.score||0);
+    if(allScoresArr.length>1){
+        const avg=Math.round(allScoresArr.reduce((a,b)=>a+b,0)/allScoresArr.length);
+        const avgBar=document.getElementById('avgScoreBar');
+        avgBar.style.display='block';
+        if(percentage>avg){avgBar.innerHTML=`You scored <strong>${percentage}%</strong> — above the average of <strong>${avg}%</strong>. Only ${allScoresArr.filter(s=>s>=percentage).length} out of ${allScoresArr.length} people beat your score!`;}
+        else{avgBar.innerHTML=`The average score on this quiz is <strong>${avg}%</strong>. You scored <strong>${percentage}%</strong>. Think you can do better?`;}
     }
 
-    // Dynamic share text for share sheet
-    const viralkTexts = [
-        `I scored ${percentage}% on ${quiz.creator}'s RealorNah quiz! I got "${tier.name}" 🏆`,
-        `My bestie ranked me "${tier.name}" on their quiz 💀 I scored ${percentage}%. Can you beat me? `,
-        `Only ${Math.floor(Math.random()*3)+2} people scored above ${percentage}% on ${quiz.creator}'s quiz. Challenge accepted? `,
-    ];
-    document.getElementById('shareSheetSub').textContent = viralkTexts[0];
+    document.getElementById('shareSheetSub').textContent=`I scored ${percentage}% on ${quiz.creator}'s RealorNah quiz! I got "${tier.name}"`;
 
-    if (tier.confetti) createConfetti();
+    if(tier.confetti)createConfetti();
 
-    // Leaderboard
-    const sorted = [...allScores].sort((a,b) => b.score - a.score);
-    const list   = document.getElementById('leaderboardList');
-    list.innerHTML = '';
-    if (sorted.length === 0 && isPreview) {
-        list.innerHTML = '<div style="text-align:center;font-family:Chewy,cursive;color:rgba(255,255,255,.5);padding:1rem">Preview mode — no leaderboard data</div>';
-    } else {
-        sorted.forEach((p, idx) => {
-            const item = document.createElement('div');
-            const isMe = p.name === playerName;
-            item.className = 'leaderboard-item' + (isMe ? ' you' : '');
-            item.innerHTML = `<div class="rank">${idx+1}</div><div class="player-name">${p.name}${isMe ? ' (You)' : ''}</div><div class="player-score">${p.score}%</div>`;
+    const sorted=[...allScores].sort((a,b)=>b.score-a.score);
+    const list=document.getElementById('leaderboardList');
+    list.innerHTML='';
+    if(sorted.length===0&&isPreview){
+        list.innerHTML='<div style="text-align:center;font-family:Chewy,cursive;color:rgba(255,255,255,.5);padding:1rem">Preview mode — no leaderboard data</div>';
+    }else{
+        sorted.forEach((p,idx)=>{
+            const item=document.createElement('div');
+            const isMe=p.name===playerName;
+            item.className='leaderboard-item'+(isMe?' you':'');
+            item.innerHTML=`<div class="rank">${idx+1}</div><div class="player-name">${p.name}${isMe?' (You)':''}</div><div class="player-score">${p.score}%</div>`;
             list.appendChild(item);
         });
     }
-
-    // Answer Breakdown
     buildBreakdown();
-
-    if (window.Iconify) window.Iconify.scan();
+    if(window.Iconify)window.Iconify.scan();
 }
 
-function buildBreakdown() {
-    const sec  = document.getElementById('breakdownSection');
-    const list = document.getElementById('breakdownList');
-    sec.style.display = 'block';
-    list.innerHTML = '';
-
-    playerAnswers.forEach((pa, i) => {
-        const q       = quiz.questions[pa.qIdx];
-        const isRight = pa.chosen === pa.correct;
-        const letters = ['A','B','C','D'];
-
-        const chosenLabel  = pa.chosen === -1 ? 'No answer (timed out)' : (q.options[pa.chosen]?.text || letters[pa.chosen]);
-        const correctLabel = q.options[pa.correct]?.text || letters[pa.correct];
-
-        const div = document.createElement('div');
-        div.className = `breakdown-item ${isRight ? 'ca' : 'wa'}`;
-        div.innerHTML = `
-            <div class="breakdown-q">
-                <span class="breakdown-qn">Q${i+1}</span>
-                <span>${q.question}</span>
-            </div>
-            <div class="breakdown-your ${isRight ? 'right' : 'wrong'}">
-                <span class="iconify" data-icon="${isRight ? 'ph:check-circle-bold' : 'ph:x-circle-bold'}"></span>
-                Your answer: <strong>${chosenLabel}</strong>
-            </div>
-            ${!isRight ? `<div class="breakdown-correct-lbl"><span class="iconify" data-icon="ph:lightbulb-bold"></span> Correct: <strong>${correctLabel}</strong></div>` : ''}`;
+function buildBreakdown(){
+    const sec=document.getElementById('breakdownSection'),list=document.getElementById('breakdownList');
+    sec.style.display='block';list.innerHTML='';
+    playerAnswers.forEach((pa,i)=>{
+        const q=quiz.questions[pa.qIdx];
+        const isRight=pa.chosen===pa.correct;
+        const letters=['A','B','C','D'];
+        const chosenLabel=pa.chosen===-1?'No answer (timed out)':(q.options[pa.chosen]?.text||letters[pa.chosen]);
+        const correctLabel=q.options[pa.correct]?.text||letters[pa.correct];
+        const div=document.createElement('div');
+        div.className=`breakdown-item ${isRight?'ca':'wa'}`;
+        div.innerHTML=`<div class="breakdown-q"><span class="breakdown-qn">Q${i+1}</span><span>${q.question}</span></div><div class="breakdown-your ${isRight?'right':'wrong'}"><span class="iconify" data-icon="${isRight?'ph:check-circle-bold':'ph:x-circle-bold'}"></span>Your answer: <strong>${chosenLabel}</strong></div>${!isRight?`<div class="breakdown-correct-lbl"><span class="iconify" data-icon="ph:lightbulb-bold"></span> Correct: <strong>${correctLabel}</strong></div>`:''}`;
         list.appendChild(div);
     });
-
-    if (window.Iconify) window.Iconify.scan();
+    if(window.Iconify)window.Iconify.scan();
 }
 
-/* ── SCORECARD IMAGE GENERATION ────────────────────────── */
-async function generateScorecardImage() {
-    // Load Google Fonts into FontFace API so canvas can use them
-    const fontsToLoad = [
-        { family: 'Righteous',   url: 'https://fonts.gstatic.com/s/righteous/v17/1cXxaUPXBpj2rGoU7C9WiHGF.woff2' },
-        { family: 'Chewy',       url: 'https://fonts.gstatic.com/s/chewy/v18/uU9PCBUV4YenPWJU7xPb3vyHmlI.woff2' },
-        { family: 'BungeeShade', url: 'https://fonts.gstatic.com/s/bungeeshade/v13/Gg8xN5oFbgLvHAfNl2YbnA8aZouLIA.woff2' },
-    ];
-    await Promise.all(fontsToLoad.map(async ({ family, url }) => {
-        if (document.fonts.check(`16px "${family}"`)) return;
-        try { const f = new FontFace(family, `url(${url})`); await f.load(); document.fonts.add(f); } catch(e) {}
-    }));
+async function generateScorecardImage(){
+    const fontsToLoad=[{family:'Righteous',url:'https://fonts.gstatic.com/s/righteous/v17/1cXxaUPXBpj2rGoU7C9WiHGF.woff2'},{family:'Chewy',url:'https://fonts.gstatic.com/s/chewy/v18/uU9PCBUV4YenPWJU7xPb3vyHmlI.woff2'},{family:'BungeeShade',url:'https://fonts.gstatic.com/s/bungeeshade/v13/Gg8xN5oFbgLvHAfNl2YbnA8aZouLIA.woff2'}];
+    await Promise.all(fontsToLoad.map(async({family,url})=>{if(document.fonts.check(`16px "${family}"`))return;try{const f=new FontFace(family,`url(${url})`);await f.load();document.fonts.add(f);}catch(e){}}));
     await document.fonts.ready;
-
-    return new Promise((resolve) => {
-        const canvas = document.getElementById('scorecardCanvas');
-        const ctx    = canvas.getContext('2d');
-        const W = 800, H = 450;
-        canvas.width = W; canvas.height = H;
-
-        const percentage = Math.round((score / quiz.questions.length) * 100);
-
-        // Background
-        const bg = ctx.createLinearGradient(0, 0, W, H);
-        bg.addColorStop(0, '#0d0221'); bg.addColorStop(1, '#160036');
-        ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-
-        // Grid lines
-        ctx.strokeStyle = 'rgba(131,56,236,0.12)'; ctx.lineWidth = 1;
-        for (let x = 0; x < W; x += 50) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-        for (let y = 0; y < H; y += 50) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-
-        // Top accent bar
-        const bar = ctx.createLinearGradient(0,0,W,0);
-        bar.addColorStop(0,'#ff006e'); bar.addColorStop(0.5,'#8338ec'); bar.addColorStop(1,'#06ffa5');
-        ctx.fillStyle = bar; ctx.fillRect(0, 0, W, 6);
-
-        // Score circle
-        const cx = W/2, cy = 190, r = 90;
-        ctx.strokeStyle = 'rgba(131,56,236,0.25)'; ctx.lineWidth = 12;
-        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
-        const grad = ctx.createLinearGradient(cx-r, cy, cx+r, cy);
-        grad.addColorStop(0,'#ff006e'); grad.addColorStop(1,'#fb5607');
-        ctx.strokeStyle = grad; ctx.lineWidth = 12; ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + (Math.PI*2 * percentage/100));
-        ctx.stroke();
-
-        // Score text — BungeeShade matches the on-screen score-percent style
-        ctx.font = '700 56px "BungeeShade", cursive';
-        ctx.textAlign = 'center';
-        const pctGrad = ctx.createLinearGradient(cx-80, cy, cx+80, cy);
-        pctGrad.addColorStop(0,'#ff006e'); pctGrad.addColorStop(1,'#fb5607');
-        ctx.fillStyle = pctGrad;
-        ctx.fillText(percentage + '%', cx, cy + 20);
-
-        // Creator name + branding
-        ctx.font = '700 28px "Righteous", cursive';
-        const titGrad = ctx.createLinearGradient(0, 320, W, 320);
-        titGrad.addColorStop(0,'#06ffa5'); titGrad.addColorStop(1,'#ffbe0b');
-        ctx.fillStyle = titGrad;
-        ctx.fillText(`${quiz.creator}'s Quiz`, cx, 320);
-
-        ctx.font = '24px "Chewy", cursive';
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
-
-        const msgs = [[90,'Soulmate 👑'],[71,'BFF 🔥'],[51,'Good Friend 😊'],[31,'Suspicious 🤔'],[0,'Fake Friend 💀']];
-        const [, msg] = msgs.find(([t]) => percentage >= t);
-        ctx.fillText(msg, cx, 358);
-
-        ctx.font = '18px "Righteous", cursive';
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.fillText('realornah.app', cx, 422);
-
-        // Player name top-left
-        ctx.textAlign = 'left'; ctx.font = '700 18px "Righteous", cursive';
-        ctx.fillStyle = 'rgba(255,255,255,0.6)';
-        ctx.fillText(playerName, 28, 40);
-
+    return new Promise(resolve=>{
+        const canvas=document.getElementById('scorecardCanvas'),ctx=canvas.getContext('2d'),W=800,H=450;
+        canvas.width=W;canvas.height=H;
+        const percentage=Math.round((score/quiz.questions.length)*100);
+        const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#0d0221');bg.addColorStop(1,'#160036');
+        ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+        ctx.strokeStyle='rgba(131,56,236,0.12)';ctx.lineWidth=1;
+        for(let x=0;x<W;x+=50){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+        for(let y=0;y<H;y+=50){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+        const bar=ctx.createLinearGradient(0,0,W,0);bar.addColorStop(0,'#ff006e');bar.addColorStop(.5,'#8338ec');bar.addColorStop(1,'#06ffa5');
+        ctx.fillStyle=bar;ctx.fillRect(0,0,W,6);
+        const cx=W/2,cy=190,r=90;
+        ctx.strokeStyle='rgba(131,56,236,0.25)';ctx.lineWidth=12;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+        const grad=ctx.createLinearGradient(cx-r,cy,cx+r,cy);grad.addColorStop(0,'#ff006e');grad.addColorStop(1,'#fb5607');
+        ctx.strokeStyle=grad;ctx.lineWidth=12;ctx.lineCap='round';ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+(Math.PI*2*percentage/100));ctx.stroke();
+        ctx.font='700 56px "BungeeShade",cursive';ctx.textAlign='center';
+        const pctGrad=ctx.createLinearGradient(cx-80,cy,cx+80,cy);pctGrad.addColorStop(0,'#ff006e');pctGrad.addColorStop(1,'#fb5607');
+        ctx.fillStyle=pctGrad;ctx.fillText(percentage+'%',cx,cy+20);
+        ctx.font='700 28px "Righteous",cursive';
+        const titGrad=ctx.createLinearGradient(0,320,W,320);titGrad.addColorStop(0,'#06ffa5');titGrad.addColorStop(1,'#ffbe0b');
+        ctx.fillStyle=titGrad;ctx.fillText(`${quiz.creator}'s Quiz`,cx,320);
+        ctx.font='24px "Chewy",cursive';ctx.fillStyle='rgba(255,255,255,0.7)';
+        const msgs=[[90,'Soulmate'],[71,'BFF'],[51,'Good Friend'],[31,'Suspicious'],[0,'Fake Friend']];
+        const[,msg]=msgs.find(([t])=>percentage>=t);
+        ctx.fillText(msg,cx,358);
+        ctx.font='18px "Righteous",cursive';ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillText('realornah.app',cx,422);
+        ctx.textAlign='left';ctx.font='700 18px "Righteous",cursive';ctx.fillStyle='rgba(255,255,255,0.6)';ctx.fillText(playerName,28,40);
         resolve(canvas.toDataURL('image/png'));
     });
 }
 
-/* ── SHARE SHEET ─────────────────────────────────────── */
-function openShareSheet() {
-    document.getElementById('shareSheet').classList.add('active');
-    if (window.Iconify) window.Iconify.scan();
-}
-function closeShareSheet() {
-    document.getElementById('shareSheet').classList.remove('active');
-}
-document.getElementById('shareSheet').addEventListener('click', e => { if (e.target === e.currentTarget) closeShareSheet(); });
+function openShareSheet(){document.getElementById('shareSheet').classList.add('active');if(window.Iconify)window.Iconify.scan();}
+function closeShareSheet(){document.getElementById('shareSheet').classList.remove('active');}
+document.getElementById('shareSheet').addEventListener('click',e=>{if(e.target===e.currentTarget)closeShareSheet();});
 
-async function shareScorecard(platform) {
-    const percentage = Math.round((score / quiz.questions.length) * 100);
-    const text = `I scored ${percentage}% on ${quiz.creator}'s RealOrNah quiz! 🔥 Can you beat me? ${location.href}`;
-    const url  = location.href;
-
-    if (platform === 'whatsapp') {
-        const imgData = await generateScorecardImage();
-        const percentage = Math.round((score / quiz.questions.length) * 100);
-        const tiers2 = [[90,'Soulmate 👑'],[71,'Best Friend Forever 🔥'],[51,'Good Friend 😊'],[31,'Suspicious Friend 🤔'],[0,'Fake Friend Detected 💀']];
-        const [,tierName2] = tiers2.find(([t])=>percentage>=t);
-        const waText = `🚨 I just took ${quiz.creator}'s RealorNah quiz and got "${tierName2}" with ${percentage}%!\n\nI bet you can't beat me 👀\n\nTake the quiz: ${url}\n\n(Create your own: realornah.app)`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`, '_blank');
+async function shareScorecard(platform){
+    const percentage=Math.round((score/quiz.questions.length)*100);
+    const url=location.href;
+    if(platform==='whatsapp'){
+        const imgData=await generateScorecardImage();
+        const tiers2=[[90,'Soulmate'],[71,'Best Friend Forever'],[51,'Good Friend'],[31,'Suspicious Friend'],[0,'Fake Friend Detected']];
+        const[,tierName2]=tiers2.find(([t])=>percentage>=t);
+        const waText=`I just took ${quiz.creator}'s RealorNah quiz and got "${tierName2}" with ${percentage}%!\n\nI bet you can't beat me\n\nTake the quiz: ${url}\n\n(Create your own: realornah.app)`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`,'_blank');
         triggerImageDownload(imgData);
-    } else if (platform === 'telegram') {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s RealOrNah quiz! 🔥`)}`, '_blank');
-        const imgData = await generateScorecardImage();
-        triggerImageDownload(imgData);
-    } else if (platform === 'copy') {
-        navigator.clipboard.writeText(url).then(() => {
-            const btn = document.querySelector('.share-app-btn.cp');
-            btn.innerHTML = '<span class="sab-icon iconify" data-icon="ph:check-bold"></span>Copied!';
-            if (window.Iconify) window.Iconify.scan();
-            setTimeout(() => { btn.innerHTML = '<span class="sab-icon iconify" data-icon="ph:copy-bold"></span>Copy Link'; if (window.Iconify) window.Iconify.scan(); }, 2000);
-        });
-        return;
-    } else if (platform === 'native') {
-        const imgData = await generateScorecardImage();
-        try {
-            const blob = await (await fetch(imgData)).blob();
-            const file = new File([blob], 'realornah-score.png', {type:'image/png'});
-            if (navigator.canShare && navigator.canShare({files:[file]})) {
-                await navigator.share({ files:[file], title:'RealOrNah Score', text });
-            } else if (navigator.share) {
-                await navigator.share({ title:'RealOrNah', text, url });
-            } else {
-                triggerImageDownload(imgData);
-            }
-        } catch { triggerImageDownload(imgData); }
+    }else if(platform==='telegram'){
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s RealOrNah quiz!`)}`,'_blank');
+        const imgData=await generateScorecardImage();triggerImageDownload(imgData);
+    }else if(platform==='copy'){
+        navigator.clipboard.writeText(url).then(()=>{
+            const btn=document.querySelector('.share-app-btn.cp');
+            btn.innerHTML='<span class="sab-icon iconify" data-icon="ph:check-bold"></span>Copied!';
+            if(window.Iconify)window.Iconify.scan();
+            setTimeout(()=>{btn.innerHTML='<span class="sab-icon iconify" data-icon="ph:copy-bold"></span>Copy Link';if(window.Iconify)window.Iconify.scan();},2000);
+        });return;
+    }else if(platform==='native'){
+        const imgData=await generateScorecardImage();
+        try{
+            const blob=await(await fetch(imgData)).blob();
+            const file=new File([blob],'realornah-score.png',{type:'image/png'});
+            if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'RealOrNah Score',text:`I scored ${percentage}% on ${quiz.creator}'s quiz`});}
+            else if(navigator.share){await navigator.share({title:'RealOrNah',text:`I scored ${percentage}%`,url});}
+            else{triggerImageDownload(imgData);}
+        }catch{triggerImageDownload(imgData);}
     }
     closeShareSheet();
 }
 
-function triggerImageDownload(dataUrl) {
-    const a = document.createElement('a');
-    a.href = dataUrl; a.download = 'realornah-scorecard.png'; a.click();
-}
+function triggerImageDownload(dataUrl){const a=document.createElement('a');a.href=dataUrl;a.download='realornah-scorecard.png';a.click();}
 
-function createConfetti() {
-    const colors = ['#ff006e','#8338ec','#fb5607','#06ffa5','#ffbe0b'];
-    for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-            const c = document.createElement('div'); c.className = 'confetti';
-            c.style.left = Math.random()*100+'vw';
-            c.style.background = colors[Math.floor(Math.random()*colors.length)];
-            c.style.animationDuration = (Math.random()*2+2)+'s';
-            document.body.appendChild(c);
-            setTimeout(() => c.remove(), 4000);
-        }, i * 50);
+function createConfetti(){
+    const colors=['#ff006e','#8338ec','#fb5607','#06ffa5','#ffbe0b'];
+    for(let i=0;i<50;i++){
+        setTimeout(()=>{
+            const c=document.createElement('div');c.className='confetti';
+            c.style.left=Math.random()*100+'vw';c.style.background=colors[Math.floor(Math.random()*colors.length)];
+            c.style.animationDuration=(Math.random()*2+2)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4000);
+        },i*50);
     }
 }
 
-// Boot
-window.onload = () => { init(); };
+window.onload=()=>{init();};
 </script>
 </body>
 </html>
