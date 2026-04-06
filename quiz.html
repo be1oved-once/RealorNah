@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Play Quiz - RealorNah</title>
+    <title>Take This Friendship Quiz — Can You Score 100%? | RealorNah</title>
+    <meta name="description" content="Your friend dared you to take their friendship quiz on RealorNah. How well do YOU know them? Take the test and find out your Bestie Tier 🔥">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Your friend challenged you to their quiz 👀">
+    <meta property="og:description" content="Most people can't score above 70%. Can you? Take the RealorNah friendship quiz and prove you're a real one 🔥">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://realornah.app/og-quiz.png">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
-    <meta name="robots" content="noindex, nofollow">
     <!-- Basic favicon -->
 <link rel="icon" href="/favicon/favicon.ico" sizes="any">
 
@@ -157,6 +163,25 @@
         .breakdown-your.wrong{color:var(--neon-pink)}
         .breakdown-correct-lbl{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.55);font-family:'Chewy',cursive;font-size:.78rem}
         #scorecardCanvas{display:none}
+        /* ── BESTIE TIER BADGE ── */
+        .bestie-tier-badge{display:flex;flex-direction:column;align-items:center;margin-bottom:1.25rem;animation:fadeIn .6s ease}
+        .tier-emoji-large{font-size:3.5rem;margin-bottom:.25rem;animation:tierPop .5s ease .3s both}
+        @keyframes tierPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+        .tier-name{font-family:'Bungee Shade',cursive;font-size:1.4rem;margin-bottom:.2rem}
+        .tier-name.soulmate{background:linear-gradient(135deg,gold,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .tier-name.bff{background:linear-gradient(135deg,var(--cyan-blast),#00e5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .tier-name.good{background:linear-gradient(135deg,#a78bfa,var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .tier-name.suspicious{background:linear-gradient(135deg,var(--lemon-yellow),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .tier-name.fake{background:linear-gradient(135deg,var(--neon-pink),#cc0055);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .tier-tagline{font-family:'Chewy',cursive;font-size:.9rem;color:rgba(255,255,255,.6)}
+        .avg-score-bar{background:var(--card-bg);border:1.5px solid rgba(131,56,236,.3);border-radius:12px;padding:.75rem 1rem;margin-bottom:1rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.7);text-align:center}
+        .avg-score-bar strong{color:var(--cyan-blast)}
+        /* ── REVENGE QUIZ BUTTON ── */
+        .revenge-btn{width:100%;padding:1.1rem;background:linear-gradient(135deg,#7c3aed,var(--neon-pink));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.05rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;margin-bottom:.75rem;box-shadow:0 8px 25px rgba(124,58,237,.4);position:relative;overflow:hidden}
+        .revenge-btn::before{content:'😈';position:absolute;right:1rem;font-size:1.3rem;animation:wiggle 1s infinite}
+        @keyframes wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+        .revenge-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,0,110,.5)}
+        .revenge-hint{font-family:'Chewy',cursive;font-size:.78rem;color:rgba(255,255,255,.45);text-align:center;margin-bottom:.75rem}
     </style>
 </head>
 <body>
@@ -255,12 +280,30 @@
             <div id="leaderboardList"></div>
         </div>
 
+        <!-- BESTIE TIER BADGE -->
+        <div class="bestie-tier-badge" id="bestieTierBadge" style="display:none">
+            <div class="tier-emoji-large" id="tierEmojiLarge"></div>
+            <div class="tier-name" id="tierNameEl"></div>
+            <div class="tier-tagline" id="tierTagline"></div>
+        </div>
+
+        <!-- AVG SCORE CONTEXT -->
+        <div class="avg-score-bar" id="avgScoreBar" style="display:none"></div>
+
         <div class="result-actions">
             <button class="action-btn primary" onclick="openShareSheet()">
                 <span class="iconify" data-icon="ph:share-network-bold"></span> Share My Score
             </button>
-            <a href="create-quiz.html" class="action-btn secondary" style="text-decoration:none">
-                <span class="iconify" data-icon="ph:plus-bold"></span> Create My Own Quiz
+
+            <!-- REVENGE QUIZ — The Viral Loop -->
+            <a id="revengeBtn" href="create-quiz.html" class="revenge-btn">
+                <span class="iconify" data-icon="ph:arrow-counter-clockwise-bold"></span>
+                Now Make THEM Sweat — Create Your Quiz
+            </a>
+            <div class="revenge-hint">Challenge them back in 2 minutes ↑ This is the move.</div>
+
+            <a href="index.html" class="action-btn secondary" style="text-decoration:none">
+                <span class="iconify" data-icon="ph:house-bold"></span> Back to Home
             </a>
         </div>
 
@@ -594,18 +637,52 @@ async function saveAndShowResults() {
         circle.style.strokeDashoffset = 440 - (440 * percentage) / 100;
     }, 100);
 
-    const msgs = [
-        [90, "Best Friend Forever 🏆",  `You know ${quiz.creator} better than anyone!`],
-        [70, "You're a Good Friend 😊",  `You know ${quiz.creator} pretty well!`],
-        [50, "Not Bad 😐",              `You know some things about ${quiz.creator}.`],
-        [30, "Suspicious Friend 🤔",     `Do you even know ${quiz.creator}?`],
-        [0,  "Fake Friend Detected 💀",  `You're basically a stranger!`],
+    const tiers = [
+        [90, {emoji:'👑', name:'Soulmate',             cls:'soulmate',    tag:`You know ${quiz.creator} better than they know themselves!`,    confetti:true}],
+        [71, {emoji:'🔥', name:'Best Friend Forever',  cls:'bff',         tag:`Real one. The group chat MVP.`,                                  confetti:true}],
+        [51, {emoji:'😊', name:'Good Friend',           cls:'good',        tag:`You know ${quiz.creator} pretty well. Not bad.`}],
+        [31, {emoji:'🤔', name:'Suspicious Friend',     cls:'suspicious',  tag:`Do you even know ${quiz.creator}? We have questions.`}],
+        [0,  {emoji:'💀', name:'Fake Friend Detected',  cls:'fake',        tag:`You're basically a stranger. The audacity.`}],
     ];
-    const [, msg, sub] = msgs.find(([t]) => percentage >= t);
-    document.getElementById('resultMessage').textContent  = msg;
-    document.getElementById('resultSubtitle').textContent = sub;
-    document.getElementById('shareSheetSub').textContent  = `"I scored ${percentage}% on ${quiz.creator}'s RealOrNah quiz!"`;
-    if (percentage >= 90) createConfetti();
+    const [, tier] = tiers.find(([t]) => percentage >= t);
+
+    // Show Bestie Tier badge
+    const badgeEl = document.getElementById('bestieTierBadge');
+    const emojiEl = document.getElementById('tierEmojiLarge');
+    const nameEl  = document.getElementById('tierNameEl');
+    const tagEl   = document.getElementById('tierTagline');
+    emojiEl.textContent = tier.emoji;
+    nameEl.textContent  = tier.name;
+    nameEl.className    = `tier-name ${tier.cls}`;
+    tagEl.textContent   = tier.tag;
+    badgeEl.style.display = 'flex';
+
+    // Legacy message fields (keep for scorecard)
+    document.getElementById('resultMessage').textContent  = `${tier.emoji} ${tier.name}`;
+    document.getElementById('resultSubtitle').textContent = tier.tag;
+
+    // Avg score context
+    const allScoresArr = allScores.map(s => s.score || 0);
+    if (allScoresArr.length > 1) {
+        const avg = Math.round(allScoresArr.reduce((a,b)=>a+b,0)/allScoresArr.length);
+        const avgBar = document.getElementById('avgScoreBar');
+        avgBar.style.display = 'block';
+        if (percentage > avg) {
+            avgBar.innerHTML = `You scored <strong>${percentage}%</strong> — above the average of <strong>${avg}%</strong> 👏 Only ${allScoresArr.filter(s=>s>=percentage).length} out of ${allScoresArr.length} people beat your score!`;
+        } else {
+            avgBar.innerHTML = `The average score on this quiz is <strong>${avg}%</strong>. You scored <strong>${percentage}%</strong>. Think you can do better? 👀`;
+        }
+    }
+
+    // Dynamic share text for share sheet
+    const viralkTexts = [
+        `I scored ${percentage}% on ${quiz.creator}'s RealorNah quiz! I got "${tier.name}" 🏆`,
+        `My bestie ranked me "${tier.name}" on their quiz 💀 I scored ${percentage}%. Can you beat me? `,
+        `Only ${Math.floor(Math.random()*3)+2} people scored above ${percentage}% on ${quiz.creator}'s quiz. Challenge accepted? `,
+    ];
+    document.getElementById('shareSheetSub').textContent = viralkTexts[0];
+
+    if (tier.confetti) createConfetti();
 
     // Leaderboard
     const sorted = [...allScores].sort((a,b) => b.score - a.score);
@@ -727,7 +804,7 @@ async function generateScorecardImage() {
         ctx.font = '24px "Chewy", cursive';
         ctx.fillStyle = 'rgba(255,255,255,0.7)';
 
-        const msgs = [[90,'Best Friend Forever 🏆'],[70,"Good Friend 😊"],[50,'Not Bad 😐'],[30,'Suspicious Friend 🤔'],[0,'Fake Friend Detected 💀']];
+        const msgs = [[90,'Soulmate 👑'],[71,'BFF 🔥'],[51,'Good Friend 😊'],[31,'Suspicious 🤔'],[0,'Fake Friend 💀']];
         const [, msg] = msgs.find(([t]) => percentage >= t);
         ctx.fillText(msg, cx, 358);
 
@@ -761,9 +838,11 @@ async function shareScorecard(platform) {
 
     if (platform === 'whatsapp') {
         const imgData = await generateScorecardImage();
-        // WhatsApp can't receive images from web, so share link with text
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        // Also trigger image download so user can attach manually
+        const percentage = Math.round((score / quiz.questions.length) * 100);
+        const tiers2 = [[90,'Soulmate 👑'],[71,'Best Friend Forever 🔥'],[51,'Good Friend 😊'],[31,'Suspicious Friend 🤔'],[0,'Fake Friend Detected 💀']];
+        const [,tierName2] = tiers2.find(([t])=>percentage>=t);
+        const waText = `🚨 I just took ${quiz.creator}'s RealorNah quiz and got "${tierName2}" with ${percentage}%!\n\nI bet you can't beat me 👀\n\nTake the quiz: ${url}\n\n(Create your own: realornah.app)`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`, '_blank');
         triggerImageDownload(imgData);
     } else if (platform === 'telegram') {
         window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s RealOrNah quiz! 🔥`)}`, '_blank');
