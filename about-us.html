@@ -13,11 +13,12 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://realornah.app/about-us.html">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About RealorNah – The Viral Friend Quiz App">
+    <meta name="twitter:description" content="Create a quiz about yourself. Make your friends answer. Watch the leaderboard. Find out who's actually real.">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"RealorNah","url":"https://realornah.app"}</script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
-    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"RealorNah","url":"https://realornah.app"}</script>
+
+    <!-- Favicons -->
     <link rel="icon" href="/favicon/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -25,108 +26,709 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+
     <style>
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-        :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e;--sidebar-bg:#0a0118}
-        html,body{height:100%;overflow-x:hidden}
-        body{font-family:'Righteous',cursive;background:var(--deep-bg);color:white;line-height:1.5}
-        #readingProgress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--neon-pink),var(--electric-purple),var(--cyan-blast));z-index:9999;transition:width .1s linear;box-shadow:0 0 8px rgba(255,0,110,.6)}
-        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(131,56,236,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(131,56,236,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
-        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
-        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");pointer-events:none}
-        .app-container{position:relative;width:100%;height:100%;overflow:hidden}
-        /* Sidebar */
-        .sidebar{position:fixed;top:0;left:0;width:85%;max-width:320px;height:100%;background:var(--sidebar-bg);border-right:2px solid var(--electric-purple);z-index:200;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:1rem;box-shadow:5px 0 30px rgba(0,0,0,.5)}
-        .sidebar.open{transform:translateX(0)}
-        .sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid rgba(131,56,236,.3)}
-        .sidebar-logo{font-family:'Rubik Bubbles',cursive;font-size:1.3rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .close-sidebar{width:40px;height:40px;background:rgba(255,0,110,.2);border:2px solid var(--neon-pink);border-radius:50%;color:var(--neon-pink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s}
-        .close-sidebar:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
-        .sidebar-menu{flex:1;display:flex;flex-direction:column;gap:.5rem}
-        .menu-item{display:flex;align-items:center;gap:1rem;padding:1rem;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;transition:all .3s;font-size:1rem}
-        .menu-item:hover,.menu-item.active{background:rgba(131,56,236,.2);color:var(--cyan-blast)}
-        .sidebar-footer{padding-top:1rem;border-top:1px solid rgba(131,56,236,.3);display:flex;flex-direction:column;gap:.5rem}
-        .insta-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
-        .insta-link:hover{transform:scale(1.02);box-shadow:0 5px 20px rgba(253,29,29,.4)}
-        .brand-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#ff4d8d,#ff758f);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
-        .brand-link:hover{transform:scale(1.03);box-shadow:0 8px 25px rgba(255,77,141,.5)}
-        .brand-logo{width:26px;height:26px;border-radius:6px;object-fit:cover;box-shadow:0 3px 8px rgba(0,0,0,.3)}
-        .sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
-        .sidebar-overlay.active{opacity:1;visibility:visible}
-        .main-content{width:100%;height:100%;overflow-y:auto;transition:transform .3s ease}
-        .main-content.shifted{transform:translateX(85%)}
-        /* Nav */
-        nav{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;position:sticky;top:0;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
-        .menu-btn{width:42px;height:42px;background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;flex-shrink:0}
-        .menu-btn:hover{background:var(--electric-purple);transform:scale(1.05)}
-        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
-        .nav-cta{font-family:'Rubik Bubbles',cursive;font-size:.7rem;padding:.5rem .875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:20px;color:white;text-decoration:none;transition:all .3s;flex-shrink:0;display:flex;align-items:center;gap:.3rem}
-        .nav-cta:hover{transform:scale(1.05);box-shadow:0 5px 15px rgba(255,0,110,.4)}
-        /* Article */
-        .container{max-width:600px;margin:0 auto;padding:1rem .75rem 2rem}
-        .article-header{text-align:center;padding:1.5rem 0 1rem}
-        .category-badge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,0,110,.12);border:1.5px solid var(--neon-pink);border-radius:20px;padding:.3rem .875rem;font-size:.75rem;color:var(--neon-pink);margin-bottom:.875rem}
-        .article-title{font-family:'Bungee Shade',cursive;font-size:clamp(1.5rem,6vw,2rem);background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;line-height:1.15}
-        .article-subtitle{font-family:'Chewy',cursive;font-size:.95rem;color:rgba(255,255,255,.65);max-width:420px;margin:0 auto}
-        .header-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--neon-pink),var(--electric-purple));border-radius:2px;margin:1rem auto 0}
-        .article-body{padding-top:1.25rem}
-        .lead{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:1.25rem}
-        .body-text{font-size:.875rem;color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:1rem}
-        .sec-heading{font-family:'Chewy',cursive;font-size:1.15rem;color:var(--lemon-yellow);margin:1.75rem 0 .875rem;display:flex;align-items:center;gap:.5rem}
-        /* Stats strip */
-        .stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1.25rem 0}
-        .stat-card{background:var(--card-bg);border:2px solid rgba(131,56,236,.4);border-radius:16px;padding:1rem .5rem;text-align:center;transition:all .3s}
-        .stat-card:hover{border-color:var(--neon-pink);transform:translateY(-2px)}
-        .stat-n{font-family:'Bungee Shade',cursive;font-size:1.3rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-bottom:.2rem}
-        .stat-l{font-size:.68rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px}
-        /* Pull quote */
-        .pull-quote{background:linear-gradient(135deg,rgba(255,0,110,.08),rgba(131,56,236,.08));border-left:4px solid var(--neon-pink);border-radius:0 14px 14px 0;padding:1rem 1.25rem;margin:1.25rem 0}
-        .pull-quote p{font-family:'Chewy',cursive;font-size:1rem;color:white;line-height:1.6;margin-bottom:.4rem}
-        .pull-quote cite{font-size:.75rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.35rem}
-        /* Insight box */
-        .insight-box{background:rgba(6,255,165,.07);border:1.5px solid rgba(6,255,165,.3);border-radius:14px;padding:1rem 1.25rem;margin:1rem 0}
-        .insight-box h4{font-family:'Chewy',cursive;font-size:.95rem;color:var(--cyan-blast);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
-        .insight-box p{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.5}
-        /* Feature list */
-        .feat-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin:1rem 0}
-        .feat-list li{display:flex;align-items:flex-start;gap:.65rem;font-size:.85rem;color:rgba(255,255,255,.8);line-height:1.5}
-        .feat-list li .iconify{color:var(--cyan-blast);flex-shrink:0;margin-top:2px;font-size:1rem}
-        /* Section divider */
-        .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(131,56,236,.4),transparent);margin:2rem 0}
-        /* Comparison */
-        .comparison{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin:1rem 0}
-        .avoid,.embrace{background:var(--card-bg);border-radius:16px;padding:1rem;border:2px solid transparent}
-        .avoid{border-color:rgba(255,0,110,.3)}
-        .embrace{border-color:rgba(6,255,165,.3)}
-        .avoid h4{font-family:'Chewy',cursive;font-size:.95rem;color:var(--neon-pink);margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
-        .embrace h4{font-family:'Chewy',cursive;font-size:.95rem;color:var(--cyan-blast);margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
-        .avoid ul,.embrace ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-        .avoid ul li,.embrace ul li{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.4}
-        /* Roadmap */
-        .roadmap-list{display:flex;flex-direction:column;gap:1rem;margin:1rem 0}
-        .roadmap-item{display:flex;gap:1rem;align-items:flex-start}
-        .roadmap-dot{width:36px;height:36px;min-width:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem}
-        .roadmap-item.done .roadmap-dot{background:rgba(6,255,165,.2);border:2px solid var(--cyan-blast);color:var(--cyan-blast)}
-        .roadmap-item.live .roadmap-dot{background:rgba(251,86,7,.2);border:2px solid var(--hot-orange);color:var(--hot-orange)}
-        .roadmap-item.future .roadmap-dot{background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);color:var(--electric-purple)}
-        .roadmap-content{flex:1}
-        .roadmap-label{font-family:'Chewy',cursive;font-size:.85rem;margin-bottom:.3rem;display:flex;align-items:center;gap:.4rem}
-        .roadmap-item.done .roadmap-label{color:var(--cyan-blast)}
-        .roadmap-item.live .roadmap-label{color:var(--hot-orange)}
-        .roadmap-item.future .roadmap-label{color:var(--electric-purple)}
-        .roadmap-p{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5}
-        /* CTA */
-        .cta-button{font-family:'Rubik Bubbles',cursive;font-size:1rem;padding:.875rem 2rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));border:none;border-radius:16px;color:white;cursor:pointer;transition:all .3s;box-shadow:0 10px 30px rgba(255,0,110,.35);text-decoration:none;display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin:1.5rem 0}
-        .cta-button:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,0,110,.55)}
-        /* Footer */
-        footer{text-align:center;padding:2rem 1rem 1.5rem;border-top:1px solid rgba(131,56,236,.2)}
-        .footer-logo{font-family:'Rubik Bubbles',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
-        .footer-tagline{font-family:'Chewy',cursive;font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:.9rem}
-        .footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem}
-        .footer-links a{font-family:'Chewy',cursive;font-size:.82rem;color:rgba(255,255,255,.45);text-decoration:none;transition:color .3s}
-        .footer-links a:hover{color:var(--neon-pink)}
-        @media(max-width:440px){.comparison{grid-template-columns:1fr}.stats-strip{grid-template-columns:1fr 1fr}}
-        @media(min-width:768px){.container{max-width:700px}}
+        /* ══════════════════════════════════════
+           RESET & ROOT
+        ══════════════════════════════════════ */
+        *, *::before, *::after {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        :root {
+            --neon-pink: #ff006e;
+            --electric-purple: #8338ec;
+            --hot-orange: #fb5607;
+            --cyan-blast: #06ffa5;
+            --lemon-yellow: #ffbe0b;
+            --deep-bg: #0d0221;
+            --card-bg: #160036;
+            --input-bg: #1a0b2e;
+            --sidebar-bg: #0a0118;
+        }
+        html, body { height: 100%; overflow-x: hidden; }
+        body {
+            font-family: 'Righteous', cursive;
+            background: var(--deep-bg);
+            color: white;
+            line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════════
+           READING PROGRESS BAR
+        ══════════════════════════════════════ */
+        #readingProgress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-pink), var(--electric-purple), var(--cyan-blast));
+            z-index: 9999;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 8px rgba(255,0,110,0.6);
+        }
+
+        /* ══════════════════════════════════════
+           BACKGROUND
+        ══════════════════════════════════════ */
+        .bg-grid {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(131,56,236,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(131,56,236,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0%{transform:translate(0,0)} 100%{transform:translate(50px,50px)} }
+
+        .noise {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.03; z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* ══════════════════════════════════════
+           APP CONTAINER
+        ══════════════════════════════════════ */
+        .app-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
+
+        /* ══════════════════════════════════════
+           SIDEBAR
+        ══════════════════════════════════════ */
+        .sidebar {
+            position: fixed; top: 0; left: 0;
+            width: 85%; max-width: 320px; height: 100%;
+            background: var(--sidebar-bg);
+            border-right: 2px solid var(--electric-purple);
+            z-index: 200;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex; flex-direction: column;
+            padding: 1rem;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+        }
+        .sidebar.open { transform: translateX(0); }
+
+        .sidebar-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 2rem; padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(131,56,236,0.3);
+        }
+        .sidebar-logo {
+            font-family: 'Rubik Bubbles', cursive;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--electric-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .close-sidebar {
+            width: 40px; height: 40px;
+            background: rgba(255,0,110,0.2);
+            border: 2px solid var(--neon-pink);
+            border-radius: 50%; color: var(--neon-pink);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; transition: all 0.3s;
+        }
+        .close-sidebar:hover { background: var(--neon-pink); color: white; transform: rotate(90deg); }
+
+        .sidebar-menu { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+        .menu-item {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem; border-radius: 12px;
+            color: rgba(255,255,255,0.8); text-decoration: none;
+            transition: all 0.3s; font-size: 1rem;
+        }
+        .menu-item:hover, .menu-item.active {
+            background: rgba(131,56,236,0.2); color: var(--cyan-blast);
+        }
+        .sidebar-footer {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(131,56,236,0.3);
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .insta-link {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            border-radius: 12px; color: white; text-decoration: none;
+            font-size: 0.9rem; transition: all 0.3s;
+        }
+        .insta-link:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(253,29,29,0.4); }
+        .brand-link {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #ff4d8d, #ff758f);
+            border-radius: 12px; color: white; text-decoration: none;
+            font-size: 0.9rem; transition: all 0.3s;
+        }
+        .brand-link:hover { transform: scale(1.03); box-shadow: 0 8px 25px rgba(255,77,141,0.5); }
+        .brand-logo { width: 26px; height: 26px; border-radius: 6px; object-fit: cover; box-shadow: 0 3px 8px rgba(0,0,0,0.3); }
+
+        /* ══════════════════════════════════════
+           OVERLAY
+        ══════════════════════════════════════ */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+            z-index: 150; opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+        /* ══════════════════════════════════════
+           MAIN CONTENT
+        ══════════════════════════════════════ */
+        .main-content {
+            width: 100%; height: 100%; overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+        .main-content.shifted { transform: translateX(85%); }
+
+        /* ══════════════════════════════════════
+           NAV
+        ══════════════════════════════════════ */
+        nav {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            position: sticky; top: 0;
+            background: rgba(13,2,33,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 2px solid rgba(131,56,236,0.3);
+        }
+        .menu-btn {
+            width: 42px; height: 42px;
+            background: rgba(131,56,236,0.2);
+            border: 2px solid var(--electric-purple);
+            border-radius: 12px; color: white;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; transition: all 0.3s; flex-shrink: 0;
+        }
+        .menu-btn:hover { background: var(--electric-purple); transform: scale(1.05); }
+        .nav-logo {
+            font-family: 'Rubik Bubbles', cursive;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--electric-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; flex: 1; text-align: center;
+        }
+        .nav-cta {
+            font-family: 'Rubik Bubbles', cursive;
+            font-size: 0.7rem; padding: 0.5rem 0.875rem;
+            background: linear-gradient(135deg, var(--hot-orange), var(--neon-pink));
+            border: none; border-radius: 20px; color: white;
+            text-decoration: none; transition: all 0.3s; flex-shrink: 0;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+        .nav-cta:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255,0,110,0.4); }
+
+        /* ══════════════════════════════════════
+           CONTAINER
+        ══════════════════════════════════════ */
+        .container { max-width: 620px; margin: 0 auto; padding: 1rem 0.875rem 3rem; }
+
+        /* ══════════════════════════════════════
+           ARTICLE HEADER
+        ══════════════════════════════════════ */
+        .article-header {
+            text-align: center;
+            padding: 2rem 0.5rem 1.5rem;
+        }
+        .category-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: rgba(255,0,110,0.15);
+            border: 1.5px solid var(--neon-pink);
+            padding: 0.35rem 1rem; border-radius: 20px;
+            font-size: 0.72rem; color: var(--neon-pink);
+            margin-bottom: 1rem;
+            animation: badgePulse 2s infinite;
+        }
+        @keyframes badgePulse {
+            0%,100%{box-shadow:0 0 0 0 rgba(255,0,110,0.4)}
+            50%{box-shadow:0 0 0 8px rgba(255,0,110,0)}
+        }
+        .article-title {
+            font-family: 'Bungee Shade', cursive;
+            font-size: clamp(1.6rem, 7vw, 2.4rem);
+            line-height: 1.1; margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff 0%, var(--neon-pink) 50%, var(--hot-orange) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .article-subtitle {
+            font-family: 'Chewy', cursive;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            color: rgba(255,255,255,0.75);
+            max-width: 420px; margin: 0 auto;
+            line-height: 1.6;
+        }
+        .header-divider {
+            width: 80px; height: 3px; margin: 1.25rem auto 0;
+            background: linear-gradient(90deg, var(--neon-pink), var(--electric-purple), var(--cyan-blast));
+            border-radius: 10px;
+        }
+
+        /* ══════════════════════════════════════
+           ARTICLE BODY
+        ══════════════════════════════════════ */
+        .article-body { display: flex; flex-direction: column; gap: 0; padding-top: 1.25rem; }
+
+        .lead {
+            background: var(--card-bg);
+            border: 2px solid rgba(131,56,236,0.4);
+            border-left: 4px solid var(--neon-pink);
+            border-radius: 16px;
+            padding: 1.25rem 1.1rem;
+            font-family: 'Chewy', cursive;
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 1.75rem;
+        }
+        .lead strong { color: var(--cyan-blast); }
+
+        /* Section heading */
+        .sec-heading {
+            font-family: 'Bungee Shade', cursive;
+            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            background: linear-gradient(135deg, var(--cyan-blast), var(--lemon-yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1.75rem 0 0.9rem;
+            display: flex; align-items: center; gap: 0.55rem;
+        }
+        .sec-heading .iconify { font-size: 1.1rem; -webkit-text-fill-color: initial; }
+
+        /* Body text */
+        .body-text {
+            font-family: 'Chewy', cursive;
+            font-size: clamp(0.92rem, 3vw, 1rem);
+            color: rgba(255,255,255,0.78);
+            line-height: 1.75;
+            margin-bottom: 1rem;
+        }
+
+        /* ══════════════════════════════════════
+           PULL QUOTE
+        ══════════════════════════════════════ */
+        .pull-quote {
+            background: linear-gradient(135deg, rgba(255,0,110,0.12), rgba(131,56,236,0.12));
+            border: 2px solid rgba(255,0,110,0.3);
+            border-radius: 16px;
+            padding: 1.25rem 1.1rem 1rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .pull-quote::before {
+            content: '"';
+            position: absolute; top: -10px; left: 10px;
+            font-family: 'Bungee Shade', cursive;
+            font-size: 4rem;
+            color: rgba(255,0,110,0.15);
+            line-height: 1;
+        }
+        .pull-quote p {
+            font-family: 'Chewy', cursive;
+            font-size: clamp(1rem, 3.5vw, 1.15rem);
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        .pull-quote cite {
+            font-size: 0.78rem;
+            color: var(--neon-pink);
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+
+        /* ══════════════════════════════════════
+           INSIGHT / CALLOUT BOX
+        ══════════════════════════════════════ */
+        .insight-box {
+            background: rgba(6,255,165,0.07);
+            border: 2px solid rgba(6,255,165,0.3);
+            border-radius: 16px;
+            padding: 1.1rem;
+            margin: 1.25rem 0;
+        }
+        .insight-box h4 {
+            font-family: 'Chewy', cursive;
+            font-size: 1rem; color: var(--cyan-blast);
+            margin-bottom: 0.45rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .insight-box p {
+            font-family: 'Chewy', cursive;
+            font-size: 0.9rem; color: rgba(255,255,255,0.75);
+            line-height: 1.65;
+        }
+
+        /* ══════════════════════════════════════
+           FEATURE LIST
+        ══════════════════════════════════════ */
+        .feat-list {
+            list-style: none;
+            display: flex; flex-direction: column; gap: 0.6rem;
+            margin: 0.75rem 0 1.25rem;
+        }
+        .feat-list li {
+            display: flex; align-items: flex-start; gap: 0.75rem;
+            background: var(--card-bg);
+            border: 1.5px solid rgba(131,56,236,0.3);
+            border-radius: 12px;
+            padding: 0.75rem 0.875rem;
+            font-family: 'Chewy', cursive;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.82);
+            line-height: 1.5;
+            transition: all 0.3s;
+        }
+        .feat-list li:hover {
+            border-color: var(--neon-pink);
+            transform: translateX(4px);
+        }
+        .feat-list li .iconify {
+            color: var(--cyan-blast); font-size: 1.1rem; flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* ══════════════════════════════════════
+           TRUST BLOCK
+        ══════════════════════════════════════ */
+        .trust-block {
+            background: var(--card-bg);
+            border: 2px solid var(--electric-purple);
+            border-radius: 20px;
+            padding: 1.25rem;
+            margin: 1.25rem 0;
+            position: relative; overflow: hidden;
+        }
+        .trust-block::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--electric-purple), var(--cyan-blast));
+        }
+
+        /* ══════════════════════════════════════
+           COMPARISON
+        ══════════════════════════════════════ */
+        .comparison {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem;
+            margin: 1rem 0 1.5rem;
+        }
+        .avoid, .embrace {
+            background: var(--card-bg);
+            border-radius: 16px; padding: 1rem 0.9rem;
+        }
+        .avoid {
+            background: rgba(255,0,110,0.06);
+            border: 2px solid rgba(255,0,110,0.25);
+        }
+        .embrace {
+            background: rgba(6,255,165,0.06);
+            border: 2px solid rgba(6,255,165,0.25);
+        }
+        .avoid h4, .embrace h4 {
+            font-family: 'Chewy', cursive;
+            font-size: 0.9rem; margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .avoid h4 { color: var(--neon-pink); }
+        .embrace h4 { color: var(--cyan-blast); }
+        .avoid ul, .embrace ul {
+            list-style: none; display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .avoid ul li, .embrace ul li {
+            font-family: 'Chewy', cursive;
+            font-size: 0.82rem; color: rgba(255,255,255,0.72);
+            line-height: 1.45; display: flex; align-items: flex-start; gap: 0.4rem;
+        }
+        .avoid ul li::before { content: '✗'; color: var(--neon-pink); flex-shrink: 0; }
+        .embrace ul li::before { content: '✓'; color: var(--cyan-blast); flex-shrink: 0; }
+
+        /* ══════════════════════════════════════
+           STATS STRIP
+        ══════════════════════════════════════ */
+        .stats-strip {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 0.75rem; margin: 1rem 0 1.5rem;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border: 2px solid var(--electric-purple);
+            border-radius: 16px; padding: 1.1rem 0.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: var(--neon-pink); transform: translateY(-2px); }
+        .stat-n {
+            font-family: 'Bungee Shade', cursive;
+            font-size: 1.6rem; display: block;
+            background: linear-gradient(135deg, var(--neon-pink), var(--hot-orange));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.2rem;
+        }
+        .stat-l { font-family: 'Chewy', cursive; font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+
+        /* ══════════════════════════════════════
+           SECTION DIVIDER
+        ══════════════════════════════════════ */
+        .section-divider {
+            height: 2px; margin: 1.75rem 0;
+            background: linear-gradient(90deg, transparent, var(--electric-purple), transparent);
+            border-radius: 10px;
+        }
+
+        /* ══════════════════════════════════════
+           ROADMAP
+        ══════════════════════════════════════ */
+        .roadmap-list { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0 1.5rem; }
+        .roadmap-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .roadmap-dot {
+            width: 36px; height: 36px; min-width: 36px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; flex-shrink: 0;
+        }
+        .roadmap-item.done .roadmap-dot {
+            background: rgba(6,255,165,0.2);
+            border: 2px solid var(--cyan-blast);
+            color: var(--cyan-blast);
+        }
+        .roadmap-item.live .roadmap-dot {
+            background: rgba(251,86,7,0.2);
+            border: 2px solid var(--hot-orange);
+            color: var(--hot-orange);
+        }
+        .roadmap-item.future .roadmap-dot {
+            background: rgba(131,56,236,0.2);
+            border: 2px dashed var(--electric-purple);
+            color: var(--electric-purple);
+        }
+        .roadmap-content { flex: 1; }
+        .roadmap-label {
+            font-family: 'Chewy', cursive;
+            font-size: 0.95rem; margin-bottom: 0.3rem;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .roadmap-item.done .roadmap-label { color: var(--cyan-blast); }
+        .roadmap-item.live .roadmap-label { color: var(--hot-orange); }
+        .roadmap-item.future .roadmap-label { color: var(--electric-purple); }
+        .roadmap-p {
+            font-family: 'Chewy', cursive;
+            font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.6;
+        }
+
+        /* ══════════════════════════════════════
+           CONTACT FORM
+        ══════════════════════════════════════ */
+        .contact-wrap {
+            background: var(--card-bg);
+            border: 2px solid var(--electric-purple);
+            border-radius: 20px;
+            padding: 1.5rem 1.25rem;
+            margin: 1.25rem 0;
+            position: relative; overflow: hidden;
+        }
+        .contact-wrap::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--electric-purple), var(--cyan-blast));
+        }
+        .contact-title {
+            font-family: 'Bungee Shade', cursive;
+            font-size: clamp(1.1rem, 4vw, 1.35rem);
+            background: linear-gradient(135deg, var(--cyan-blast), var(--lemon-yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.35rem;
+        }
+        .contact-sub {
+            font-family: 'Chewy', cursive;
+            font-size: 0.88rem; color: rgba(255,255,255,0.6);
+            margin-bottom: 1.25rem;
+        }
+        .form-row { margin-bottom: 0.875rem; }
+        .form-row label {
+            display: flex;
+            font-family: 'Chewy', cursive;
+            font-size: 0.82rem; color: rgba(255,255,255,0.65);
+            margin-bottom: 0.3rem;
+            align-items: center; gap: 0.35rem;
+        }
+        .form-row label .iconify { color: var(--neon-pink); }
+        .form-row input, .form-row textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 2px solid rgba(131,56,236,0.35);
+            border-radius: 12px;
+            padding: 0.75rem 0.875rem;
+            color: white;
+            font-family: 'Righteous', cursive;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+            resize: none;
+        }
+        .form-row input::placeholder, .form-row textarea::placeholder {
+            color: rgba(255,255,255,0.25);
+        }
+        .form-row input:focus, .form-row textarea:focus {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 0 3px rgba(255,0,110,0.12);
+            background: rgba(26,11,46,0.9);
+        }
+        .contact-submit {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--hot-orange));
+            border: none; border-radius: 14px;
+            color: white; cursor: pointer;
+            font-family: 'Rubik Bubbles', cursive;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(255,0,110,0.3);
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+        .contact-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,0,110,0.5); }
+        .contact-note {
+            font-family: 'Chewy', cursive;
+            font-size: 0.78rem; color: rgba(255,255,255,0.38);
+            text-align: center; margin-top: 0.75rem;
+        }
+
+        /* ══════════════════════════════════════
+           SUCCESS MODAL
+        ══════════════════════════════════════ */
+        .contact-success {
+            position: fixed; inset: 0; z-index: 500;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .contact-success.show { opacity: 1; visibility: visible; }
+        .success-box {
+            background: var(--card-bg);
+            border: 2px solid var(--cyan-blast);
+            border-radius: 24px; padding: 2rem 1.5rem;
+            text-align: center; max-width: 320px; width: 100%;
+            box-shadow: 0 0 40px rgba(6,255,165,0.2);
+            transform: scale(0.9); transition: transform 0.3s;
+        }
+        .contact-success.show .success-box { transform: scale(1); }
+        .success-icon {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan-blast), var(--electric-purple));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; margin: 0 auto 1rem;
+        }
+        .success-box h3 {
+            font-family: 'Bungee Shade', cursive; font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--cyan-blast), var(--lemon-yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        .success-box p { font-family: 'Chewy', cursive; font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.25rem; }
+        .success-box button {
+            padding: 0.7rem 2rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--electric-purple));
+            border: none; border-radius: 12px; color: white;
+            font-family: 'Rubik Bubbles', cursive; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .success-box button:hover { transform: scale(1.05); }
+
+        /* ══════════════════════════════════════
+           FINAL THOUGHT
+        ══════════════════════════════════════ */
+        .final-thought {
+            background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(131,56,236,0.1));
+            border: 2px solid rgba(255,0,110,0.3);
+            border-radius: 20px; padding: 1.5rem;
+            text-align: center; margin: 1.5rem 0;
+        }
+        .final-thought p {
+            font-family: 'Chewy', cursive;
+            font-size: clamp(1rem, 3.5vw, 1.15rem);
+            line-height: 1.7; color: rgba(255,255,255,0.9);
+        }
+
+        /* ══════════════════════════════════════
+           AUTHOR BOX
+        ══════════════════════════════════════ */
+        .author-box {
+            display: flex; align-items: center; gap: 1rem;
+            background: var(--card-bg);
+            border: 2px solid var(--electric-purple);
+            border-radius: 20px; padding: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .author-avatar {
+            width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--neon-pink), var(--electric-purple));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Bungee Shade', cursive; font-size: 1.4rem; color: white;
+        }
+        .author-info h4 {
+            font-family: 'Chewy', cursive; font-size: 1rem; color: white; margin-bottom: 0.2rem;
+        }
+        .author-info p {
+            font-family: 'Chewy', cursive; font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════════
+           CTA BUTTON
+        ══════════════════════════════════════ */
+        .cta-button {
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            width: 100%; padding: 1rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--hot-orange));
+            border: none; border-radius: 16px; color: white;
+            font-family: 'Rubik Bubbles', cursive; font-size: 1.05rem;
+            text-decoration: none; cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(255,0,110,0.35);
+            margin: 1.5rem 0;
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255,0,110,0.55); }
+
+        /* ══════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════ */
+        footer { text-align: center; padding: 2rem 1rem 1.5rem; border-top: 1px solid rgba(131,56,236,0.2); }
+        .footer-logo {
+            font-family: 'Rubik Bubbles', cursive; font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--neon-pink), var(--electric-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.4rem;
+        }
+        .footer-tagline { font-family: 'Chewy', cursive; font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-bottom: 0.9rem; }
+        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+        .footer-links a { font-family: 'Chewy', cursive; font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--neon-pink); }
+
+        /* ══════════════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════════════ */
+        @media (max-width: 440px) {
+            .comparison { grid-template-columns: 1fr; }
+            .stats-strip { grid-template-columns: 1fr 1fr; }
+            .stats-strip .stat-card:last-child { grid-column: 1 / -1; }
+        }
+        @media (min-width: 768px) { .container { max-width: 700px; } }
     </style>
 </head>
 <body>
@@ -135,22 +737,39 @@
 <div class="noise"></div>
 
 <div class="app-container">
+
+    <!-- ══ SIDEBAR ══ -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <span class="sidebar-logo">RealorNah</span>
-            <button class="close-sidebar" onclick="closeSidebar()"><span class="iconify" data-icon="ph:x-bold"></span></button>
+            <button class="close-sidebar" onclick="closeSidebar()">
+                <span class="iconify" data-icon="ph:x-bold"></span>
+            </button>
         </div>
         <nav class="sidebar-menu">
-            <a href="index.html" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
-            <a href="create-quiz.html" class="menu-item"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
-            <a href="my-quizzes.html" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
-            <a href="trending.html" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
-            <a href="how-to-use.html" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
-            <a href="about-us.html" class="menu-item active"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
+            <a href="index.html" class="menu-item">
+                <span class="iconify" data-icon="ph:house-bold"></span>Home
+            </a>
+            <a href="create-quiz.html" class="menu-item">
+                <span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz
+            </a>
+            <a href="my-quizzes.html" class="menu-item">
+                <span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats
+            </a>
+            <a href="trending.html" class="menu-item">
+                <span class="iconify" data-icon="ph:trend-up-bold"></span>Trending
+            </a>
+            <a href="how-to-use.html" class="menu-item">
+                <span class="iconify" data-icon="ph:question-bold"></span>How to Use
+            </a>
+            <a href="about-us.html" class="menu-item active">
+                <span class="iconify" data-icon="ph:info-bold"></span>About Us
+            </a>
         </nav>
         <div class="sidebar-footer">
             <a href="https://instagram.com/preetsaw_07" target="_blank" class="insta-link">
-                <span class="iconify" data-icon="ph:instagram-logo-bold"></span>Visit Our Instagram
+                <span class="iconify" data-icon="ph:instagram-logo-bold"></span>
+                Visit Our Instagram
             </a>
             <a href="https://doyouknowme.vercel.com" target="_blank" class="brand-link">
                 <img src="/assets/DYKMlogo.png" class="brand-logo" alt="DYKM">
@@ -159,11 +778,16 @@
         </div>
     </aside>
 
+    <!-- ══ OVERLAY ══ -->
     <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
+    <!-- ══ MAIN CONTENT ══ -->
     <main class="main-content" id="mainContent">
+
         <nav>
-            <button class="menu-btn" onclick="openSidebar()"><span class="iconify" data-icon="ph:list-bold"></span></button>
+            <button class="menu-btn" onclick="openSidebar()">
+                <span class="iconify" data-icon="ph:list-bold"></span>
+            </button>
             <span class="nav-logo">RealorNah</span>
             <a href="create-quiz.html" class="nav-cta">
                 <span class="iconify" data-icon="ph:plus-bold"></span>Create
@@ -171,14 +795,24 @@
         </nav>
 
         <div class="container">
+
+            <!-- ── ARTICLE HEADER ── -->
             <header class="article-header">
-                <div class="category-badge"><span class="iconify" data-icon="ph:sparkle-bold"></span> Our Story</div>
+                <div class="category-badge">
+                    <span class="iconify" data-icon="ph:sparkle-bold"></span>
+                    Our Story
+                </div>
                 <h1 class="article-title">About RealorNah</h1>
-                <p class="article-subtitle">A viral quiz platform born from fake friends, group chats, and one very petty idea</p>
+                <p class="article-subtitle">
+                    A viral quiz platform born from fake friends, group chats, and one very petty idea
+                </p>
                 <div class="header-divider"></div>
             </header>
 
+            <!-- ── ARTICLE BODY ── -->
             <div class="article-body">
+
+                <!-- Lead -->
                 <p class="lead">
                     <strong>RealorNah</strong> is not a startup built in a boardroom with pitch decks and investor meetings.
                     It's a quiz app built by someone who got tired of friends claiming they "know everything" about you —
@@ -186,23 +820,54 @@
                     <strong>let the quiz do the talking.</strong>
                 </p>
 
+                <!-- Stats strip -->
                 <div class="stats-strip">
-                    <div class="stat-card"><span class="stat-n">1,200+</span><span class="stat-l">Quizzes Created</span></div>
-                    <div class="stat-card"><span class="stat-n">8,000+</span><span class="stat-l">Times Played</span></div>
-                    <div class="stat-card"><span class="stat-n">100%</span><span class="stat-l">Free Forever</span></div>
+                    <div class="stat-card">
+                        <span class="stat-n">1,200+</span>
+                        <span class="stat-l">Quizzes Created</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-n">8,000+</span>
+                        <span class="stat-l">Times Played</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-n">100%</span>
+                        <span class="stat-l">Free Forever</span>
+                    </div>
                 </div>
 
-                <h2 class="sec-heading"><span class="iconify" data-icon="ph:warning-circle-bold"></span> The Problem We Actually Faced</h2>
-                <p class="body-text">It started with a conversation that probably sounds familiar. "I know you better than anyone." Cool. What's my favourite food? "Um… pizza?" Wrong. What music do I actually listen to? "Oh, like… pop?" Dead wrong. What do I do when I'm stressed? Silence.</p>
-                <p class="body-text">People assume closeness without actually paying attention. The result? Fake friends who feel real — until you put them to the test.</p>
+                <!-- Section: The Problem -->
+                <h2 class="sec-heading">
+                    <span class="iconify" data-icon="ph:warning-circle-bold"></span>
+                    The Problem We Actually Faced
+                </h2>
+
+                <p class="body-text">
+                    It started with a conversation that probably sounds familiar. "I know you better than anyone."
+                    Cool. What's my favourite food? "Um… pizza?" Wrong. What music do I actually listen to? "Oh, like… pop?" Dead wrong.
+                    What do I do when I'm stressed? Silence.
+                </p>
+
+                <p class="body-text">
+                    People assume closeness without actually paying attention. The result? Fake friends who feel real — until you put them to the test.
+                </p>
 
                 <div class="pull-quote">
                     <p>We had no way to prove who actually paid attention. So we built one.</p>
                     <cite><span class="iconify" data-icon="ph:user-bold"></span> RealorNah Founder</cite>
                 </div>
 
-                <h2 class="sec-heading"><span class="iconify" data-icon="ph:rocket-launch-bold"></span> What RealorNah Actually Does</h2>
-                <p class="body-text">RealorNah turns your personality, habits, and preferences into a shareable quiz — then lets your friends try to answer it. Every wrong answer is a data point. Every low score is a verdict. It's fun, it's chaotic, and it's brutally honest.</p>
+                <!-- Section: What it does -->
+                <h2 class="sec-heading">
+                    <span class="iconify" data-icon="ph:rocket-launch-bold"></span>
+                    What RealorNah Actually Does
+                </h2>
+
+                <p class="body-text">
+                    RealorNah turns your personality, habits, and preferences into a shareable quiz — then lets your friends
+                    try to answer it. Every wrong answer is a data point. Every low score is a verdict.
+                    It's fun, it's chaotic, and it's brutally honest.
+                </p>
 
                 <div class="insight-box">
                     <h4><span class="iconify" data-icon="ph:lightbulb-bold"></span> The Core Philosophy</h4>
@@ -217,11 +882,19 @@
                     <li><span class="iconify" data-icon="ph:share-network-bold"></span> Share on WhatsApp, Instagram, Telegram, Discord, Snapchat</li>
                     <li><span class="iconify" data-icon="ph:trophy-bold"></span> See a live ranked leaderboard with Bestie Tier badges</li>
                     <li><span class="iconify" data-icon="ph:key-bold"></span> Sync quizzes across devices with a 6-digit PIN</li>
-                    <li><span class="iconify" data-icon="ph:skull-bold"></span> Low scorers are officially exposed as Fake Friends</li>
+                    <li><span class="iconify" data-icon="ph:skull-bold"></span> Low scorers are officially exposed as Fake Friends™</li>
                 </ul>
 
-                <h2 class="sec-heading"><span class="iconify" data-icon="ph:scales-bold"></span> Why RealorNah Is Different</h2>
-                <p class="body-text">Most quiz apps are generic. They give you random personality tests or trivia that has nothing to do with the people in your life. RealorNah is personal. It's about <em>you</em> — and whether the people around you actually know you.</p>
+                <!-- Section: Why different -->
+                <h2 class="sec-heading">
+                    <span class="iconify" data-icon="ph:scales-bold"></span>
+                    Why RealorNah Is Different
+                </h2>
+
+                <p class="body-text">
+                    Most quiz apps are generic. They give you random personality tests or trivia that has nothing to do with the people in your life.
+                    RealorNah is personal. It's about <em>you</em> — and whether the people around you actually know you.
+                </p>
 
                 <div class="comparison">
                     <div class="avoid">
@@ -246,8 +919,17 @@
                     </div>
                 </div>
 
-                <h2 class="sec-heading"><span class="iconify" data-icon="ph:target-bold"></span> Mission: Make Friendship Honest</h2>
-                <p class="body-text">The mission is simple: give people a fun, low-pressure way to find out who actually pays attention in their lives. Not to cancel friends. Not to cause drama (okay, maybe a little drama). But to celebrate the ones who genuinely know you — and laugh at the ones who don't.</p>
+                <!-- Section: Mission -->
+                <h2 class="sec-heading">
+                    <span class="iconify" data-icon="ph:target-bold"></span>
+                    Mission: Make Friendship Honest
+                </h2>
+
+                <p class="body-text">
+                    The mission is simple: give people a fun, low-pressure way to find out who actually pays attention in their lives.
+                    Not to cancel friends. Not to cause drama (okay, maybe a little drama). But to celebrate the ones
+                    who genuinely know you — and laugh at the ones who don't.
+                </p>
 
                 <ul class="feat-list">
                     <li><span class="iconify" data-icon="ph:heart-bold"></span> Celebrate the friends who actually know you inside out</li>
@@ -262,35 +944,48 @@
 
                 <div class="section-divider"></div>
 
-                <h2 class="sec-heading"><span class="iconify" data-icon="ph:map-trifold-bold"></span> What's Live and What's Coming</h2>
+                <!-- Section: Roadmap -->
+                <h2 class="sec-heading">
+                    <span class="iconify" data-icon="ph:map-trifold-bold"></span>
+                    What's Live and What's Coming
+                </h2>
+
                 <p class="body-text">RealorNah evolves based on what real users actually ask for. Here's the honest roadmap:</p>
 
                 <div class="roadmap-list">
                     <div class="roadmap-item done">
                         <div class="roadmap-dot"><span class="iconify" data-icon="ph:check-bold"></span></div>
                         <div class="roadmap-content">
-                            <div class="roadmap-label"><span class="iconify" data-icon="ph:check-circle-bold"></span> Live Now — Core</div>
+                            <div class="roadmap-label">
+                                <span class="iconify" data-icon="ph:check-circle-bold"></span> Live Now — Core
+                            </div>
                             <p class="roadmap-p">Create quizzes, shareable links, live leaderboard, play without login, dashboard to manage and delete quizzes, answer breakdown after playing.</p>
                         </div>
                     </div>
                     <div class="roadmap-item done">
                         <div class="roadmap-dot"><span class="iconify" data-icon="ph:check-bold"></span></div>
                         <div class="roadmap-content">
-                            <div class="roadmap-label"><span class="iconify" data-icon="ph:check-circle-bold"></span> Live Now — Latest Features</div>
+                            <div class="roadmap-label">
+                                <span class="iconify" data-icon="ph:check-circle-bold"></span> Live Now — Latest Features
+                            </div>
                             <p class="roadmap-p">Icon/image-based question mode, per-question timers, Bestie Tier badges, scorecard share image, WhatsApp viral share text, quiz templates gallery, Smart Suggest auto-fill, PIN sync across devices, QR code on quiz creation.</p>
                         </div>
                     </div>
                     <div class="roadmap-item live">
                         <div class="roadmap-dot"><span class="iconify" data-icon="ph:arrow-right-bold"></span></div>
                         <div class="roadmap-content">
-                            <div class="roadmap-label"><span class="iconify" data-icon="ph:timer-bold"></span> In Progress</div>
+                            <div class="roadmap-label">
+                                <span class="iconify" data-icon="ph:timer-bold"></span> In Progress
+                            </div>
                             <p class="roadmap-p">Email notifications when friends play, improved trending algorithm, quiz editing from the dashboard, expanded template library.</p>
                         </div>
                     </div>
                     <div class="roadmap-item future">
                         <div class="roadmap-dot"><span class="iconify" data-icon="ph:star-bold"></span></div>
                         <div class="roadmap-content">
-                            <div class="roadmap-label"><span class="iconify" data-icon="ph:sparkle-bold"></span> Future Vision</div>
+                            <div class="roadmap-label">
+                                <span class="iconify" data-icon="ph:sparkle-bold"></span> Future Vision
+                            </div>
                             <p class="roadmap-p">Group challenges, friendship score history, AI-powered question suggestions, and a "Fake Friend Hall of Fame."</p>
                         </div>
                     </div>
@@ -298,18 +993,73 @@
 
                 <div class="section-divider"></div>
 
-                <h2 class="sec-heading"><span class="iconify" data-icon="ph:chat-circle-bold"></span> Get In Touch</h2>
-                <p class="body-text">RealorNah is built in public. Found a bug? Have a feature idea? Want to collab? Your feedback directly shapes the next update — every message gets read.</p>
+                <!-- Section: Get In Touch -->
+                <h2 class="sec-heading">
+                    <span class="iconify" data-icon="ph:chat-circle-bold"></span>
+                    Get In Touch
+                </h2>
+
+                <p class="body-text">
+                    RealorNah is built in public. Found a bug? Have a feature idea? Want to collab?
+                    Your feedback directly shapes the next update — every message gets read.
+                </p>
 
                 <ul class="feat-list">
-                    <li><span class="iconify" data-icon="ph:envelope-bold"></span> <strong style="color:white">Email:</strong>&nbsp;<a href="mailto:contact.globalratings@gmail.com" style="color:var(--cyan-blast);text-decoration:none">contact.globalratings@gmail.com</a></li>
+                    <li><span class="iconify" data-icon="ph:envelope-bold"></span> <strong style="color:white">Email:</strong>&nbsp;<a href="mailto:hello@realornah.app" style="color:var(--cyan-blast);text-decoration:none">hello@realornah.app</a></li>
                     <li><span class="iconify" data-icon="ph:instagram-logo-bold"></span> <strong style="color:white">Instagram:</strong>&nbsp;<a href="https://instagram.com/preetsaw_07" target="_blank" style="color:var(--cyan-blast);text-decoration:none">@preetsaw_07</a></li>
                 </ul>
 
+                <!-- ── CONTACT FORM ── -->
+                <div class="contact-wrap">
+                    <div class="contact-title">Send a Message</div>
+                    <p class="contact-sub">Drop your feedback, bug report, or just say hi — we'll reply within 24–48 hours.</p>
+
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <div class="form-row">
+                            <label><span class="iconify" data-icon="ph:user-bold"></span> Your Name</label>
+                            <input type="text" id="cName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-row">
+                            <label><span class="iconify" data-icon="ph:envelope-bold"></span> Email Address</label>
+                            <input type="email" id="cEmail" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-row">
+                            <label><span class="iconify" data-icon="ph:chat-text-bold"></span> Message</label>
+                            <textarea id="cMessage" rows="4" placeholder="Write your message here…" required></textarea>
+                        </div>
+                        <button type="submit" class="contact-submit">
+                            <span class="iconify" data-icon="ph:paper-plane-tilt-bold"></span>
+                            Send Message
+                        </button>
+                        <p class="contact-note">(We typically respond within 24–48 hours)</p>
+                    </form>
+                </div>
+
+                <!-- Final Thought -->
+                <div class="final-thought">
+                    <p>
+                        RealorNah believes in one thing — your real friends will prove it. Not with words.
+                        Not with vibes. With their quiz score. <span style="color:var(--neon-pink)">Let the leaderboard decide.</span>
+                        <span class="iconify" data-icon="ph:skull-bold" style="color:var(--neon-pink)"></span>
+                    </p>
+                </div>
+
+                <!-- Author Box -->
+                <div class="author-box">
+                    <div class="author-avatar">R</div>
+                    <div class="author-info">
+                        <h4>The RealorNah Team</h4>
+                        <p>Built by people who got tired of fake friends. Currently exposing them one quiz at a time — free of charge.</p>
+                    </div>
+                </div>
+
+                <!-- CTA -->
                 <a href="create-quiz.html" class="cta-button">
-                    <span class="iconify" data-icon="ph:rocket-launch-bold"></span> Create My Quiz — It's Free
+                    <span class="iconify" data-icon="ph:rocket-launch-bold"></span>
+                    Create My Quiz — It's Free
                 </a>
-            </div>
+
+            </div><!-- /article-body -->
 
             <footer>
                 <div class="footer-logo">RealorNah</div>
@@ -321,22 +1071,101 @@
                     <a href="create-quiz.html">Create Quiz</a>
                 </div>
             </footer>
-        </div>
+
+        </div><!-- /container -->
     </main>
+</div><!-- /app-container -->
+
+<!-- ── SUCCESS MODAL ── -->
+<div class="contact-success" id="contactSuccess">
+    <div class="success-box">
+        <div class="success-icon">
+            <span class="iconify" data-icon="ph:check-bold"></span>
+        </div>
+        <h3>Message Sent!</h3>
+        <p>Thanks for reaching out to RealorNah.<br>We'll get back to you soon! 🔥</p>
+        <button onclick="closeSuccess()">Got it!</button>
+    </div>
 </div>
 
 <script>
-function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('active');document.getElementById('mainContent').classList.add('shifted');}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('active');document.getElementById('mainContent').classList.remove('shifted');}
-let tStartX=0;
-document.addEventListener('touchstart',e=>{tStartX=e.changedTouches[0].screenX;});
-document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-tStartX;const open=document.getElementById('sidebar').classList.contains('open');if(!open&&dx>50&&tStartX<50)openSidebar();if(open&&dx<-50)closeSidebar();});
-// Reading progress bar
-document.getElementById('mainContent').addEventListener('scroll',function(){
-    const el=this;const total=el.scrollHeight-el.clientHeight;const pct=(el.scrollTop/total)*100;
-    document.getElementById('readingProgress').style.width=Math.min(pct,100)+'%';
-});
-window.onload=function(){if(window.Iconify)window.Iconify.scan();};
+    /* ── Reading Progress ── */
+    (function () {
+        const bar = document.getElementById('readingProgress');
+        const mc  = document.getElementById('mainContent');
+        if (!bar || !mc) return;
+        mc.addEventListener('scroll', () => {
+            const pct = mc.scrollHeight - mc.clientHeight > 0
+                ? (mc.scrollTop / (mc.scrollHeight - mc.clientHeight)) * 100 : 0;
+            bar.style.width = pct + '%';
+        }, { passive: true });
+    })();
+
+    /* ── Sidebar ── */
+    function openSidebar() {
+        document.getElementById('sidebar').classList.add('open');
+        document.getElementById('overlay').classList.add('active');
+        document.getElementById('mainContent').classList.add('shifted');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
+        document.getElementById('mainContent').classList.remove('shifted');
+    }
+
+    /* ── Swipe gestures ── */
+    let tStartX = 0;
+    document.addEventListener('touchstart', e => { tStartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].screenX - tStartX;
+        const open = document.getElementById('sidebar').classList.contains('open');
+        if (!open && dx > 50 && tStartX < 50) openSidebar();
+        if (open && dx < -50) closeSidebar();
+    });
+
+    /* ── Contact Form ── */
+    (function(){ const s = document.createElement('style'); s.textContent = '@keyframes contactSpin{to{transform:rotate(360deg)}}'; document.head.appendChild(s); })();
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const btn     = document.querySelector('.contact-submit');
+        const note    = document.querySelector('.contact-note');
+        const name    = document.getElementById('cName').value.trim();
+        const email   = document.getElementById('cEmail').value.trim();
+        const message = document.getElementById('cMessage').value.trim();
+        if (!name || !email || !message) return;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="iconify" data-icon="ph:circle-notch-bold" style="animation:contactSpin 1s linear infinite;display:inline-block"></span> Sending…';
+        note.textContent = '(Sending your message…)';
+        note.style.color = '';
+        if (window.Iconify) window.Iconify.scan();
+        try {
+            const res  = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, message })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                document.getElementById('contactSuccess').classList.add('show');
+                e.target.reset();
+            } else {
+                note.textContent = '⚠️ ' + (data.error ?? 'Something went wrong. Please try again.');
+                note.style.color = 'var(--neon-pink)';
+            }
+        } catch {
+            note.textContent = '⚠️ Network error — please check your connection.';
+            note.style.color = 'var(--neon-pink)';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="iconify" data-icon="ph:paper-plane-tilt-bold"></span> Send Message';
+            if (window.Iconify) window.Iconify.scan();
+        }
+    }
+
+    function closeSuccess() {
+        document.getElementById('contactSuccess').classList.remove('show');
+    }
 </script>
 </body>
 </html>
