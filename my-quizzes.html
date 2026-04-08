@@ -198,30 +198,30 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
             </button>
         </div>
         <nav class="sidebar-menu">
-            <a href="index.html" class="menu-item">
+            <a href="index" class="menu-item">
                 <span class="iconify" data-icon="ph:house-bold"></span>
                 Home
             </a>
-            <a href="create-quiz.html" class="menu-item">
+            <a href="create-quiz" class="menu-item">
                 <span class="iconify" data-icon="ph:plus-circle-bold"></span>
                 Create New Quiz
             </a>
-            <a href="my-quizzes.html" class="menu-item active">
+            <a href="my-quizzes" class="menu-item active">
                 <span class="iconify" data-icon="ph:chart-bar-bold"></span>
                 My Quiz Stats
             </a>
-            <a href="trending.html" class="menu-item">
+            <a href="trending" class="menu-item">
                 <span class="iconify" data-icon="ph:trend-up-bold"></span> Trending
             </a>
-            <a href="templates.html" class="menu-item">
+            <a href="templates" class="menu-item">
                 <span class="iconify" data-icon="ph:grid-four-bold"></span>
                 Templates
             </a>
-            <a href="how-to-use.html" class="menu-item">
+            <a href="how-to-use" class="menu-item">
                 <span class="iconify" data-icon="ph:question-bold"></span>
                 How to Use
             </a>
-            <a href="about-us.html" class="menu-item">
+            <a href="about-us" class="menu-item">
                 <span class="iconify" data-icon="ph:info-bold"></span>
                 About Us
             </a>
@@ -249,7 +249,7 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                 <span class="iconify" data-icon="ph:key-bold"></span>
                 <div class="pin-active-dot"></div>
             </button>
-            <a href="create-quiz.html" class="nav-cta">Create</a>
+            <a href="create-quiz" class="nav-cta">Create</a>
         </nav>
 
         <div class="container">
@@ -264,7 +264,7 @@ box-shadow:0 8px 25px rgba(255,77,141,.5);
                 <div class="stat-card"><span class="stat-number" id="bestScore">—</span><span class="stat-label">Best Score</span></div>
             </div>
 
-            <a href="create-quiz.html" class="create-new-btn">
+            <a href="create-quiz" class="create-new-btn">
                 <span class="iconify" data-icon="ph:plus-bold"></span> Create New Quiz
             </a>
 
@@ -428,7 +428,7 @@ function renderQuizzes(container, quizzes) {
         const plays   = q.plays || 0;
         const scores  = q.scores || [];
         const avg     = scores.length ? Math.round(scores.reduce((s,p)=>s+p.score,0)/scores.length) : 0;
-        const link    = `${location.origin}/quiz.html?id=${q.quizId}`;
+        const link    = `${location.origin}/quiz?id=${q.quizId}`;
         return `
         <div class="quiz-card" id="card-${q.quizId}">
             <div class="quiz-header">
@@ -466,7 +466,7 @@ function showEmpty(container) {
         <div class="empty-state">
             <div class="empty-icon"><span class="iconify" data-icon="ph:note-blank-bold"></span></div>
             <p class="empty-text">No quizzes yet. Create your first quiz!</p>
-            <a href="create-quiz.html" class="create-new-btn" style="display:inline-flex;width:auto;margin-bottom:0">Create Quiz</a>
+            <a href="create-quiz" class="create-new-btn" style="display:inline-flex;width:auto;margin-bottom:0">Create Quiz</a>
         </div>`;
     if (window.Iconify) window.Iconify.scan();
 }

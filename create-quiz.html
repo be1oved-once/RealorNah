@@ -6,7 +6,7 @@
     <title>Create a "How Well Do You Know Me" Quiz Free | RealorNah</title>
     <meta name="description" content="Create your free friendship quiz in 2 minutes. Add questions, set answers, share on WhatsApp. Find out who your real friends are on RealorNah!">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://realornah.app/create-quiz.html">
+    <link rel="canonical" href="https://realornah.vercel.app/create-quiz">
     <meta property="og:title" content="Create Your Friendship Quiz — Free | RealorNah">
     <meta property="og:description" content="Make a quiz about yourself and send it to friends. See who knows you best. Takes 2 minutes!">
     <meta property="og:image" content="https://realornah.vercel.app/og-cover.png">
@@ -204,13 +204,13 @@
             </button>
         </div>
         <nav class="sidebar-menu">
-            <a href="index.html" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
-            <a href="create-quiz.html" class="menu-item active"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
-            <a href="my-quizzes.html" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
-            <a href="trending.html" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
-            <a href="templates.html" class="menu-item"><span class="iconify" data-icon="ph:grid-four-bold"></span>Templates</a>
-            <a href="how-to-use.html" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
-            <a href="about-us.html" class="menu-item"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
+            <a href="index" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
+            <a href="create-quiz" class="menu-item active"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
+            <a href="my-quizzes" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
+            <a href="trending" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
+            <a href="templates" class="menu-item"><span class="iconify" data-icon="ph:grid-four-bold"></span>Templates</a>
+            <a href="how-to-use" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
+            <a href="about-us" class="menu-item"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
         </nav>
         <div class="sidebar-footer">
             <a href="https://instagram.com/preetsaw_07" target="_blank" class="insta-link">
@@ -867,7 +867,7 @@ async function generateQuiz(){
         localStorage.setItem('myQuizIds',JSON.stringify(myIds));
         if(window.PinSync&&window.PinSync._db)window.PinSync.pushToFirestore();
         document.getElementById('savingOverlay').classList.remove('active');
-        const link=`${location.origin}/quiz.html?id=${generatedQuizId}`;
+        const link=`${location.origin}/quiz?id=${generatedQuizId}`;
         document.getElementById('quizLinkText').textContent=link;
         document.getElementById('errorMsg').style.display='none';
         document.getElementById('successPopup').classList.add('active');
@@ -907,7 +907,7 @@ function shareTelegram(){
 
 function previewQuiz(){
     if(!generatedQuizId)return;
-    window.open(`${location.origin}/quiz.html?id=${generatedQuizId}&preview=1`,'_blank');
+    window.open(`${location.origin}/quiz?id=${generatedQuizId}&preview=1`,'_blank');
 }
 
 function closeSuccess(){

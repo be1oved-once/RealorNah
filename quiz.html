@@ -181,7 +181,7 @@
 </div>
 
 <nav>
-    <a href="index.html" class="logo">RealorNah</a>
+    <a href="index" class="logo">RealorNah</a>
     <div class="quiz-info">
         <div class="progress-bar"><div class="progress-fill" id="navProgress"></div></div>
         <span id="quizProgressText">0/0</span>
@@ -198,7 +198,7 @@
         <div class="error-icon"><span class="iconify" data-icon="ph:smiley-sad-bold"></span></div>
         <div class="error-title">Quiz Not Found</div>
         <div class="error-text">This quiz link may be invalid or expired.</div>
-        <a href="index.html" style="margin-top:1rem;color:var(--cyan-blast);font-family:'Chewy',cursive;font-size:1rem;display:flex;align-items:center;gap:.4rem">
+        <a href="index" style="margin-top:1rem;color:var(--cyan-blast);font-family:'Chewy',cursive;font-size:1rem;display:flex;align-items:center;gap:.4rem">
             <span class="iconify" data-icon="ph:arrow-left-bold"></span> Back to Home
         </a>
     </div>
@@ -276,14 +276,14 @@
                 <span class="iconify" data-icon="ph:share-network-bold"></span> Share My Score
             </button>
 
-            <a id="revengeBtn" href="create-quiz.html" class="revenge-btn">
+            <a id="revengeBtn" href="create-quiz" class="revenge-btn">
                 <span class="iconify" data-icon="ph:arrow-counter-clockwise-bold"></span>
                 Now Make THEM Sweat — Create Your Quiz
                 <span class="iconify" data-icon="ph:devil-bold" style="position:absolute;right:1rem;font-size:1.3rem;animation:wiggle 1s infinite"></span>
             </a>
             <div class="revenge-hint">Challenge them back in 2 minutes — This is the move.</div>
 
-            <a href="index.html" class="action-btn secondary" style="text-decoration:none">
+            <a href="index" class="action-btn secondary" style="text-decoration:none">
                 <span class="iconify" data-icon="ph:house-bold"></span> Back to Home
             </a>
         </div>
@@ -471,7 +471,7 @@ async function saveAndShowResults(){
             const fresh=await window.loadQuiz(quizId);
             const newPlays=fresh?.plays||0;
             if(fresh?.creatorEmail&&newPlays>0&&newPlays%3===0){
-                fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({creatorEmail:fresh.creatorEmail,creatorName:fresh.creator,quizId,plays:newPlays,quizLink:`${location.origin}/quiz.html?id=${quizId}`})}).catch(()=>{});
+                fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({creatorEmail:fresh.creatorEmail,creatorName:fresh.creator,quizId,plays:newPlays,quizLink:`${location.origin}/quiz?id=${quizId}`})}).catch(()=>{});
             }
         }catch(e){}
     }
@@ -578,7 +578,7 @@ async function generateScorecardImage(){
         const msgs=[[90,'Soulmate'],[71,'BFF'],[51,'Good Friend'],[31,'Suspicious'],[0,'Fake Friend']];
         const[,msg]=msgs.find(([t])=>percentage>=t);
         ctx.fillText(msg,cx,358);
-        ctx.font='18px "Righteous",cursive';ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillText('realornah.app',cx,422);
+        ctx.font='18px "Righteous",cursive';ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillText('realornah.vercel.app',cx,422);
         ctx.textAlign='left';ctx.font='700 18px "Righteous",cursive';ctx.fillStyle='rgba(255,255,255,0.6)';ctx.fillText(playerName,28,40);
         resolve(canvas.toDataURL('image/png'));
     });
@@ -595,7 +595,7 @@ async function shareScorecard(platform){
         const imgData=await generateScorecardImage();
         const tiers2=[[90,'Soulmate'],[71,'Best Friend Forever'],[51,'Good Friend'],[31,'Suspicious Friend'],[0,'Fake Friend Detected']];
         const[,tierName2]=tiers2.find(([t])=>percentage>=t);
-        const waText=`I just took ${quiz.creator}'s RealorNah quiz and got "${tierName2}" with ${percentage}%!\n\nI bet you can't beat me\n\nTake the quiz: ${url}\n\n(Create your own: realornah.app)`;
+        const waText=`I just took ${quiz.creator}'s RealorNah quiz and got "${tierName2}" with ${percentage}%!\n\nI bet you can't beat me\n\nTake the quiz: ${url}\n\n(Create your own: realornah.vercel.app)`;
         window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`,'_blank');
         triggerImageDownload(imgData);
     }else if(platform==='telegram'){
