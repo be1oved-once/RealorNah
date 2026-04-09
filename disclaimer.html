@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Disclaimer – RealorNah | Just a Fun Quiz App</title>
+    <meta name="description" content="RealorNah is an entertainment platform. Quiz scores don't define your friendships. Read our full disclaimer here.">
+    <meta name="author" content="RealorNah">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://realornah.vercel.app/disclaimer">
+    <meta property="og:title" content="Disclaimer – RealorNah">
+    <meta property="og:description" content="RealorNah is an entertainment platform. Quiz scores don't define your friendships.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://realornah.vercel.app/og-cover.png">
+    <meta property="og:url" content="https://realornah.vercel.app/disclaimer">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Disclaimer","url":"https://realornah.vercel.app/disclaimer","isPartOf":{"@type":"WebSite","name":"RealorNah","url":"https://realornah.vercel.app"}}</script>
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e;--sidebar-bg:#0a0118}
+        html{scroll-behavior:smooth}
+        body{font-family:'Righteous',cursive;background:var(--deep-bg);min-height:100vh;color:white;overflow-x:hidden;line-height:1.6}
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(131,56,236,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(131,56,236,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+        .app-container{position:relative;width:100%;height:100%;overflow:hidden}
+        .sidebar{position:fixed;top:0;left:0;width:85%;max-width:320px;height:100%;background:var(--sidebar-bg);border-right:2px solid var(--electric-purple);z-index:200;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:1rem;box-shadow:5px 0 30px rgba(0,0,0,.5)}
+        .sidebar.open{transform:translateX(0)}
+        .sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid rgba(131,56,236,.3)}
+        .sidebar-logo{font-family:'Rubik Bubbles',cursive;font-size:1.3rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .close-sidebar{width:40px;height:40px;background:rgba(255,0,110,.2);border:2px solid var(--neon-pink);border-radius:50%;color:var(--neon-pink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s}
+        .close-sidebar:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
+        .sidebar-menu{flex:1;display:flex;flex-direction:column;gap:.5rem}
+        .menu-item{display:flex;align-items:center;gap:1rem;padding:1rem;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;transition:all .3s;font-size:1rem}
+        .menu-item:hover,.menu-item.active{background:rgba(131,56,236,.2);color:var(--cyan-blast)}
+        .sidebar-footer{padding-top:1rem;border-top:1px solid rgba(131,56,236,.3);display:flex;flex-direction:column;gap:.5rem}
+        .insta-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
+        .brand-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#ff4d8d,#ff758f);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
+        .brand-logo{width:26px;height:26px;border-radius:6px;object-fit:cover}
+        .sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
+        .sidebar-overlay.active{opacity:1;visibility:visible}
+        .main-content{width:100%;height:100%;overflow-y:auto;transition:transform .3s ease}
+        .main-content.shifted{transform:translateX(85%)}
+        nav{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;position:sticky;top:0;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
+        .menu-btn{width:42px;height:42px;background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;flex-shrink:0}
+        .menu-btn:hover{background:var(--electric-purple);transform:scale(1.05)}
+        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
+        .nav-cta{font-family:'Rubik Bubbles',cursive;font-size:.7rem;padding:.5rem .875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:20px;color:white;text-decoration:none;transition:all .3s;flex-shrink:0;display:flex;align-items:center;gap:.3rem}
+        .container{max-width:680px;margin:0 auto;padding:1.5rem .875rem 3rem}
+        .page-header{text-align:center;padding:1.5rem 0 1.25rem}
+        .page-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,190,11,.12);border:1.5px solid var(--lemon-yellow);padding:.35rem .9rem;border-radius:20px;font-size:.75rem;color:var(--lemon-yellow);margin-bottom:.75rem}
+        .page-title{font-family:'Bungee Shade',cursive;font-size:clamp(1.6rem,5vw,2.2rem);background:linear-gradient(135deg,var(--lemon-yellow),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+        .page-subtitle{font-size:.85rem;color:rgba(255,255,255,.55);margin-bottom:.4rem}
+        .last-updated{font-size:.75rem;color:rgba(255,255,255,.3);font-family:'Chewy',cursive}
+        .section{background:var(--card-bg);border:1.5px solid rgba(131,56,236,.3);border-radius:18px;padding:1.25rem 1.1rem;margin-bottom:.9rem}
+        .section-title{font-family:'Chewy',cursive;font-size:1.1rem;color:var(--cyan-blast);margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem}
+        .section p{font-size:.84rem;color:rgba(255,255,255,.78);line-height:1.7;margin-bottom:.65rem}
+        .section p:last-child{margin-bottom:0}
+        .section ul{list-style:none;margin:.4rem 0 .65rem}
+        .section ul li{font-size:.84rem;color:rgba(255,255,255,.78);padding:.28rem 0 .28rem 1.2rem;position:relative;line-height:1.6}
+        .section ul li::before{content:"→";position:absolute;left:0;color:var(--lemon-yellow);font-size:.78rem}
+        .fun-box{background:rgba(255,190,11,.07);border:1.5px solid rgba(255,190,11,.25);border-radius:12px;padding:.875rem;margin:.65rem 0;font-size:.82rem;color:rgba(255,255,255,.85)}
+        footer{text-align:center;padding:2rem 1rem 1.5rem;border-top:1px solid rgba(131,56,236,.2)}
+        .footer-logo{font-family:'Rubik Bubbles',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+        .footer-tagline{font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:.65rem}
+        .footer-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem 1.1rem;margin-bottom:.5rem}
+        .footer-nav a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.74rem;transition:color .3s}
+        .footer-nav a:hover{color:var(--neon-pink)}
+        .footer-legal{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem .9rem;margin-bottom:.5rem}
+        .footer-legal a{color:rgba(255,255,255,.25);text-decoration:none;font-size:.7rem;transition:color .3s}
+        .footer-legal a:hover{color:var(--electric-purple)}
+        .footer-copy{font-size:.65rem;color:rgba(255,255,255,.2)}
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+<div class="app-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">RealorNah</span>
+            <button class="close-sidebar" onclick="closeSidebar()"><span class="iconify" data-icon="ph:x-bold"></span></button>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="/" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
+            <a href="create-quiz" class="menu-item"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
+            <a href="my-quizzes" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
+            <a href="trending" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
+            <a href="how-to-use" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
+            <a href="about-us" class="menu-item"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
+            <a href="contact" class="menu-item"><span class="iconify" data-icon="ph:envelope-bold"></span>Contact</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="https://instagram.com/preetsaw_07" target="_blank" class="insta-link"><span class="iconify" data-icon="ph:instagram-logo-bold"></span>Visit Our Instagram</a>
+            <a href="https://doyouknowme.vercel.com" target="_blank" class="brand-link"><img src="/assets/DYKMlogo.png" class="brand-logo" alt="DYKM"><span>Visit DoYouKnowMe</span></a>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+    <main class="main-content" id="mainContent">
+        <nav>
+            <button class="menu-btn" onclick="openSidebar()"><span class="iconify" data-icon="ph:list-bold"></span></button>
+            <span class="nav-logo">RealorNah</span>
+            <a href="create-quiz" class="nav-cta"><span class="iconify" data-icon="ph:plus-bold"></span>Create</a>
+        </nav>
+        <div class="container">
+            <header class="page-header">
+                <div class="page-badge"><span class="iconify" data-icon="ph:warning-bold"></span> Legal</div>
+                <h1 class="page-title">Disclaimer</h1>
+                <p class="page-subtitle">Just so we're all on the same page — this is a fun quiz app, not a friendship court.</p>
+                <p class="last-updated">Last updated: April 8, 2025</p>
+            </header>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:smiley-bold"></span> Entertainment Only</h2>
+                <div class="fun-box">🎉 <strong>RealorNah is purely for entertainment.</strong> Quiz scores are not a scientific, psychological, or clinical measure of any friendship or relationship. Don't break up a friendship over a score of 4/10. Please.</div>
+                <p>Questions, results, and Bestie Tier badges are designed to be fun and engaging — not definitive judgments of people's character. A low score might just mean someone's bad at quizzes.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:user-check-bold"></span> User-Generated Content</h2>
+                <p>Quiz questions on RealorNah are created by users, not by us. We do not verify, endorse, or take responsibility for any user-created quiz content. Report inappropriate content via our <a href="contact" style="color:var(--cyan-blast)">Contact page</a>.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:link-bold"></span> External Links</h2>
+                <p>RealorNah may link to external websites (WhatsApp, Instagram, etc.). We are not responsible for their content or availability.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:cloud-bold"></span> Service Availability</h2>
+                <p>We aim for 24/7 uptime but cannot guarantee it. Technical issues or third-party failures may cause downtime. We recommend saving important quiz PINs or result screenshots.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:heart-bold"></span> Emotional Wellbeing</h2>
+                <p>If a quiz result affects you negatively, remember: a score does not define your worth or your friendships. Answers are subjective, and real friendship is far more complex than any 10-question quiz.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:scales-bold"></span> No Professional Advice</h2>
+                <p>Nothing on RealorNah constitutes legal, psychological, relationship, or professional advice. All content is for entertainment purposes only.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title"><span class="iconify" data-icon="ph:envelope-bold"></span> Questions?</h2>
+                <p><strong>Email:</strong> contact.globalratings@gmail.com &nbsp;·&nbsp; <a href="contact" style="color:var(--cyan-blast)">Contact form</a></p>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-logo">RealorNah</div>
+            <div class="footer-tagline">Test your friendships. No filter. No mercy.</div>
+            <nav class="footer-nav">
+                <a href="/">Home</a><a href="create-quiz">Create Quiz</a><a href="trending">Trending</a>
+                <a href="templates">Templates</a><a href="how-to-use">How to Use</a>
+                <a href="about-us">About</a><a href="contact">Contact</a>
+            </nav>
+            <div class="footer-legal">
+                <a href="privacy-policy">Privacy Policy</a><a href="terms">Terms of Service</a><a href="disclaimer">Disclaimer</a>
+            </div>
+            <p class="footer-copy">© 2025 RealorNah. All rights reserved.</p>
+        </footer>
+    </main>
+</div>
+<script>
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('active');document.getElementById('mainContent').classList.add('shifted');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('active');document.getElementById('mainContent').classList.remove('shifted');}
+let tStartX=0;
+document.addEventListener('touchstart',e=>{tStartX=e.changedTouches[0].screenX;});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-tStartX;const open=document.getElementById('sidebar').classList.contains('open');if(!open&&dx>50&&tStartX<50)openSidebar();if(open&&dx<-50)closeSidebar();});
+</script>
+</body>
+</html>

@@ -114,7 +114,14 @@
         /* Footer */
         footer{text-align:center;padding:2rem 1rem;border-top:1px solid rgba(131,56,236,.2);margin-top:1rem}
         .footer-logo{font-family:'Rubik Bubbles',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
-        .footer-tagline{font-size:.8rem;color:rgba(255,255,255,.5)}
+        .footer-tagline{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.6rem}
+        .footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem 1rem;margin-bottom:.4rem}
+        .footer-links a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.75rem;transition:color .3s}
+        .footer-links a:hover{color:var(--neon-pink)}
+        .footer-legal{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem 1rem}
+        .footer-legal a{color:rgba(255,255,255,.25);text-decoration:none;font-size:.7rem;transition:color .3s}
+        .footer-legal a:hover{color:var(--electric-purple)}
+        .footer-copy{font-size:.65rem;color:rgba(255,255,255,.2);margin-top:.4rem}
         @media(min-width:768px){.container{max-width:700px}.feature-grid{grid-template-columns:repeat(4,1fr)}}
     </style>
 </head>
@@ -129,11 +136,11 @@
         </div>
         <nav class="sidebar-menu">
             <a href="index" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
-            <a href="create-quiz" class="menu-item"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
+            <a href="create-quiz" class="menu-item active"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
             <a href="my-quizzes" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
             <a href="trending" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
             <a href="templates" class="menu-item"><span class="iconify" data-icon="ph:grid-four-bold"></span>Templates</a>
-            <a href="how-to-use" class="menu-item active"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
+            <a href="how-to-use" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
             <a href="about-us" class="menu-item"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
         </nav>
         <div class="sidebar-footer">
@@ -341,6 +348,20 @@
             <footer>
                 <div class="footer-logo">RealorNah</div>
                 <div class="footer-tagline">Test your friendships with fun quizzes</div>
+                <div class="footer-links">
+                    <a href="/">Home</a>
+                    <a href="create-quiz">Create Quiz</a>
+                    <a href="trending">Trending</a>
+                    <a href="templates">Templates</a>
+                    <a href="about-us">About</a>
+                    <a href="contact">Contact</a>
+                </div>
+                <div class="footer-legal">
+                    <a href="privacy-policy">Privacy Policy</a>
+                    <a href="terms">Terms of Service</a>
+                    <a href="disclaimer">Disclaimer</a>
+                </div>
+                <p class="footer-copy">© 2025 RealorNah. All rights reserved.</p>
             </footer>
         </div>
     </main>

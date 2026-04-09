@@ -420,6 +420,14 @@
             .btn-group { flex-direction: column; align-items: center; }
             .btn-primary, .btn-secondary { width: 100%; max-width: 260px; justify-content: center; }
         }
+        .page-footer{text-align:center;padding:2rem 1rem 1.5rem;position:relative;z-index:10}
+        .page-footer .footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem .9rem;margin-bottom:.4rem}
+        .page-footer .footer-links a{color:rgba(255,255,255,.38);text-decoration:none;font-size:.72rem;transition:color .3s;font-family:'Righteous',cursive}
+        .page-footer .footer-links a:hover{color:#ff006e}
+        .page-footer .footer-legal{display:flex;justify-content:center;flex-wrap:wrap;gap:.35rem .9rem}
+        .page-footer .footer-legal a{color:rgba(255,255,255,.22);text-decoration:none;font-size:.68rem;transition:color .3s;font-family:'Righteous',cursive}
+        .page-footer .footer-legal a:hover{color:#8338ec}
+        .page-footer .footer-copy{font-size:.62rem;color:rgba(255,255,255,.18);margin-top:.4rem;font-family:'Righteous',cursive}
     </style>
 </head>
 <body>
@@ -468,11 +476,11 @@
         </p>
 
         <div class="btn-group">
-            <a href="index.html" class="btn-primary">
+            <a href="/" class="btn-primary">
                 <span class="iconify" data-icon="ph:house-bold"></span>
                 Back to Home
             </a>
-            <a href="create-quiz.html" class="btn-secondary">
+            <a href="create-quiz" class="btn-secondary">
                 <span class="iconify" data-icon="ph:plus-bold"></span>
                 Create a Quiz
             </a>
@@ -480,7 +488,24 @@
 
     </div>
 
-    <a href="index.html" class="bottom-logo">RealorNah</a>
+    <a href="/" class="bottom-logo">RealorNah</a>
+
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="create-quiz">Create Quiz</a>
+            <a href="trending">Trending</a>
+            <a href="templates">Templates</a>
+            <a href="how-to-use">How to Use</a>
+            <a href="contact">Contact</a>
+        </div>
+        <div class="footer-legal">
+            <a href="privacy-policy">Privacy Policy</a>
+            <a href="terms">Terms of Service</a>
+            <a href="disclaimer">Disclaimer</a>
+        </div>
+        <p class="footer-copy">© 2025 RealorNah. All rights reserved.</p>
+    </footer>
 
     <script>
         // ── Generate floating particles ──

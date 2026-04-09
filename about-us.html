@@ -125,7 +125,7 @@
 
         .sidebar-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 2rem; padding-bottom: 1rem;
+            margin-bottom: 1rem; padding-bottom: 1rem;
             border-bottom: 1px solid rgba(131,56,236,0.3);
         }
         .sidebar-logo {
@@ -148,7 +148,7 @@
 
         .sidebar-menu { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
         .menu-item {
-            display: flex; align-items: center; gap: 1rem;
+            display: flex; align-items: center; gap: .3rem;
             padding: 1rem; border-radius: 12px;
             color: rgba(255,255,255,0.8); text-decoration: none;
             transition: all 0.3s; font-size: 1rem;
@@ -720,6 +720,10 @@
         .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
         .footer-links a { font-family: 'Chewy', cursive; font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.3s; }
         .footer-links a:hover { color: var(--neon-pink); }
+        .footer-legal { display: flex; justify-content: center; flex-wrap: wrap; gap: .4rem 1rem; margin-top: .5rem; }
+        .footer-legal a { font-family: 'Chewy', cursive; font-size: 0.72rem; color: rgba(255,255,255,0.28); text-decoration: none; transition: color .3s; }
+        .footer-legal a:hover { color: var(--electric-purple); }
+        .footer-copy { font-size: .65rem; color: rgba(255,255,255,.2); margin-top: .4rem; }
 
         /* ══════════════════════════════════════
            RESPONSIVE
@@ -748,24 +752,13 @@
             </button>
         </div>
         <nav class="sidebar-menu">
-            <a href="index" class="menu-item">
-                <span class="iconify" data-icon="ph:house-bold"></span>Home
-            </a>
-            <a href="create-quiz" class="menu-item">
-                <span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz
-            </a>
-            <a href="my-quizzes" class="menu-item">
-                <span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats
-            </a>
-            <a href="trending" class="menu-item">
-                <span class="iconify" data-icon="ph:trend-up-bold"></span>Trending
-            </a>
-            <a href="how-to-use" class="menu-item">
-                <span class="iconify" data-icon="ph:question-bold"></span>How to Use
-            </a>
-            <a href="about-us" class="menu-item active">
-                <span class="iconify" data-icon="ph:info-bold"></span>About Us
-            </a>
+            <a href="index" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
+            <a href="create-quiz" class="menu-item active"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
+            <a href="my-quizzes" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
+            <a href="trending" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
+            <a href="templates" class="menu-item"><span class="iconify" data-icon="ph:grid-four-bold"></span>Templates</a>
+            <a href="how-to-use" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
+            <a href="about-us" class="menu-item"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
         </nav>
         <div class="sidebar-footer">
             <a href="https://instagram.com/preetsaw_07" target="_blank" class="insta-link">
@@ -1066,11 +1059,19 @@
                 <div class="footer-logo">RealorNah</div>
                 <div class="footer-tagline">Real friends. Real scores. Real drama.</div>
                 <div class="footer-links">
-                    <a href="index">Home</a>
-                    <a href="how-to-use">How to Use</a>
-                    <a href="trending">Trending</a>
+                    <a href="/">Home</a>
                     <a href="create-quiz">Create Quiz</a>
+                    <a href="trending">Trending</a>
+                    <a href="templates">Templates</a>
+                    <a href="how-to-use">How to Use</a>
+                    <a href="contact">Contact</a>
                 </div>
+                <div class="footer-legal">
+                    <a href="privacy-policy">Privacy Policy</a>
+                    <a href="terms">Terms of Service</a>
+                    <a href="disclaimer">Disclaimer</a>
+                </div>
+                <p class="footer-copy">© 2025 RealorNah. All rights reserved.</p>
             </footer>
 
         </div><!-- /container -->

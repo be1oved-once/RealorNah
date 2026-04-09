@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contact RealorNah – Got Questions? Hit Us Up</title>
+    <meta name="description" content="Contact the RealorNah team for support, feedback, or collab ideas. We read every message — usually within 24 hours.">
+    <meta name="author" content="RealorNah">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://realornah.vercel.app/contact">
+    <meta property="og:title" content="Contact RealorNah – Got Questions? Hit Us Up">
+    <meta property="og:description" content="Contact the RealorNah team for support, feedback, or collab ideas. We actually reply.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://realornah.vercel.app/og-cover.png">
+    <meta property="og:url" content="https://realornah.vercel.app/contact">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","name":"Contact RealorNah","url":"https://realornah.vercel.app/contact","isPartOf":{"@type":"WebSite","name":"RealorNah","url":"https://realornah.vercel.app"}}</script>
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e;--sidebar-bg:#0a0118}
+        html{scroll-behavior:smooth}
+        body{font-family:'Righteous',cursive;background:var(--deep-bg);min-height:100vh;color:white;overflow-x:hidden;line-height:1.6}
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(131,56,236,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(131,56,236,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+        .app-container{position:relative;width:100%;height:100%;overflow:hidden}
+
+        /* SIDEBAR */
+        .sidebar{position:fixed;top:0;left:0;width:85%;max-width:320px;height:100%;background:var(--sidebar-bg);border-right:2px solid var(--electric-purple);z-index:200;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:1rem;box-shadow:5px 0 30px rgba(0,0,0,.5)}
+        .sidebar.open{transform:translateX(0)}
+        .sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid rgba(131,56,236,.3)}
+        .sidebar-logo{font-family:'Rubik Bubbles',cursive;font-size:1.3rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .close-sidebar{width:40px;height:40px;background:rgba(255,0,110,.2);border:2px solid var(--neon-pink);border-radius:50%;color:var(--neon-pink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s}
+        .close-sidebar:hover{background:var(--neon-pink);color:white;transform:rotate(90deg)}
+        .sidebar-menu{flex:1;display:flex;flex-direction:column;gap:.5rem}
+        .menu-item{display:flex;align-items:center;gap:1rem;padding:1rem;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;transition:all .3s;font-size:1rem}
+        .menu-item:hover,.menu-item.active{background:rgba(131,56,236,.2);color:var(--cyan-blast)}
+        .sidebar-footer{padding-top:1rem;border-top:1px solid rgba(131,56,236,.3);display:flex;flex-direction:column;gap:.5rem}
+        .insta-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
+        .brand-link{display:flex;align-items:center;gap:.75rem;padding:.875rem;background:linear-gradient(135deg,#ff4d8d,#ff758f);border-radius:12px;color:white;text-decoration:none;font-size:.9rem;transition:all .3s}
+        .brand-logo{width:26px;height:26px;border-radius:6px;object-fit:cover}
+        .sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
+        .sidebar-overlay.active{opacity:1;visibility:visible}
+        .main-content{width:100%;height:100%;overflow-y:auto;transition:transform .3s ease}
+        .main-content.shifted{transform:translateX(85%)}
+
+        /* NAV */
+        nav{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;position:sticky;top:0;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
+        .menu-btn{width:42px;height:42px;background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;flex-shrink:0}
+        .menu-btn:hover{background:var(--electric-purple);transform:scale(1.05)}
+        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
+        .nav-cta{font-family:'Rubik Bubbles',cursive;font-size:.7rem;padding:.5rem .875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:20px;color:white;text-decoration:none;transition:all .3s;flex-shrink:0;display:flex;align-items:center;gap:.3rem}
+        .nav-cta:hover{transform:scale(1.05)}
+
+        /* CONTENT */
+        .container{max-width:620px;margin:0 auto;padding:1.5rem .875rem 3rem}
+        .page-header{text-align:center;padding:1.5rem 0 1.25rem}
+        .page-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(6,255,165,.12);border:1.5px solid var(--cyan-blast);padding:.35rem .9rem;border-radius:20px;font-size:.75rem;color:var(--cyan-blast);margin-bottom:.75rem}
+        .page-title{font-family:'Bungee Shade',cursive;font-size:clamp(1.8rem,6vw,2.5rem);background:linear-gradient(135deg,var(--cyan-blast),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+        .page-subtitle{font-size:.86rem;color:rgba(255,255,255,.58);max-width:360px;margin:0 auto}
+
+        /* QUICK LINKS */
+        .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1.25rem}
+        .quick-card{background:var(--card-bg);border:1.5px solid rgba(131,56,236,.3);border-radius:14px;padding:.9rem;text-align:center;text-decoration:none;color:white;transition:border-color .3s,transform .2s}
+        .quick-card:hover{border-color:var(--electric-purple);transform:translateY(-2px)}
+        .quick-card-icon{font-size:1.4rem;margin-bottom:.3rem;display:block}
+        .quick-card-label{font-family:'Chewy',cursive;font-size:.88rem;color:rgba(255,255,255,.8)}
+        .quick-card-sub{font-size:.7rem;color:rgba(255,255,255,.38);margin-top:.1rem}
+
+        /* FORM CARD */
+        .form-card{background:var(--card-bg);border:2px solid rgba(131,56,236,.35);border-radius:20px;padding:1.35rem 1.1rem;margin-bottom:1rem}
+        .form-title{font-family:'Chewy',cursive;font-size:1.15rem;color:var(--lemon-yellow);margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem}
+
+        /* FIELDS */
+        .field{margin-bottom:.9rem}
+        .field label{display:block;font-family:'Chewy',cursive;font-size:.88rem;color:rgba(255,255,255,.6);margin-bottom:.38rem}
+        .field input,.field textarea{width:100%;background:var(--input-bg);border:1.5px solid rgba(131,56,236,.3);border-radius:12px;padding:.72rem .95rem;color:white;font-family:'Righteous',cursive;font-size:.84rem;outline:none;transition:border-color .3s}
+        .field input:focus,.field textarea:focus{border-color:var(--electric-purple)}
+        .field textarea{resize:vertical;min-height:120px;line-height:1.6}
+        .char-count{text-align:right;font-size:.68rem;color:rgba(255,255,255,.28);margin-top:.22rem}
+
+        /* CUSTOM DROPDOWN */
+        .custom-select{position:relative}
+        .select-trigger{width:100%;background:var(--input-bg);border:1.5px solid rgba(131,56,236,.3);border-radius:12px;padding:.72rem .95rem;color:rgba(255,255,255,.5);font-family:'Righteous',cursive;font-size:.84rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.5rem;transition:border-color .3s;user-select:none}
+        .select-trigger.has-value{color:white}
+        .select-trigger.open{border-color:var(--electric-purple);border-bottom-left-radius:0;border-bottom-right-radius:0}
+        .select-arrow{transition:transform .25s;flex-shrink:0;font-size:1rem;color:rgba(255,255,255,.4)}
+        .select-arrow.open{transform:rotate(180deg)}
+        .select-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--input-bg);border:1.5px solid var(--electric-purple);border-top:none;border-bottom-left-radius:12px;border-bottom-right-radius:12px;z-index:50;overflow:hidden;max-height:0;transition:max-height .25s ease}
+        .select-dropdown.open{max-height:320px}
+        .select-option{display:flex;align-items:center;gap:.75rem;padding:.75rem .95rem;cursor:pointer;font-size:.84rem;color:rgba(255,255,255,.75);transition:background .2s}
+        .select-option:hover{background:rgba(131,56,236,.25);color:white}
+        .select-option.selected{background:rgba(131,56,236,.2);color:var(--cyan-blast)}
+        .select-option-icon{font-size:1rem;flex-shrink:0}
+
+        /* SUBMIT */
+        .submit-btn{width:100%;padding:.95rem;background:linear-gradient(135deg,var(--electric-purple),var(--neon-pink));border:none;border-radius:14px;color:white;font-family:'Chewy',cursive;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:opacity .3s,transform .2s;margin-top:.25rem}
+        .submit-btn:hover:not(:disabled){transform:translateY(-2px);opacity:.92}
+        .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .spin{animation:spin .8s linear infinite}
+
+        /* TOAST */
+        .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:14px;padding:.8rem 1.15rem;display:flex;align-items:center;gap:.55rem;font-size:.84rem;z-index:999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .toast.success{border-color:var(--cyan-blast);color:var(--cyan-blast)}
+        .toast.error{border-color:var(--neon-pink);color:var(--neon-pink)}
+
+        /* FAQ */
+        .faq-card{background:var(--card-bg);border:1.5px solid rgba(131,56,236,.25);border-radius:14px;padding:1rem 1.05rem;margin-bottom:.55rem}
+        .faq-q{font-family:'Chewy',cursive;font-size:.93rem;color:var(--lemon-yellow);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+        .faq-a{font-size:.82rem;color:rgba(255,255,255,.68);line-height:1.65;max-height:0;overflow:hidden;transition:max-height .3s ease,margin-top .3s ease}
+        .faq-a.open{max-height:200px;margin-top:.5rem}
+        .faq-toggle{transition:transform .3s;color:rgba(255,255,255,.35);flex-shrink:0}
+        .faq-toggle.open{transform:rotate(45deg);color:var(--cyan-blast)}
+
+        /* FOOTER */
+        footer{text-align:center;padding:2rem 1rem 1.5rem;border-top:1px solid rgba(131,56,236,.2)}
+        .footer-logo{font-family:'Rubik Bubbles',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+        .footer-tagline{font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:.65rem}
+        .footer-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem 1.1rem;margin-bottom:.5rem}
+        .footer-nav a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.74rem;transition:color .3s}
+        .footer-nav a:hover{color:var(--neon-pink)}
+        .footer-legal{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem .9rem;margin-bottom:.5rem}
+        .footer-legal a{color:rgba(255,255,255,.25);text-decoration:none;font-size:.7rem;transition:color .3s}
+        .footer-legal a:hover{color:var(--electric-purple)}
+        .footer-copy{font-size:.65rem;color:rgba(255,255,255,.2)}
+
+        @media(max-width:360px){.quick-links{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+<div class="toast" id="toast"></div>
+
+<div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">RealorNah</span>
+            <button class="close-sidebar" onclick="closeSidebar()"><span class="iconify" data-icon="ph:x-bold"></span></button>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="/" class="menu-item"><span class="iconify" data-icon="ph:house-bold"></span>Home</a>
+            <a href="create-quiz" class="menu-item"><span class="iconify" data-icon="ph:plus-circle-bold"></span>Create New Quiz</a>
+            <a href="my-quizzes" class="menu-item"><span class="iconify" data-icon="ph:chart-bar-bold"></span>My Quiz Stats</a>
+            <a href="trending" class="menu-item"><span class="iconify" data-icon="ph:trend-up-bold"></span>Trending</a>
+            <a href="how-to-use" class="menu-item"><span class="iconify" data-icon="ph:question-bold"></span>How to Use</a>
+            <a href="about-us" class="menu-item"><span class="iconify" data-icon="ph:info-bold"></span>About Us</a>
+            <a href="contact" class="menu-item active"><span class="iconify" data-icon="ph:envelope-bold"></span>Contact</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="https://instagram.com/preetsaw_07" target="_blank" class="insta-link"><span class="iconify" data-icon="ph:instagram-logo-bold"></span>Visit Our Instagram</a>
+            <a href="https://doyouknowme.vercel.com" target="_blank" class="brand-link"><img src="/assets/DYKMlogo.png" class="brand-logo" alt="DYKM"><span>Visit DoYouKnowMe</span></a>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <main class="main-content" id="mainContent">
+        <nav>
+            <button class="menu-btn" onclick="openSidebar()"><span class="iconify" data-icon="ph:list-bold"></span></button>
+            <span class="nav-logo">RealorNah</span>
+            <a href="create-quiz" class="nav-cta"><span class="iconify" data-icon="ph:plus-bold"></span>Create</a>
+        </nav>
+
+        <div class="container">
+            <header class="page-header">
+                <div class="page-badge"><span class="iconify" data-icon="ph:chat-bold"></span> Get In Touch</div>
+                <h1 class="page-title">Contact Us</h1>
+                <p class="page-subtitle">Questions, bug reports, collab ideas, or just vibes — we actually read and reply to every message.</p>
+            </header>
+
+            <!-- Quick links -->
+            <div class="quick-links">
+                <a href="how-to-use" class="quick-card">
+                    <span class="quick-card-icon"><span class="iconify" data-icon="ph:question-bold" style="color:var(--cyan-blast)"></span></span>
+                    <div class="quick-card-label">How to Use</div>
+                    <div class="quick-card-sub">Step-by-step guide</div>
+                </a>
+                <a href="about-us" class="quick-card">
+                    <span class="quick-card-icon"><span class="iconify" data-icon="ph:info-bold" style="color:var(--lemon-yellow)"></span></span>
+                    <div class="quick-card-label">About Us</div>
+                    <div class="quick-card-sub">Our story</div>
+                </a>
+                <a href="trending" class="quick-card">
+                    <span class="quick-card-icon"><span class="iconify" data-icon="ph:trend-up-bold" style="color:var(--hot-orange)"></span></span>
+                    <div class="quick-card-label">Trending Quizzes</div>
+                    <div class="quick-card-sub">See what's viral</div>
+                </a>
+                <a href="create-quiz" class="quick-card">
+                    <span class="quick-card-icon"><span class="iconify" data-icon="ph:rocket-launch-bold" style="color:var(--neon-pink)"></span></span>
+                    <div class="quick-card-label">Create a Quiz</div>
+                    <div class="quick-card-sub">Free, instant</div>
+                </a>
+            </div>
+
+            <!-- Contact form -->
+            <div class="form-card">
+                <h2 class="form-title"><span class="iconify" data-icon="ph:paper-plane-tilt-bold"></span> Send Us a Message</h2>
+
+                <div class="field">
+                    <label for="contact-name">Your Name</label>
+                    <input type="text" id="contact-name" placeholder="What should we call you?" maxlength="80" autocomplete="name">
+                </div>
+
+                <div class="field">
+                    <label for="contact-email">Email Address</label>
+                    <input type="email" id="contact-email" placeholder="your@email.com" maxlength="120" autocomplete="email">
+                </div>
+
+                <!-- Custom dropdown — no native select -->
+                <div class="field">
+                    <label>What's it about?</label>
+                    <div class="custom-select" id="customSelect">
+                        <div class="select-trigger" id="selectTrigger" onclick="toggleDropdown()">
+                            <span id="selectLabel">Choose a topic</span>
+                            <span class="iconify select-arrow" id="selectArrow" data-icon="ph:caret-down-bold"></span>
+                        </div>
+                        <div class="select-dropdown" id="selectDropdown">
+                            <div class="select-option" onclick="selectOption('Bug Report','ph:bug-bold','#ff006e')">
+                                <span class="iconify select-option-icon" data-icon="ph:bug-bold" style="color:#ff006e"></span>Bug Report
+                            </div>
+                            <div class="select-option" onclick="selectOption('Feature Request','ph:sparkle-bold','#06ffa5')">
+                                <span class="iconify select-option-icon" data-icon="ph:sparkle-bold" style="color:#06ffa5"></span>Feature Request
+                            </div>
+                            <div class="select-option" onclick="selectOption('Quiz Help','ph:student-bold','#ffbe0b')">
+                                <span class="iconify select-option-icon" data-icon="ph:student-bold" style="color:#ffbe0b"></span>Quiz Help
+                            </div>
+                            <div class="select-option" onclick="selectOption('Collab / Partnership','ph:handshake-bold','#fb5607')">
+                                <span class="iconify select-option-icon" data-icon="ph:handshake-bold" style="color:#fb5607"></span>Collab / Partnership
+                            </div>
+                            <div class="select-option" onclick="selectOption('Content Removal','ph:trash-bold','#8338ec')">
+                                <span class="iconify select-option-icon" data-icon="ph:trash-bold" style="color:#8338ec"></span>Content Removal Request
+                            </div>
+                            <div class="select-option" onclick="selectOption('General Feedback','ph:chat-circle-text-bold','#06ffa5')">
+                                <span class="iconify select-option-icon" data-icon="ph:chat-circle-text-bold" style="color:#06ffa5"></span>General Feedback
+                            </div>
+                            <div class="select-option" onclick="selectOption('Other','ph:dots-three-bold','rgba(255,255,255,.5)')">
+                                <span class="iconify select-option-icon" data-icon="ph:dots-three-bold" style="color:rgba(255,255,255,.5)"></span>Other
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="contact-message">Your Message</label>
+                    <textarea id="contact-message" placeholder="Tell us everything. We don't bite." maxlength="2000"></textarea>
+                    <div class="char-count"><span id="charCount">0</span> / 2000</div>
+                </div>
+
+                <button class="submit-btn" id="submitBtn" onclick="sendMessage()">
+                    <span class="iconify" data-icon="ph:paper-plane-tilt-bold"></span>
+                    Send Message
+                </button>
+            </div>
+
+            <!-- FAQ -->
+            <h2 style="font-family:'Chewy',cursive;font-size:1.05rem;color:rgba(255,255,255,.5);text-align:center;margin-bottom:.65rem">Frequently Asked</h2>
+
+            <div class="faq-card">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    How do I delete my quiz?
+                    <span class="iconify faq-toggle" data-icon="ph:plus-bold"></span>
+                </div>
+                <div class="faq-a">Go to <strong>My Quizzes</strong>, find your quiz by PIN, and delete it. Lost your PIN? Contact us with your quiz title and creation date.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Can I report an inappropriate quiz?
+                    <span class="iconify faq-toggle" data-icon="ph:plus-bold"></span>
+                </div>
+                <div class="faq-a">Yes — use the form above with "Content Removal Request" and include the quiz PIN or link. We review all reports within 24 hours.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    How long until you reply?
+                    <span class="iconify faq-toggle" data-icon="ph:plus-bold"></span>
+                </div>
+                <div class="faq-a">Usually within 24–48 hours. We're a small team but we read every single message.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Open to collabs or features?
+                    <span class="iconify faq-toggle" data-icon="ph:plus-bold"></span>
+                </div>
+                <div class="faq-a">Absolutely! Choose "Collab / Partnership" above and tell us about your idea.</div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-logo">RealorNah</div>
+            <div class="footer-tagline">Test your friendships. No filter. No mercy.</div>
+            <nav class="footer-nav">
+                <a href="/">Home</a><a href="create-quiz">Create Quiz</a><a href="trending">Trending</a>
+                <a href="templates">Templates</a><a href="how-to-use">How to Use</a>
+                <a href="about-us">About</a>
+            </nav>
+            <div class="footer-legal">
+                <a href="privacy-policy">Privacy Policy</a><a href="terms">Terms of Service</a><a href="disclaimer">Disclaimer</a>
+            </div>
+            <p class="footer-copy">© 2025 RealorNah. All rights reserved.</p>
+        </footer>
+    </main>
+</div>
+
+<script>
+/* ── SIDEBAR ── */
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('active');document.getElementById('mainContent').classList.add('shifted');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('active');document.getElementById('mainContent').classList.remove('shifted');}
+let tStartX=0;
+document.addEventListener('touchstart',e=>{tStartX=e.changedTouches[0].screenX;});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-tStartX;const open=document.getElementById('sidebar').classList.contains('open');if(!open&&dx>50&&tStartX<50)openSidebar();if(open&&dx<-50)closeSidebar();});
+
+/* ── CUSTOM DROPDOWN ── */
+let selectedSubject = '';
+function toggleDropdown() {
+    const trigger = document.getElementById('selectTrigger');
+    const dropdown = document.getElementById('selectDropdown');
+    const arrow = document.getElementById('selectArrow');
+    const isOpen = dropdown.classList.contains('open');
+    trigger.classList.toggle('open', !isOpen);
+    dropdown.classList.toggle('open', !isOpen);
+    arrow.classList.toggle('open', !isOpen);
+}
+function selectOption(value, icon, color) {
+    selectedSubject = value;
+    const label = document.getElementById('selectLabel');
+    label.innerHTML = `<span class="iconify" data-icon="${icon}" style="color:${color};margin-right:.5rem;font-size:1rem;vertical-align:middle"></span>${value}`;
+    if(window.Iconify) window.Iconify.scan();
+    document.getElementById('selectTrigger').classList.add('has-value');
+    document.getElementById('selectTrigger').classList.remove('open');
+    document.getElementById('selectDropdown').classList.remove('open');
+    document.getElementById('selectArrow').classList.remove('open');
+    // mark selected
+    document.querySelectorAll('.select-option').forEach(o => {
+        o.classList.toggle('selected', o.textContent.trim().startsWith(value.replace('/ ','').split('/')[0].trim()));
+    });
+}
+// close dropdown on outside click
+document.addEventListener('click', e => {
+    if (!document.getElementById('customSelect').contains(e.target)) {
+        document.getElementById('selectTrigger').classList.remove('open');
+        document.getElementById('selectDropdown').classList.remove('open');
+        document.getElementById('selectArrow').classList.remove('open');
+    }
+});
+
+/* ── CHAR COUNT ── */
+document.getElementById('contact-message').addEventListener('input', function(){
+    document.getElementById('charCount').textContent = this.value.length;
+});
+
+/* ── TOAST ── */
+let toastTimer;
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.innerHTML = `<span class="iconify" data-icon="${type==='success'?'ph:check-circle-bold':'ph:x-circle-bold'}"></span> ${msg}`;
+    if(window.Iconify) window.Iconify.scan();
+    t.className = `toast show ${type}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+/* ── SUBMIT ── */
+async function sendMessage() {
+    const btn = document.getElementById('submitBtn');
+    const name    = document.getElementById('contact-name').value.trim();
+    const email   = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+
+    if (!name)    return showToast('Please enter your name.','error');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('Please enter a valid email.','error');
+    if (!selectedSubject) return showToast('Please choose a topic.','error');
+    if (!message || message.length < 10) return showToast('Message too short. Say more!','error');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="iconify spin" data-icon="ph:spinner-gap-bold"></span> Sending…';
+    if(window.Iconify) window.Iconify.scan();
+
+    try {
+        const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({name, email, subject: selectedSubject, message}),
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            showToast("Message sent! We'll reply soon 🎉",'success');
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-email').value = '';
+            document.getElementById('contact-message').value = '';
+            document.getElementById('charCount').textContent = '0';
+            selectedSubject = '';
+            document.getElementById('selectLabel').textContent = 'Choose a topic';
+            document.getElementById('selectTrigger').classList.remove('has-value');
+            document.querySelectorAll('.select-option').forEach(o => o.classList.remove('selected'));
+        } else {
+            showToast(data.error || 'Something went wrong. Try again.','error');
+        }
+    } catch(e) {
+        showToast('Network error. Check your connection.','error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="iconify" data-icon="ph:paper-plane-tilt-bold"></span> Send Message';
+        if(window.Iconify) window.Iconify.scan();
+    }
+}
+
+/* ── FAQ ── */
+function toggleFaq(el) {
+    const ans = el.nextElementSibling;
+    const ico = el.querySelector('.faq-toggle');
+    const open = ans.classList.contains('open');
+    ans.classList.toggle('open', !open);
+    ico.classList.toggle('open', !open);
+}
+</script>
+</body>
+</html>
