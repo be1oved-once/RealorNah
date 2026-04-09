@@ -24,7 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <style>
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent; text-decoration-line: none;}
         :root{--neon-pink:#ff006e;--electric-purple:#8338ec;--hot-orange:#fb5607;--cyan-blast:#06ffa5;--lemon-yellow:#ffbe0b;--deep-bg:#0d0221;--card-bg:#160036;--input-bg:#1a0b2e;--sidebar-bg:#0a0118}
         html{scroll-behavior:smooth}
         body{font-family:'Righteous',cursive;background:var(--deep-bg);min-height:100vh;color:white;overflow-x:hidden;line-height:1.6}
@@ -52,7 +52,7 @@
         nav{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;position:sticky;top:0;background:rgba(13,2,33,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(131,56,236,.3)}
         .menu-btn{width:42px;height:42px;background:rgba(131,56,236,.2);border:2px solid var(--electric-purple);border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;flex-shrink:0}
         .menu-btn:hover{background:var(--electric-purple);transform:scale(1.05)}
-        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
+        .nav-logo{font-family:'Rubik Bubbles',cursive;font-size:1.6rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
         .nav-cta{font-family:'Rubik Bubbles',cursive;font-size:.7rem;padding:.5rem .875rem;background:linear-gradient(135deg,var(--hot-orange),var(--neon-pink));border:none;border-radius:20px;color:white;text-decoration:none;transition:all .3s;flex-shrink:0;display:flex;align-items:center;gap:.3rem}
         .container{max-width:680px;margin:0 auto;padding:1.5rem .875rem 3rem}
         .page-header{text-align:center;padding:1.5rem 0 1.25rem}
@@ -107,7 +107,7 @@
     <main class="main-content" id="mainContent">
         <nav>
             <button class="menu-btn" onclick="openSidebar()"><span class="iconify" data-icon="ph:list-bold"></span></button>
-            <span class="nav-logo">RealorNah</span>
+            <a href="/" class="nav-logo">RealorNah</a>
             <a href="create-quiz" class="nav-cta"><span class="iconify" data-icon="ph:plus-bold"></span>Create</a>
         </nav>
         <div class="container">

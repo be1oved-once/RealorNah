@@ -44,6 +44,7 @@
             margin: 0; padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            text-decoration: none;
         }
         :root {
             --neon-pink: #ff006e;
@@ -221,7 +222,7 @@
         .menu-btn:hover { background: var(--electric-purple); transform: scale(1.05); }
         .nav-logo {
             font-family: 'Rubik Bubbles', cursive;
-            font-size: 1.1rem;
+            font-size: 1.6rem;
             background: linear-gradient(135deg, var(--neon-pink), var(--electric-purple));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text; flex: 1; text-align: center;
@@ -746,7 +747,7 @@
     <!-- ══ SIDEBAR ══ -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <span class="sidebar-logo">RealorNah</span>
+            <a href="/"><span class="sidebar-logo">RealorNah</span></a>
             <button class="close-sidebar" onclick="closeSidebar()">
                 <span class="iconify" data-icon="ph:x-bold"></span>
             </button>
@@ -782,7 +783,7 @@
             <button class="menu-btn" onclick="openSidebar()">
                 <span class="iconify" data-icon="ph:list-bold"></span>
             </button>
-            <span class="nav-logo">RealorNah</span>
+            <span class="nav-logo"><a href="/">RealorNah</a></span>
             <a href="create-quiz" class="nav-cta">
                 <span class="iconify" data-icon="ph:plus-bold"></span>Create
             </a>
@@ -1071,7 +1072,7 @@
                     <a href="terms">Terms of Service</a>
                     <a href="disclaimer">Disclaimer</a>
                 </div>
-                <p class="footer-copy">© 2025 RealorNah. All rights reserved.</p>
+                <p class="footer-copy">© 2026 RealorNah. All rights reserved.</p>
             </footer>
 
         </div><!-- /container -->
