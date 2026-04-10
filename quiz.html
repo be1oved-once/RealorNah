@@ -133,7 +133,7 @@
         .share-app-btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
         .share-app-btn .sab-icon{font-size:1.5rem}
         .share-app-btn.wa{background:linear-gradient(135deg,#25D366,#128C7E)}
-        .share-app-btn.tg{background:linear-gradient(135deg,#0088cc,#005fa3)}
+        .share-app-btn.ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
         .share-app-btn.cp{background:linear-gradient(135deg,var(--electric-purple),#5b21b6)}
         .share-app-btn.more{background:linear-gradient(135deg,#374151,#1f2937)}
         .share-cancel{width:100%;padding:.75rem;background:transparent;border:2px solid rgba(255,255,255,.15);border-radius:12px;color:rgba(255,255,255,.6);font-family:'Righteous',cursive;font-size:.9rem;cursor:pointer;transition:all .3s}
@@ -344,8 +344,8 @@
             <button class="share-app-btn wa" onclick="shareScorecard('whatsapp')">
                 <span class="sab-icon iconify" data-icon="ph:whatsapp-logo-bold"></span>WhatsApp
             </button>
-            <button class="share-app-btn tg" onclick="shareScorecard('telegram')">
-                <span class="sab-icon iconify" data-icon="ph:telegram-logo-bold"></span>Telegram
+            <button class="share-app-btn ig" onclick="shareScorecard('instagram')">
+                <span class="sab-icon iconify" data-icon="ph:instagram-logo-bold"></span>Story
             </button>
             <button class="share-app-btn cp" onclick="shareScorecard('copy')">
                 <span class="sab-icon iconify" data-icon="ph:copy-bold"></span>Copy Link
@@ -616,10 +616,10 @@ async function generateScorecardImage(){
 
     const percentage=Math.round((score/quiz.questions.length)*100);
 
-    // Tier config
+    // Tier config — colors match the site CSS exactly
     const tierCfg=[
-        [90,{name:'Soulmate',          grad:['#FFD700','#FFA500'], ring:'#FFD700', glow:'rgba(255,215,0,0.45)'}],
-        [71,{name:'Best Friend Forever',grad:['#06ffa5','#00c9ff'], ring:'#06ffa5', glow:'rgba(6,255,165,0.4)'}],
+        [90,{name:'Soulmate',          grad:['#FFD700','#ffd700'], ring:'#FFD700', glow:'rgba(255,215,0,0.45)'}],
+        [71,{name:'Best Friend Forever',grad:['#06ffa5','#00e5ff'], ring:'#06ffa5', glow:'rgba(6,255,165,0.4)'}],
         [51,{name:'Good Friend',        grad:['#a78bfa','#8338ec'], ring:'#a78bfa', glow:'rgba(167,139,250,0.4)'}],
         [31,{name:'Suspicious Friend',  grad:['#ffbe0b','#fb5607'], ring:'#ffbe0b', glow:'rgba(255,190,11,0.4)'}],
         [0, {name:'Fake Friend',        grad:['#ff006e','#cc0055'], ring:'#ff006e', glow:'rgba(255,0,110,0.4)'}],
@@ -627,6 +627,23 @@ async function generateScorecardImage(){
     const [,tc]=tierCfg.find(([t])=>percentage>=t);
 
     // ── Deep background ──────────────────────────────────────────────
+    // Clip entire canvas to rounded rect so corners are transparent
+    const CANVAS_R = 56;
+    ctx.clearRect(0,0,W,H);
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(CANVAS_R,0);
+    ctx.lineTo(W-CANVAS_R,0);
+    ctx.quadraticCurveTo(W,0,W,CANVAS_R);
+    ctx.lineTo(W,H-CANVAS_R);
+    ctx.quadraticCurveTo(W,H,W-CANVAS_R,H);
+    ctx.lineTo(CANVAS_R,H);
+    ctx.quadraticCurveTo(0,H,0,H-CANVAS_R);
+    ctx.lineTo(0,CANVAS_R);
+    ctx.quadraticCurveTo(0,0,CANVAS_R,0);
+    ctx.closePath();
+    ctx.clip();
+
     const bgGrad=ctx.createLinearGradient(0,0,W,H);
     bgGrad.addColorStop(0,'#0a0018');
     bgGrad.addColorStop(0.5,'#0f0028');
@@ -709,12 +726,12 @@ async function generateScorecardImage(){
     ctx.arc(RX,RY,RR,-Math.PI/2,-Math.PI/2+(Math.PI*2*percentage/100));
     ctx.stroke();
 
-    // Score percent (no glow)
+    // Score percent — matches site .score-percent: neon-pink → hot-orange gradient
     const pctGrad=ctx.createLinearGradient(RX-80,RY-60,RX+80,RY+20);
-    pctGrad.addColorStop(0,'#ffffff'); pctGrad.addColorStop(1,tc.grad[0]);
-    ctx.font="100px 'Bungee Shade', cursive";
+    pctGrad.addColorStop(0,'#ff006e'); pctGrad.addColorStop(1,'#fb5607');
+    ctx.font="76px 'Bungee Shade', cursive";
     ctx.fillStyle=pctGrad;
-    ctx.fillText(`${percentage}%`,RX,RY+38);
+    ctx.fillText(`${percentage}%`,RX,RY+30);
 
     // "out of X questions" below ring
     ctx.font="28px 'Chewy', cursive";
@@ -735,17 +752,6 @@ async function generateScorecardImage(){
     const tagline=`I took ${quiz.creator}'s quiz on RealorNah`;
     ctx.fillText(tagline,540,960);
 
-    // Player name chip
-    const chipW=460, chipH=72, chipX=540-chipW/2, chipY=1010;
-    const chipBg=ctx.createLinearGradient(chipX,chipY,chipX+chipW,chipY+chipH);
-    chipBg.addColorStop(0,tc.grad[0]+'33'); chipBg.addColorStop(1,tc.grad[1]+'22');
-    roundRect(ctx,chipX,chipY,chipW,chipH,36,true,chipBg);
-    ctx.strokeStyle=tc.grad[0]+'66'; ctx.lineWidth=1.5;
-    roundStroke(ctx,chipX,chipY,chipW,chipH,36);
-    ctx.font="32px 'Righteous', cursive";
-    ctx.fillStyle='rgba(255,255,255,0.9)';
-    ctx.fillText(`✦ ${playerName} ✦`,540,chipY+47);
-
     // ── Footer ───────────────────────────────────────────────────────
     ctx.font="26px 'Righteous', cursive";
     ctx.fillStyle='rgba(255,255,255,0.28)';
@@ -759,6 +765,7 @@ async function generateScorecardImage(){
         ctx.fill();
     }
 
+    ctx.restore(); // close rounded clip
     return canvas.toDataURL('image/png',1);
 }
 
@@ -853,8 +860,18 @@ Take the quiz: ${url}
         window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`,'_blank');
     }
 
-    else if(platform==='telegram'){
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s quiz!`)}`,'_blank');
+    else if(platform==='instagram'){
+        // Download image first, then try native share (works on mobile)
+        try{
+            const blob=await (await fetch(imgData)).blob();
+            const file=new File([blob],'realornah-score.png',{type:'image/png'});
+            if(navigator.canShare&&navigator.canShare({files:[file]})){
+                await navigator.share({files:[file],title:'My RealorNah Score'});
+                closeShareSheet();return;
+            }
+        }catch(e){}
+        // Fallback: just download the image so they can post it manually
+        const a=document.createElement('a');a.href=imgData;a.download='realornah-score.png';a.click();
     }
 
     else if(platform==='copy'){
