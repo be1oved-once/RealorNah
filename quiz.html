@@ -138,6 +138,11 @@
         .share-app-btn.more{background:linear-gradient(135deg,#374151,#1f2937)}
         .share-cancel{width:100%;padding:.75rem;background:transparent;border:2px solid rgba(255,255,255,.15);border-radius:12px;color:rgba(255,255,255,.6);font-family:'Righteous',cursive;font-size:.9rem;cursor:pointer;transition:all .3s}
         .share-cancel:hover{border-color:var(--neon-pink);color:var(--neon-pink)}
+        /* Share loading overlay */
+        .share-loading-overlay{display:none;position:absolute;inset:0;background:rgba(13,2,33,.85);border-radius:24px 24px 0 0;z-index:10;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;backdrop-filter:blur(4px)}
+        .share-loading-overlay.active{display:flex}
+        .share-loading-overlay .slo-spinner{width:44px;height:44px;border:4px solid rgba(131,56,236,.3);border-top:4px solid var(--neon-pink);border-radius:50%;animation:spin .8s linear infinite}
+        .share-loading-overlay .slo-text{font-family:'Chewy',cursive;font-size:1rem;color:var(--cyan-blast)}
         /* Answer Breakdown */
         .breakdown-section{background:var(--card-bg);border:2px solid rgba(131,56,236,.4);border-radius:20px;padding:1.25rem;margin-bottom:1.25rem}
         .breakdown-title{font-family:'Chewy',cursive;font-size:1.1rem;color:var(--lemon-yellow);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
@@ -328,7 +333,11 @@
 <canvas id="scorecardCanvas" width="800" height="450"></canvas>
 
 <div class="share-sheet" id="shareSheet">
-    <div class="share-sheet-inner">
+    <div class="share-sheet-inner" style="position:relative">
+        <div class="share-loading-overlay" id="shareLoadingOverlay">
+            <div class="slo-spinner"></div>
+            <div class="slo-text">Preparing your scorecard...</div>
+        </div>
         <div class="share-sheet-title">Share Your Score</div>
         <div class="share-sheet-sub" id="shareSheetSub">You scored on this quiz!</div>
         <div class="share-btns-row">
@@ -580,82 +589,177 @@ function buildBreakdown(){
     if(window.Iconify)window.Iconify.scan();
 }
 
+async function loadPageFonts(){
+    // Load the exact same Google Fonts used on the page via FontFace API
+    const fonts=[
+        {name:'Rubik Bubbles', url:'https://fonts.gstatic.com/s/rubikbubbles/v2/JIA1UVdwbHFJtwA7Us1BPFbRNTENpg.woff2'},
+        {name:'Bungee Shade',  url:'https://fonts.gstatic.com/s/bungeeshade/v13/DtVkJxarWL0t2KdzK3oI_jks7iLSrwFUlw.woff2'},
+        {name:'Chewy',         url:'https://fonts.gstatic.com/s/chewy/v18/uK_94ruUb-k-wk5xIDMfO-ed.woff2'},
+        {name:'Righteous',     url:'https://fonts.gstatic.com/s/righteous/v17/1cXxaUPXBpj2rGoU7C9mj3uEicG01A.woff2'},
+    ];
+    await Promise.all(fonts.map(async f=>{
+        try{
+            const ff=new FontFace(f.name, `url(${f.url})`);
+            await ff.load();
+            document.fonts.add(ff);
+        }catch(e){console.warn('Font load failed:',f.name,e);}
+    }));
+}
+
 async function generateScorecardImage(){
+    await loadPageFonts();
 
-    return new Promise(resolve=>{
+    const canvas=document.getElementById('scorecardCanvas');
+    const ctx=canvas.getContext('2d');
+    const W=1080, H=1350;
+    canvas.width=W; canvas.height=H;
 
-        const canvas=document.getElementById('scorecardCanvas');
-        const ctx=canvas.getContext('2d');
+    const percentage=Math.round((score/quiz.questions.length)*100);
 
-        canvas.width=1080;
-        canvas.height=1350;
+    // Tier config
+    const tierCfg=[
+        [90,{name:'Soulmate',          grad:['#FFD700','#FFA500'], ring:'#FFD700', glow:'rgba(255,215,0,0.45)'}],
+        [71,{name:'Best Friend Forever',grad:['#06ffa5','#00c9ff'], ring:'#06ffa5', glow:'rgba(6,255,165,0.4)'}],
+        [51,{name:'Good Friend',        grad:['#a78bfa','#8338ec'], ring:'#a78bfa', glow:'rgba(167,139,250,0.4)'}],
+        [31,{name:'Suspicious Friend',  grad:['#ffbe0b','#fb5607'], ring:'#ffbe0b', glow:'rgba(255,190,11,0.4)'}],
+        [0, {name:'Fake Friend',        grad:['#ff006e','#cc0055'], ring:'#ff006e', glow:'rgba(255,0,110,0.4)'}],
+    ];
+    const [,tc]=tierCfg.find(([t])=>percentage>=t);
 
-        const W=1080,H=1350;
-        const percentage=Math.round((score/quiz.questions.length)*100);
+    // ── Deep background ──────────────────────────────────────────────
+    const bgGrad=ctx.createLinearGradient(0,0,W,H);
+    bgGrad.addColorStop(0,'#0a0018');
+    bgGrad.addColorStop(0.5,'#0f0028');
+    bgGrad.addColorStop(1,'#130030');
+    ctx.fillStyle=bgGrad; ctx.fillRect(0,0,W,H);
 
-        // Background
-        let bg=ctx.createLinearGradient(0,0,W,H);
-        bg.addColorStop(0,"#120022");
-        bg.addColorStop(1,"#220044");
+    // Subtle grid
+    ctx.strokeStyle='rgba(131,56,236,0.07)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=54){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=54){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 
-        ctx.fillStyle=bg;
-        ctx.fillRect(0,0,W,H);
+    // Background glow blobs
+    const blob=(bx,by,br,col)=>{const g=ctx.createRadialGradient(bx,by,0,bx,by,br);g.addColorStop(0,col);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);};
+    blob(200,300,420,'rgba(131,56,236,0.18)');
+    blob(900,1100,380,tc.glow);
+    blob(540,680,300,'rgba(255,0,110,0.1)');
 
-        // Rounded Main Card
-        roundRect(ctx,90,120,900,1050,40,true,"#1c1038");
+    // ── Glassmorphism card ───────────────────────────────────────────
+    const CX=90, CY=100, CW=900, CH=1140, CR=56;
 
-        // Glow Border
-        ctx.strokeStyle="#8b5cf6";
-        ctx.lineWidth=5;
-        roundStroke(ctx,90,120,900,1050,40);
+    // Card shadow / outer glow
+    ctx.save();
+    ctx.shadowColor=tc.glow;
+    ctx.shadowBlur=80;
+    roundRect(ctx,CX,CY,CW,CH,CR,true,'rgba(0,0,0,0.01)');
+    ctx.restore();
 
-        // Logo
-        ctx.font="bold 52px Inter";
-        ctx.fillStyle="#ff00aa";
-        ctx.textAlign="center";
-        ctx.fillText("RealorNah",540,210);
+    // Glass fill
+    const glassFill=ctx.createLinearGradient(CX,CY,CX+CW,CY+CH);
+    glassFill.addColorStop(0,'rgba(255,255,255,0.07)');
+    glassFill.addColorStop(1,'rgba(255,255,255,0.03)');
+    roundRect(ctx,CX,CY,CW,CH,CR,true,glassFill);
 
-        // Circle
-        ctx.strokeStyle="#322255";
-        ctx.lineWidth=18;
+    // Shimmer highlight top-left
+    const shimmer=ctx.createLinearGradient(CX,CY,CX+CW*0.6,CY+CH*0.3);
+    shimmer.addColorStop(0,'rgba(255,255,255,0.12)');
+    shimmer.addColorStop(1,'rgba(255,255,255,0)');
+    roundRect(ctx,CX,CY,CW,CH,CR,true,shimmer);
+
+    // Card border gradient
+    ctx.save();
+    const borderGrad=ctx.createLinearGradient(CX,CY,CX+CW,CY+CH);
+    borderGrad.addColorStop(0,'rgba(255,255,255,0.25)');
+    borderGrad.addColorStop(0.4,tc.grad[0]+'88');
+    borderGrad.addColorStop(1,'rgba(131,56,236,0.4)');
+    ctx.strokeStyle=borderGrad; ctx.lineWidth=3;
+    roundStroke(ctx,CX,CY,CW,CH,CR);
+    ctx.restore();
+
+    // Inner card separator line
+    ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(CX+60,CY+380); ctx.lineTo(CX+CW-60,CY+380); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(CX+60,CY+840); ctx.lineTo(CX+CW-60,CY+840); ctx.stroke();
+
+    // ── Logo ─────────────────────────────────────────────────────────
+    ctx.textAlign='center';
+    const logoGrad=ctx.createLinearGradient(340,0,740,0);
+    logoGrad.addColorStop(0,'#ff006e'); logoGrad.addColorStop(1,'#8338ec');
+    ctx.font="68px 'Rubik Bubbles', cursive";
+    ctx.fillStyle=logoGrad;
+    ctx.fillText('RealorNah',540,225);
+
+    // Tagline under logo
+    ctx.font="30px 'Chewy', cursive";
+    ctx.fillStyle='rgba(255,255,255,0.45)';
+    ctx.fillText('Friendship Quiz Results',540,285);
+
+    // ── Score ring ───────────────────────────────────────────────────
+    const RX=540, RY=530, RR=175;
+
+    // Ring track
+    ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=22;
+    ctx.beginPath(); ctx.arc(RX,RY,RR,0,Math.PI*2); ctx.stroke();
+
+    // Ring arc (no glow)
+    const arcGrad=ctx.createLinearGradient(RX-RR,RY,RX+RR,RY);
+    arcGrad.addColorStop(0,tc.grad[0]); arcGrad.addColorStop(1,tc.grad[1]);
+    ctx.strokeStyle=arcGrad; ctx.lineWidth=22; ctx.lineCap='round';
+    ctx.beginPath();
+    ctx.arc(RX,RY,RR,-Math.PI/2,-Math.PI/2+(Math.PI*2*percentage/100));
+    ctx.stroke();
+
+    // Score percent (no glow)
+    const pctGrad=ctx.createLinearGradient(RX-80,RY-60,RX+80,RY+20);
+    pctGrad.addColorStop(0,'#ffffff'); pctGrad.addColorStop(1,tc.grad[0]);
+    ctx.font="100px 'Bungee Shade', cursive";
+    ctx.fillStyle=pctGrad;
+    ctx.fillText(`${percentage}%`,RX,RY+38);
+
+    // "out of X questions" below ring
+    ctx.font="28px 'Chewy', cursive";
+    ctx.fillStyle='rgba(255,255,255,0.5)';
+    ctx.fillText(`${score} out of ${quiz.questions.length} correct`,RX,RY+RR+55);
+
+    // ── Tier badge area ───────────────────────────────────────────────
+    const tierGrad=ctx.createLinearGradient(300,840,780,920);
+    tierGrad.addColorStop(0,tc.grad[0]); tierGrad.addColorStop(1,tc.grad[1]);
+
+    // Tier name (no glow)
+    ctx.font="58px 'Bungee Shade', cursive";
+    ctx.fillStyle=tierGrad;
+    ctx.fillText(tc.name,540,900);
+
+    ctx.font="32px 'Chewy', cursive";
+    ctx.fillStyle='rgba(255,255,255,0.65)';
+    const tagline=`I took ${quiz.creator}'s quiz on RealorNah`;
+    ctx.fillText(tagline,540,960);
+
+    // Player name chip
+    const chipW=460, chipH=72, chipX=540-chipW/2, chipY=1010;
+    const chipBg=ctx.createLinearGradient(chipX,chipY,chipX+chipW,chipY+chipH);
+    chipBg.addColorStop(0,tc.grad[0]+'33'); chipBg.addColorStop(1,tc.grad[1]+'22');
+    roundRect(ctx,chipX,chipY,chipW,chipH,36,true,chipBg);
+    ctx.strokeStyle=tc.grad[0]+'66'; ctx.lineWidth=1.5;
+    roundStroke(ctx,chipX,chipY,chipW,chipH,36);
+    ctx.font="32px 'Righteous', cursive";
+    ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.fillText(`✦ ${playerName} ✦`,540,chipY+47);
+
+    // ── Footer ───────────────────────────────────────────────────────
+    ctx.font="26px 'Righteous', cursive";
+    ctx.fillStyle='rgba(255,255,255,0.28)';
+    ctx.fillText('realornah.vercel.app',540,1185);
+
+    // Decorative dots
+    for(let i=0;i<5;i++){
         ctx.beginPath();
-        ctx.arc(540,520,170,0,Math.PI*2);
-        ctx.stroke();
+        ctx.arc(360+i*65,1215,5,0,Math.PI*2);
+        ctx.fillStyle= i===2 ? tc.grad[0] : 'rgba(255,255,255,0.2)';
+        ctx.fill();
+    }
 
-        // Progress
-        ctx.strokeStyle="#ff0077";
-        ctx.beginPath();
-        ctx.arc(
-            540,
-            520,
-            170,
-            -Math.PI/2,
-            -Math.PI/2+(Math.PI*2*percentage/100)
-        );
-        ctx.stroke();
-
-        // Percentage
-        ctx.font="bold 110px Inter";
-        ctx.fillStyle="white";
-        ctx.fillText(`${percentage}%`,540,550);
-
-        // Quiz Creator
-        ctx.font="bold 56px Inter";
-        ctx.fillStyle="#00ff99";
-        ctx.fillText(`${quiz.creator}'s Quiz`,540,820);
-
-        // Subtitle
-        ctx.font="42px Inter";
-        ctx.fillStyle="#cccccc";
-        ctx.fillText("How well do you know them?",540,900);
-
-        // Footer
-        ctx.font="34px Inter";
-        ctx.fillStyle="#777";
-        ctx.fillText("realornah.vercel.app",540,1100);
-
-        resolve(canvas.toDataURL("image/png",1));
-    });
+    return canvas.toDataURL('image/png',1);
 }
 
 function roundRect(ctx,x,y,w,h,r,fill,color){
@@ -701,12 +805,18 @@ async function shareScorecard(platform){
     const percentage=Math.round((score/quiz.questions.length)*100);
     const url=location.href;
 
-    let imgData = preRenderedScorecard;
-
-    if(!imgData){
-        imgData = await generateScorecardImage();
-        preRenderedScorecard = imgData;
+    // If image isn't ready yet, show spinner and wait
+    if(!preRenderedScorecard){
+        const overlay=document.getElementById('shareLoadingOverlay');
+        overlay.classList.add('active');
+        try{
+            preRenderedScorecard=await generateScorecardImage();
+        }catch(e){console.error(e);}
+        overlay.classList.remove('active');
     }
+
+    const imgData=preRenderedScorecard;
+    if(!imgData){closeShareSheet();return;}
 
     if(platform==='whatsapp'){
 
@@ -729,55 +839,41 @@ Take the quiz: ${url}
 
 (Create your own: realornah.vercel.app)`;
 
-        window.open(
-            `https://wa.me/?text=${encodeURIComponent(waText)}`,
-            '_blank'
-        );
+        // Try native share with image first (works on Android/iOS)
+        try{
+            const blob=await (await fetch(imgData)).blob();
+            const file=new File([blob],'realornah-score.png',{type:'image/png'});
+            if(navigator.canShare&&navigator.canShare({files:[file]})){
+                await navigator.share({files:[file],title:'My RealorNah Score',text:waText});
+                closeShareSheet();return;
+            }
+        }catch(e){}
 
-        triggerImageDownload(imgData);
+        // Fallback: open WhatsApp with text only
+        window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`,'_blank');
     }
 
     else if(platform==='telegram'){
-
-        window.open(
-            `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s quiz!`)}`,
-            '_blank'
-        );
-
-        triggerImageDownload(imgData);
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s quiz!`)}`,'_blank');
     }
 
     else if(platform==='copy'){
-
         navigator.clipboard.writeText(url);
-
-        return;
+        closeShareSheet();return;
     }
 
     else if(platform==='native'){
-
         try{
             const blob=await (await fetch(imgData)).blob();
-
-            const file=new File(
-                [blob],
-                'realornah-score.png',
-                {type:'image/png'}
-            );
-
-            await navigator.share({
-                files:[file],
-                title:'RealOrNah Score',
-                text:`I scored ${percentage}%!`
-            });
-
+            const file=new File([blob],'realornah-score.png',{type:'image/png'});
+            await navigator.share({files:[file],title:'RealOrNah Score',text:`I scored ${percentage}%!`});
         }catch(e){}
     }
 
     closeShareSheet();
 }
 
-function triggerImageDownload(dataUrl){const a=document.createElement('a');a.href=dataUrl;a.download='realornah-scorecard.png';a.click();}
+
 
 function createConfetti(){
     const colors=['#ff006e','#8338ec','#fb5607','#06ffa5','#ffbe0b'];
