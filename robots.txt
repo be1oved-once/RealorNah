@@ -2,6 +2,5 @@ User-agent: *
 Allow: /
 
 Disallow: /api/
-Disallow: /quiz?*
 
 Sitemap: https://realornah.vercel.app/sitemap.xml
